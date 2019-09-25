@@ -6,14 +6,16 @@ const bcrypt = require('bcrypt')
 passport.use(
   new LocalStrategy(
     {
-      usernameField: 'email',
+      emailField: 'email',
       passwordField: 'password',
     },
     (email, password, done) => {
+      console.log('here', email)
       User.findOne({ email })
         .then(foundUser => {
           if (!foundUser) {
             done(null, false, { message: 'Invalid email or password' })
+            console.log('here.....')
             return
           }
 
@@ -21,6 +23,7 @@ passport.use(
             done(null, false, { message: 'Invalid email or password' })
             return
           }
+          console.log('here.....')
 
           done(null, foundUser)
         })

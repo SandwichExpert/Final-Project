@@ -8,7 +8,7 @@ export default function Login(props) {
   function handleSubmit(e) {
     e.preventDefault()
     api
-      .login(formValues.username, formValues.password)
+      .login(formValues.email, formValues.password)
       .then(result => {
         console.log('SUCCESS!')
         props.history.push('/') // Redirect to the home page
@@ -26,6 +26,7 @@ export default function Login(props) {
         Password: <input type="password" {...getInputProps('password')} />{' '}
         <br />
         <button>Login</button>
+        <pre>{JSON.stringify(formValues, null, 2)}</pre>
       </form>
       {message && <div className="info info-danger">{message}</div>}
     </div>
