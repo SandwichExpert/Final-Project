@@ -13,7 +13,7 @@ const pointSchema = new mongoose.Schema({
   },
 })
 
-const shema = new Schema(
+const schema = new Schema(
   {
     // an array of users
     _users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
@@ -32,4 +32,4 @@ const shema = new Schema(
   }
 )
 
-module.exports = mongoose.model('User', this.schema)
+module.exports = mongoose.model('User', schema)

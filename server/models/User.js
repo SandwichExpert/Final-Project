@@ -8,12 +8,10 @@ const userSchema = new Schema(
     avatar: String,
     email: String,
     password: String,
+    _friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   },
   {
-    timestamps: {
-      createdAt: 'created_at',
-      updatedAt: 'updated_at',
-    },
+    timestamps: true,
   }
 )
 
