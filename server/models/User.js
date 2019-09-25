@@ -5,10 +5,11 @@ const userSchema = new Schema(
   {
     first_name: String,
     last_name: String,
-    avatar: String,
+    avatar: { type: String, default: './static/media/default_avatar.png' },
     email: String,
     password: String,
     _friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    _meetups: [{ type: mongoose.Schema.Types.ObjectId, ref: 'MeetUp' }],
   },
   {
     timestamps: true,

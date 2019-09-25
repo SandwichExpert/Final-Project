@@ -9,10 +9,17 @@ const bcrypt = require('bcrypt')
 const bcryptSalt = 10
 
 router.post('/signup', uploader.single('avatar'), (req, res, next) => {
+  console.log('-----', req.file)
   const avatar_url = req.file.url
   const { email, password, first_name, last_name } = req.body
   if (!email || !password || !first_name || !last_name) {
     res.status(400).json({ message: 'fill in all required fields' })
+    return
+  }
+  if (password.length < 4) {
+    res
+      .status(400)
+      .json({ message: 'password must be at least 5 characters long' })
     return
   }
   User.findOne({ email })
