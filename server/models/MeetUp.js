@@ -16,7 +16,7 @@ const pointSchema = new mongoose.Schema({
 const schema = new Schema(
   {
     // an array of users
-    name: { type: string, required: true },
+    name: { type: String, required: true },
     _admin: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
