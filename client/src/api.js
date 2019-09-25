@@ -38,10 +38,10 @@ export default {
   // This method signs up and logs in the user
   signup(userInfo) {
     const formData = new FormData()
-    formData.append('first_name', userInfo.first_name)
-    formData.append('last_name', userInfo.last_name)
-    formData.append('password', userInfo.password)
-    formData.append('email', userInfo.email)
+    const userInfoKeys = Object.keys(userInfo)
+    userInfoKeys.foreach(key => {
+      formData.append(`${key}`, userInfo.key)
+    })
     return service
       .post('/signup', formData)
       .then(res => {
@@ -52,10 +52,10 @@ export default {
       .catch(errHandler)
   },
 
-  login(username, password) {
+  login(email, password) {
     return service
       .post('/login', {
-        username,
+        email,
         password,
       })
       .then(res => {
@@ -71,8 +71,37 @@ export default {
     return service.get('/logout')
   },
 
+  // API for users routes
+
+  getUserInfo() {
+    return service
+      .get(`/users`)
+      .then(res => res.data)
+      .catch(errHandler)
+  },
+
+  deleteUser() {
+    return service
+      .delete('/users')
+      .then(res => res.data)
+      .catch(errHandler)
+  },
+
+  editUser(userInfo) {
+    const formData = new FormData()
+    const userInfoKeys = Object.keys(userInfo)
+    userInfoKeys.foreach(key => {
+      formData.append(`${key}`, userInfo.key)
+    })
+    return service
+      .put('/users/edit', body)
+      .then()
+      .catch()
+  },
+
   // This is an example on how to use this method in a different file
   // api.getCountries().then(countries => { /* ... */ })
+
   getCountries() {
     return service
       .get('/countries')

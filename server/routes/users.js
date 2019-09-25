@@ -4,8 +4,8 @@ const router = express.Router()
 const uploader = require('../configs/cloudinary')
 
 router
-  .get('/:userid', (req, res, next) => {
-    const id = req.params.userid
+  .get('/', (req, res, next) => {
+    const id = req.user._id
     findUser(id)
       .then(user => {
         console.log('user requested', user)
@@ -18,14 +18,9 @@ router
       })
       .catch(err => console.log(err))
   })
-  .get('/friends/:userid', (req, res, next) => {
-    const id = req.params.userid
-    findUserFriends.then(friends => {
-      res.json({ friends })
-    })
-  })
-  .delete('/:userid', (req, res, next) => {
-    const id = req.params.userid
+
+  .delete('/', (req, res, next) => {
+    const id = req.user._id
     deleteUser(id)
       .then(user => {
         console.log('user deleted')
@@ -49,13 +44,14 @@ router
   })
   .post('/addFriend', (req, res, next) => {
     const email = req.body.email
+    console.log(req.user, '----------', email)
     const userId = req.user._id
     addFriendToUser(userId, email).then(user => {
       console.log('friend was added to user')
       res.json(user)
     })
   })
-  .delete('/removeFriend/:friendId', (req, res, next) => {
+  .put('/removeFriend/:friendId', (req, res, next) => {
     const userId = req.user._id
     const friendId = req.params.friendId
     removeFriendFromUser(userId, friendId)
@@ -68,6 +64,8 @@ router
 async function findUser(id) {
   try {
     const foundUser = await User.findById(id)
+      .populate('_friends')
+      .populate('_meetups')
     return foundUser
   } catch (err) {
     return res.json({ msg: 'user not found' })
@@ -93,17 +91,18 @@ async function updateUser(id, changes) {
   }
 }
 
-async function findUserFriends(id) {
-  const user_with_full_friends = await User.findById(id).populate('_friends')
-  const friends = user_with_full_friends._friends.map(friend => {
-    return friend
-  })
-  return friends
-}
-
 async function addFriendToUser(userId, email) {
+  console.log('email: ', email)
   const friend = await User.findOne({ email })
+  console.log('friend: ', friend)
   const friendId = friend._id
+  await User.findByIdAndUpdate(
+    friendId,
+    {
+      $push: { _friends: userId },
+    },
+    { new: true }
+  )
   const updatedUser = await User.findByIdAndUpdate(
     userId,
     {
@@ -115,6 +114,13 @@ async function addFriendToUser(userId, email) {
 }
 
 async function removeFriendFromUser(userId, friendId) {
+  await User.findByIdAndUpdate(
+    friendId,
+    {
+      $pull: { _friends: userId },
+    },
+    { new: true }
+  )
   const updatedUser = await User.findByIdAndUpdate(
     userId,
     {
