@@ -95,8 +95,16 @@ export default {
     })
     return service
       .put('/users/edit', body)
-      .then()
-      .catch()
+      .then(res => res.data)
+      .catch(errHandler)
+  },
+
+  addFriend(body) {
+    const email = { email: body.email }
+    return service
+      .post('users/addFriend')
+      .then(res => res.data)
+      .catch(errHandler)
   },
 
   // This is an example on how to use this method in a different file

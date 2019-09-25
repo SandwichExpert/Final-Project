@@ -31,8 +31,8 @@ router
   })
   .put('/edit', uploader.single('avatar'), (req, res, next) => {
     let changes = req.body
-    req.file ? (changes.avatar = req.file.url) : null
     const id = req.user._id
+    req.file ? (changes.avatar = req.file.url) : null
     console.log(req.body)
     updateUser(id, changes)
       .then(user => {
