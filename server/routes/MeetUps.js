@@ -1,5 +1,5 @@
 const express = require('express')
-
+const MeetUp = require('../models/MeetUp')
 const router = express.Router()
 
 // Route to get all countries

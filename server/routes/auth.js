@@ -11,8 +11,8 @@ const bcryptSalt = 10
 router.post('/signup', uploader.single('avatar'), (req, res, next) => {
   const avatar_url = req.file.url
   const { email, password, first_name, last_name } = req.body
-  if (!email || !password) {
-    res.status(400).json({ message: 'Indicate email and password' })
+  if (!email || !password || !first_name || !last_name) {
+    res.status(400).json({ message: 'fill in all required fields' })
     return
   }
   User.findOne({ email })
@@ -23,7 +23,13 @@ router.post('/signup', uploader.single('avatar'), (req, res, next) => {
       }
       const salt = bcrypt.genSaltSync(bcryptSalt)
       const hashPass = bcrypt.hashSync(password, salt)
-      const newUser = new User({ email, password: hashPass, name })
+      const newUser = new User({
+        email,
+        password: hashPass,
+        first_name,
+        last_name,
+        avatar: avatar_url,
+      })
       return newUser.save()
     })
     .then(userSaved => {

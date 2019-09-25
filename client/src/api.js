@@ -37,8 +37,13 @@ export default {
 
   // This method signs up and logs in the user
   signup(userInfo) {
+    const formData = new formData()
+    formData.append('first_name', userInfo.first_name)
+    formData.append('last_name', userInfo.last_name)
+    formData.append('password', userInfo.password)
+    formData.append('email', userInfo.email)
     return service
-      .post('/signup', userInfo)
+      .post('/signup', formData)
       .then(res => {
         // If we have localStorage.getItem('user') saved, the application will consider we are loggedin
         localStorage.setItem('user', JSON.stringify(res.data))

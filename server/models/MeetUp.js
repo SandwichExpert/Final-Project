@@ -16,6 +16,12 @@ const pointSchema = new mongoose.Schema({
 const schema = new Schema(
   {
     // an array of users
+    name: { type: string, required: true },
+    _admin: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
     _users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     meetup_date: { type: String, required: true },
     meetup_time: { type: String, required: true },
@@ -32,4 +38,4 @@ const schema = new Schema(
   }
 )
 
-module.exports = mongoose.model('User', schema)
+module.exports = mongoose.model('MeetUp', schema)
