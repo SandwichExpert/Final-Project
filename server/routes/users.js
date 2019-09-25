@@ -18,6 +18,12 @@ router
       })
       .catch(err => console.log(err))
   })
+  .get('/friends/:userid', (req, res, next) => {
+    const id = req.params.userid
+    findUserFriends.then(friends => {
+      res.json({ friends })
+    })
+  })
   .delete('/:userid', (req, res, next) => {
     const id = req.params.userid
     deleteUser(id)
@@ -28,10 +34,10 @@ router
       })
       .catch(err => console.log(err))
   })
-  .put('/edit/:userid', uploader.single('avatar'), (req, res, next) => {
+  .put('/edit', uploader.single('avatar'), (req, res, next) => {
     let changes = req.body
     req.file ? (changes.avatar = req.file.url) : null
-    const id = req.params.userid
+    const id = req.user._id
     console.log(req.body)
     updateUser(id, changes)
       .then(user => {
@@ -40,6 +46,23 @@ router
         res.json(user)
       })
       .catch(err => console.log(err))
+  })
+  .post('/addFriend', (req, res, next) => {
+    const email = req.body.email
+    const userId = req.user._id
+    addFriendToUser(userId, email).then(user => {
+      console.log('friend was added to user')
+      res.json(user)
+    })
+  })
+  .delete('/removeFriend/:friendId', (req, res, next) => {
+    const userId = req.user._id
+    const friendId = req.params.friendId
+    removeFriendFromUser(userId, friendId)
+      .then(user => {
+        res.json(user)
+      })
+      .catch(err => console.log('err', err))
   })
 
 async function findUser(id) {
@@ -68,6 +91,38 @@ async function updateUser(id, changes) {
   } catch (err) {
     return alert(err)
   }
+}
+
+async function findUserFriends(id) {
+  const user_with_full_friends = await User.findById(id).populate('_friends')
+  const friends = user_with_full_friends._friends.map(friend => {
+    return friend
+  })
+  return friends
+}
+
+async function addFriendToUser(userId, email) {
+  const friend = await User.findOne({ email })
+  const friendId = friend._id
+  const updatedUser = await User.findByIdAndUpdate(
+    userId,
+    {
+      $push: { _friends: friendId },
+    },
+    { new: true }
+  )
+  return updatedUser
+}
+
+async function removeFriendFromUser(userId, friendId) {
+  const updatedUser = await User.findByIdAndUpdate(
+    userId,
+    {
+      $pull: { _friends: friendId },
+    },
+    { new: true }
+  )
+  return updatedUser
 }
 
 module.exports = router
