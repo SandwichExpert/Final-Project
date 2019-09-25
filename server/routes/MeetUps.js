@@ -12,6 +12,13 @@ router.get('/my-meetups', isLoggedIn, (req, res, next) => {
     })
 })
 
+router.get('/:meetupId', isLoggedIn, (req, res, next) => {
+  const id = req.params.meetupId
+  MeetUp.findById(id).then(meetup => {
+    res.json(meetup)
+  })
+})
+
 router.post('/meetups', isLoggedIn, (req, res, next) => {
   const _admin = req.user._id
   const meetup_date = req.body.meetup_date
@@ -30,6 +37,18 @@ router.post('/meetups', isLoggedIn, (req, res, next) => {
   })
 })
 
+router.post('/location',isLoggedIn,(req,res,next)=>{
+  const {lat,lng} = req.body;
+  const newLocation = {coordinates : [lat,lng]}
+  MeetUp.create(newLocation)
+  .then(location =>{
+    res.json(location)
+    .catch(err => next(err))
+  })
+
+
+})
+
 router.post('/:meetupId', isLoggedIn, (req, res, next) => {
   const options = { new: true }
   const meetup = req.params.meetupId
@@ -41,35 +60,20 @@ router.post('/:meetupId', isLoggedIn, (req, res, next) => {
   ).then(updatedMeetup => {
     res.json(updatedMeetup)
   })
+  .catch(err => next(err))
 })
 
 router.delete('/:meetupId/:meetupUserId', isLoggedIn, (req, res, next) => {
-  const options = { new: true };
-  const meetupId = req.params.meetupId;
-  const meetupUserId = req.params.meetupUserId;
-  const currentUserId = req.user._id;
-  console.log('-----', meetupUserId, '-----------', meetupId);
-  findAdminFromMeetup(meetupId, meetupUserId, currentUserId).then(updatedMeetup => {
-    res.json(updatedMeetup)
-  })
-
-  // MeetUp.findById(meetupUser)
-  // .then(deletedUser => {
-  //   const adminId = meetup._admin
-  //   if(!deletedUser){
-  //     next({success:false, status : 400})
-  //   }
-  //   if (adminId == meetup.admin.toString() || deletedUser.id == meetupUser){
-  //     MeetUp.findByIdAndDelete(deletedUser._id).then(()=>{
-  //       res.json({success:true})
-  //     })
-  //   }
-  //   else res.json({success : false, status : 403})
-  // })
-  // MeetUp.findByIdAndDelete(meetup, meetupUser,options)
-  // .then(updatedMeetup =>{
-  //   res.json(updatedMeetup);
-  // })
+  const options = { new: true }
+  const meetupId = req.params.meetupId
+  const meetupUserId = req.params.meetupUserId
+  const currentUserId = req.user._id
+  findAdminFromMeetup(meetupId, meetupUserId, currentUserId).then(
+    updatedMeetup => {
+      res.json(updatedMeetup)
+    }
+  )
+  .catch(err => next(err));
 })
 
 router.delete('/:meetupId', isLoggedIn, (req, res, next) => {
@@ -93,15 +97,15 @@ router.delete('/:meetupId', isLoggedIn, (req, res, next) => {
 async function findAdminFromMeetup(meetupId, meetupUserId, currentUserId) {
   const meetup = await MeetUp.findById(meetupId)
   const admin = meetup._admin
-  console.log(admin,"-------------YO-----------")
+  // console.log(admin,"-------------YO-----------")
   if (currentUserId == admin || currentUserId == meetupUserId) {
-    console.log(currentUserId,"-------------YO-----------")
+    // console.log(currentUserId,"-------------YO-----------")
     const updatedMeetup = await MeetUp.findByIdAndUpdate(
       meetupId,
       { $pull: { _users: meetupUserId } },
       { new: true }
     )
-    console.log(updatedMeetup,"YAAAAAAAAAAAAAAAAAAAAAAA")
+    // console.log(updatedMeetup,"YAAAAAAAAAAAAAAAAAAAAAAA")
     return updatedMeetup
   }
 }
