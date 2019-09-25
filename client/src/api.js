@@ -6,7 +6,7 @@ const service = axios.create({
   baseURL:
     process.env.NODE_ENV === 'production'
       ? '/api'
-      : `http://${window.location.hostname}:5000/api`,
+      : `http://${window.location.hostname}:2000/api`,
 
   withCredentials: true,
 })
@@ -37,7 +37,7 @@ export default {
 
   // This method signs up and logs in the user
   signup(userInfo) {
-    const formData = new formData()
+    const formData = new FormData()
     formData.append('first_name', userInfo.first_name)
     formData.append('last_name', userInfo.last_name)
     formData.append('password', userInfo.password)
