@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const path = require('path')
 require('dotenv').config({ path: path.join(__dirname, '../.env') })
 
@@ -49,3 +50,5 @@ getAll().then(Msg => {
     mongoose.disconnect()
   })
 })
+=======
+>>>>>>> xavier

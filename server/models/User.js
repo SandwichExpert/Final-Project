@@ -9,6 +9,7 @@ const userSchema = new Schema(
     email: String,
     password: String,
     _friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    // pending_friends:[{type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     _meetups: [{ type: mongoose.Schema.Types.ObjectId, ref: 'MeetUp' }],
   },
   {
