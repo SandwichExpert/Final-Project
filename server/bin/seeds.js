@@ -9,35 +9,43 @@ require('dotenv').config({ path: path.join(__dirname, '../.env') })
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const User = require('../models/User')
+const MeetUp = require('../models')
 
 const bcryptSalt = 10
 
+// make a mongodb connection
 require('../configs/database')
 
-let users = [
-  {
-    username: 'alice',
+let userDocs = [
+  new User({
+    first_name: 'alice',
+    last_name: 'something',
+    email: 'alice@gmail.com',
     password: bcrypt.hashSync('alice', bcrypt.genSaltSync(bcryptSalt)),
-  },
-  {
-    username: 'bob',
+  }),
+  new User({
+    first_name: 'bob',
+    last_name: 'something',
+    email: 'bob@gmail.com',
     password: bcrypt.hashSync('bob', bcrypt.genSaltSync(bcryptSalt)),
-  },
+  }),
 ]
 
-User.deleteMany()
-  .then(() => {
-    return User.create(users)
-  })
-  .then(usersCreated => {
-    console.log(`${usersCreated.length} users created with the following id:`)
-    console.log(usersCreated.map(u => u._id))
-  })
-  .then(() => {
-    // Close properly the connection to Mongoose
+async function getAll() {
+  await User.deleteMany()
+  return 'all good'
+}
+
+async function feedDB() {
+  await User.create(userDocs)
+  return 'all good'
+}
+
+getAll().then(Msg => {
+  console.log(Msg, ' full delete')
+  feedDB().then(Msg => {
+    console.log(Msg, ' database has been fed')
+    console.log(`${userDocs.length} users created`)
     mongoose.disconnect()
   })
-  .catch(err => {
-    mongoose.disconnect()
-    throw err
-  })
+})
