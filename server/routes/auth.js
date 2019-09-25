@@ -45,7 +45,7 @@ router.post('/signup', uploader.single('avatar'), (req, res, next) => {
     .catch(err => next(err))
 })
 
-router.post('/login ', (req, res, next) => {
+router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, theUser, failureDetails) => {
     if (err) {
       res.status(500).json({ message: 'Something went wrong' })
