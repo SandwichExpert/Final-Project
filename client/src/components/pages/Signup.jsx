@@ -7,7 +7,7 @@ export default function Signup(props) {
     first_name: '',
     last_name: '',
     password: '',
-    message: null,
+    avatar: '',
   })
 
   function handleInputChange(event) {
@@ -24,6 +24,7 @@ export default function Signup(props) {
       first_name: state.first_name,
       last_name: state.last_name,
       password: state.password,
+      avatar: state.avatar,
     }
     api
       .signup(data)
@@ -39,17 +40,25 @@ export default function Signup(props) {
       <form>
         email:{' '}
         <input
-          type="text"
+          type="email"
           value={state.email}
           name="email"
           onChange={handleInputChange}
         />{' '}
         <br />
-        Name:{' '}
+        First Name:{' '}
         <input
           type="text"
-          value={state.name}
-          name="name"
+          value={state.first_name}
+          name="first_name"
+          onChange={handleInputChange}
+        />{' '}
+        <br />
+        Last Name:{' '}
+        <input
+          type="text"
+          value={state.last_name}
+          name="last_name"
           onChange={handleInputChange}
         />{' '}
         <br />
@@ -58,6 +67,14 @@ export default function Signup(props) {
           type="password"
           value={state.password}
           name="password"
+          onChange={handleInputChange}
+        />{' '}
+        <br />
+        Avatar:{' '}
+        <input
+          type="file"
+          value={state.file}
+          name="avatar"
           onChange={handleInputChange}
         />{' '}
         <br />

@@ -9,7 +9,6 @@ const bcrypt = require('bcrypt')
 const bcryptSalt = 10
 
 router.post('/signup', uploader.single('avatar'), (req, res, next) => {
-  console.log('-----', req.file)
   let avatar_url = ''
   req.file ? (avatar_url = req.file.url) : null
   const { email, password, first_name, last_name } = req.body

@@ -39,11 +39,15 @@ export default {
   signup(userInfo) {
     const formData = new FormData()
     const userInfoKeys = Object.keys(userInfo)
-    userInfoKeys.foreach(key => {
-      formData.append(`${key}`, userInfo.key)
+    userInfoKeys.forEach(key => {
+      formData.append(`${key}`, userInfo[`${key}`])
     })
     return service
-      .post('/signup', formData)
+      .post('/signup', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
       .then(res => {
         // If we have localStorage.getItem('user') saved, the application will consider we are loggedin
         localStorage.setItem('user', JSON.stringify(res.data))
@@ -91,7 +95,7 @@ export default {
     const formData = new FormData()
     const userInfoKeys = Object.keys(userInfo)
     userInfoKeys.foreach(key => {
-      formData.append(`${key}`, userInfo.key)
+      formData.append(`${key}`, userInfo[`${key}`])
     })
     return service
       .put('/users/edit', formData)
