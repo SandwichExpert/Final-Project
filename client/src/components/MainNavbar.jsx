@@ -11,12 +11,12 @@ function MainNavbar(props) {
   return (
     <nav className="App-header">
       <img src={logo} className="App-logo" alt="logo" />
-      <h1 className="App-title">MERN Boilerplate</h1>
+      <h1 className="App-title">Maptee</h1>
       <NavLink to="/" exact>
         Home
       </NavLink>
-      <NavLink to="/countries">Countries</NavLink>
-      <NavLink to="/add-country">Add country</NavLink>
+      <NavLink to="/meetups">Meetups</NavLink>
+      <NavLink to="/profile">Profile</NavLink>
       {!api.isLoggedIn() && <NavLink to="/signup">Signup</NavLink>}
       {!api.isLoggedIn() && <NavLink to="/login">Login</NavLink>}
       {api.isLoggedIn() && (
