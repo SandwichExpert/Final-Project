@@ -1,10 +1,11 @@
-import React from 'react'
-import { Route, Switch } from 'react-router-dom'
-import MainNavbar from './MainNavbar'
-import Home from './pages/Home'
-import User from './pages/User'
-import Login from './pages/Login'
-import Signup from './pages/Signup'
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Route, Switch } from 'react-router-dom';
+import MainNavbar from './MainNavbar';
+import Home from './pages/Home';
+import User from './pages/User';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
 
 export default function App() {
   return (

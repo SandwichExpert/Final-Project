@@ -1,7 +1,10 @@
 // --------------------
 // Definition of variables
-$primary: #32c3ff;
-
+$one: #6b7db3;
+$two: #6BB39A;
+$three:#99b3ff;
+$four: #bb99ff;
+$five: #99ffff; 
 // ----------------------------------------
 // To install Boostrap:
 // 1) Run in the client folder: $ npm i bootstrap
@@ -14,9 +17,14 @@ $primary: #32c3ff;
 // import { Button } from 'reactstrap';
 // <Button color="danger">Danger!</Button>
 // ----------------------------------------
-
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
+@import url('https://fonts.googleapis.com/css?family=Karla|Playfair+Display&display=swap');
 // --------------------
 // Style reusable for all components
+*{
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;
