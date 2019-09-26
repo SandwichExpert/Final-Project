@@ -1,0 +1,46 @@
+.landing {
+  background: linear-gradient(
+      0deg,
+      #ffffff -38.58%,
+      rgba(255, 255, 255, 0) 44.44%
+    ),
+    #ffffff;
+  height: 100vh;
+  width: 100%;
+}
+
+#landing__signuplink,
+#landing__loginlink {
+  font-family: Karla;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 25px;
+  line-height: 29px;
+  text-align: center;
+
+  color: #ffffff;
+}
+
+.landing__buttons {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 20%;
+}
+
+#landing__loginbtn,
+#landing__signupbtn {
+  width: 50%;
+
+  margin-top: 10%;
+  background: $two;
+  box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  border-color: transparent;
+}
+
+#landing__logo {
+  padding-top: 35%;
+  width: 65%;
+}

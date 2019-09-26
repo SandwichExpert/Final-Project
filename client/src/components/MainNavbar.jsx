@@ -15,6 +15,8 @@ function MainNavbar(props) {
       <NavLink to="/" exact>
         Home
       </NavLink>
+      <NavLink to="/landing">Landing</NavLink>
+      <NavLink to="/profile">Profile</NavLink>
       <NavLink to="/meetups">Meetups</NavLink>
       <NavLink to="/profile">Profile</NavLink>
       {!api.isLoggedIn() && <NavLink to="/signup">Signup</NavLink>}

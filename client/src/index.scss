@@ -1,10 +1,10 @@
 // --------------------
 // Definition of variables
 $one: #6b7db3;
-$two: #6BB39A;
-$three:#99b3ff;
+$two: #6bb39a;
+$three: #99b3ff;
 $four: #bb99ff;
-$five: #99ffff; 
+$five: #99ffff;
 // ----------------------------------------
 // To install Boostrap:
 // 1) Run in the client folder: $ npm i bootstrap
@@ -19,10 +19,9 @@ $five: #99ffff;
 // ----------------------------------------
 @import '../node_modules/bootstrap/scss/bootstrap.scss';
 @import url('https://fonts.googleapis.com/css?family=Karla|Playfair+Display&display=swap');
-
-// --------------------
+@import '../src/css_styles/landing.scss'; // --------------------
 // Style reusable for all components
-*{
+* {
   box-sizing: border-box;
   font-family: 'Karla', sans-serif;
   
@@ -147,6 +146,7 @@ color : white;
     font-size: 1.2em;
   }
 }
+<<<<<<< HEAD
 
 // --------------------
 // Style for Secret component
@@ -158,3 +158,5 @@ color : white;
 }
 
 @import './media.scss';
+=======
+>>>>>>> 6e2ed42... style changes
