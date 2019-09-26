@@ -1,6 +1,6 @@
 const express = require('express')
 const MeetUp = require('../models/MeetUp')
-const Location = require('../models/Location') 
+const Location = require('../models/Location')
 const { isLoggedIn } = require('../middlewares')
 const router = express.Router()
 
@@ -38,77 +38,74 @@ router.post('/', isLoggedIn, (req, res, next) => {
   })
 })
 
-router.post('/:meetupId/suggested-location',isLoggedIn,(req,res,next)=>{
-  const {lat,lng} = req.body;
-  const options = { new: true };
+router.post('/:meetupId/suggested-location', isLoggedIn, (req, res, next) => {
+  const { lat, lng } = req.body
+  const options = { new: true }
   const meetup = req.params.meetupId
   const newLocation = {
-    type_of_location:req.body.type_of,
+    type_of_location: req.body.type_of,
     location: {
-      coordinates:[lat,lng]
-    }
-  };
-  console.log(req.body.type_of,"WAAAAAAAAAAAAAAAAA-------------")
-  console.log(newLocation,"!!!! ---------------------------- !!!!")
-  Location.create(newLocation)
-  .then(location =>{
-    console.log(location, "a new location was added")
+      coordinates: [lat, lng],
+    },
+  }
+  console.log(req.body.type_of, 'WAAAAAAAAAAAAAAAAA-------------')
+  console.log(newLocation, '!!!! ---------------------------- !!!!')
+  Location.create(newLocation).then(location => {
+    console.log(location, 'a new location was added')
     res.json(location)
     const locationId = location._id
-    MeetUp.findByIdAndUpdate(meetup,{
-      $push:{
-        suggested_locations : locationId
-      }},options)
-    .then(suggestedLocation =>{
-      res.json(suggestedLocation)
-      .catch(err => next(err))
+    MeetUp.findByIdAndUpdate(
+      meetup,
+      {
+        $push: {
+          suggested_locations: locationId,
+        },
+      },
+      options
+    ).then(suggestedLocation => {
+      res.json(suggestedLocation).catch(err => next(err))
     })
-    
-  });
-  
-
-
-});
-
+  })
+})
 
 router.post('/:meetupId', isLoggedIn, (req, res, next) => {
   const options = { new: true }
   const meetup = req.params.meetupId
-  
-  MeetUp.findByIdAndUpdate(
-    meetup,
-    { $push: { _users: req.user } },
-    options
-    ).then(updatedMeetup => {
+
+  MeetUp.findByIdAndUpdate(meetup, { $push: { _users: req.user } }, options)
+    .then(updatedMeetup => {
       res.json(updatedMeetup)
     })
     .catch(err => next(err))
-  })
-  
-  router.delete('/:meetupId/:suggestedLocationId',isLoggedIn,(req,res,next)=>{
+})
+
+router.delete(
+  '/:meetupId/:suggestedLocationId',
+  isLoggedIn,
+  (req, res, next) => {
     const currentUserId = req.user._id
-    const options = {new:true};
-    const meetupId = req.params.meetupId;
-    const suggestedLocationId = req.params.suggestedLocationId;
-    findLocationThroughMeetup(meetupId,suggestedLocationId,currentUserId)
-    .then(updateSuggestedLocation =>{
-      console.log(updateSuggestedLocation,"HEEEEEEERE ---------")
-      res.json(updateSuggestedLocation)
-    })
-    .catch(err => next(err));
-  })
+    const options = { new: true }
+    const meetupId = req.params.meetupId
+    const suggestedLocationId = req.params.suggestedLocationId
+    findLocationThroughMeetup(meetupId, suggestedLocationId, currentUserId)
+      .then(updateSuggestedLocation => {
+        console.log(updateSuggestedLocation, 'HEEEEEEERE ---------')
+        res.json(updateSuggestedLocation)
+      })
+      .catch(err => next(err))
+  }
+)
 
 router.delete('/:meetupId/:meetupUserId', isLoggedIn, (req, res, next) => {
   const options = { new: true }
   const meetupId = req.params.meetupId
   const meetupUserId = req.params.meetupUserId
   const currentUserId = req.user._id
-  findAdminFromMeetup(meetupId, meetupUserId, currentUserId).then(
-    updatedMeetup => {
+  findAdminFromMeetup(meetupId, meetupUserId, currentUserId)
+    .then(updatedMeetup => {
       res.json(updatedMeetup)
-    }
-  )
-  .catch(err => next(err));
+    })
+    .catch(err => next(err))
 })
 
 router.delete('/:meetupId', isLoggedIn, (req, res, next) => {
@@ -145,21 +142,25 @@ async function findAdminFromMeetup(meetupId, meetupUserId, currentUserId) {
   }
 }
 
-async function findLocationThroughMeetup(meetupId,suggestedLocationId,currentUserId){
+async function findLocationThroughMeetup(
+  meetupId,
+  suggestedLocationId,
+  currentUserId
+) {
   const meetup = await MeetUp.findById(meetupId)
-  console.log(meetup,'"!!!!!!!!!!!!!!!!!!!!!')
+  console.log(meetup, '"!!!!!!!!!!!!!!!!!!!!!')
   const admin = meetup._admin
   console.log(admin)
   console.log(currentUserId)
 
-  if(currentUserId == admin.toString()){
+  if (currentUserId == admin.toString()) {
     const updateSuggestedLocation = await MeetUp.findByIdAndUpdate(
       meetupId,
-      {$pull : {suggested_locations:suggestedLocationId}},
-      {new:true}
+      { $pull: { suggested_locations: suggestedLocationId } },
+      { new: true }
     )
-    console.log(updateSuggestedLocation,"WATAAAAAAA")
-    return updateSuggestedLocation;
+    console.log(updateSuggestedLocation, 'WATAAAAAAA')
+    return updateSuggestedLocation
   }
 }
 
