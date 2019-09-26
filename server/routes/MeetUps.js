@@ -1,7 +1,7 @@
-const express = require('express');
-const MeetUp = require('../models/MeetUp');
-const Location = require('../models/Location');
-const { isLoggedIn } = require('../middlewares');
+const express = require('express')
+const MeetUp = require('../models/MeetUp')
+const Location = require('../models/Location') 
+const { isLoggedIn } = require('../middlewares')
 const router = express.Router()
 
 router.get('/my-meetups', isLoggedIn, (req, res, next) => {
@@ -16,27 +16,27 @@ router.get('/my-meetups', isLoggedIn, (req, res, next) => {
 router.get('/:meetupId', isLoggedIn, (req, res, next) => {
   const id = req.params.meetupId
   MeetUp.findById(id).then(meetup => {
-    res.json(meetup);
-  });
-});
+    res.json(meetup)
+  })
+})
 
 router.post('/', isLoggedIn, (req, res, next) => {
-  const _admin = req.user._id;
-  const meetup_date = req.body.meetup_date;
-  const meetup_time = req.body.meetup_time;
-  const name = req.body.name;
+  const _admin = req.user._id
+  const meetup_date = req.body.meetup_date
+  const meetup_time = req.body.meetup_time
+  const name = req.body.name
 
   const newMeetUp = {
     _admin,
     meetup_date,
     meetup_time,
     name,
-  };
+  }
 
   MeetUp.create(newMeetUp).then(meetup => {
-    res.json(meetup);
-  });
-});
+    res.json(meetup)
+  })
+})
 
 router.post('/:meetupId/suggested-location',isLoggedIn,(req,res,next)=>{
   const {lat,lng} = req.body;
@@ -109,7 +109,7 @@ router.delete('/:meetupId/:meetupUserId', isLoggedIn, (req, res, next) => {
     }
   )
   .catch(err => next(err));
-});
+})
 
 router.delete('/:meetupId', isLoggedIn, (req, res, next) => {
   let adminId = req.user._id.toString()
@@ -155,13 +155,12 @@ async function findLocationThroughMeetup(meetupId,suggestedLocationId,currentUse
   if(currentUserId == admin.toString()){
     const updateSuggestedLocation = await MeetUp.findByIdAndUpdate(
       meetupId,
-      {$pull : suggested_locations.suggestedLocationId},
+      {$pull : {suggested_locations:suggestedLocationId}},
       {new:true}
     )
     console.log(updateSuggestedLocation,"WATAAAAAAA")
     return updateSuggestedLocation;
   }
-  else console.log("it did not work")
 }
 
 module.exports = router
