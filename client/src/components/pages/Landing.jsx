@@ -3,13 +3,6 @@ import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import logo from '../../assets/maptee_logo.svg'
 
-// const buttonStyle = {
-//   backgroundColor: '#6BB39A',
-//   boxShadow: '5px 5px 4px rgba(0, 0, 0, 0.25)',
-//   borderRadius: '20px',
-//   borderColor: 'transparent',
-// }
-
 export default function Landing() {
   return (
     <div className="landing">

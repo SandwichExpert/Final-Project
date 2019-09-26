@@ -4,8 +4,7 @@
       #ffffff -38.58%,
       rgba(255, 255, 255, 0) 44.44%
     ),
-    #ffffff;
-  height: 100vh;
+    $one;
   width: 100%;
 }
 
@@ -21,6 +20,9 @@
   color: #ffffff;
 }
 
+#landing__signupbtn {
+  margin-bottom: 50%;
+}
 .landing__buttons {
   display: flex;
   align-items: center;
