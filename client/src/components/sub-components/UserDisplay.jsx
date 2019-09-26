@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import FriendDisplay from './FriendDisplay'
+import { Link } from 'react-router-dom'
 
 export default function UserDisplay(props) {
   return (
@@ -7,7 +8,7 @@ export default function UserDisplay(props) {
       <div
         className="background-image"
         style={{
-          backgroundImage: `url(https://cdn.wallpapersafari.com/39/34/IhAtRd.png)`,
+          backgroundImage: `url(https://wallpaperaccess.com/full/97836.jpg)`,
           width: '100%',
         }}
       ></div>
@@ -24,11 +25,20 @@ export default function UserDisplay(props) {
         </div>
       </div>
       <div className="buttons">
-        <button className="buttons__follow">
-          <b>Follow </b>
+        <button className="buttons__meetup">
+          <Link to="/meetups">
+            <b>My Meetups</b>
+          </Link>
         </button>
-        <button className="buttons__message">
-          <b>Message</b>
+        <button className="buttons__meetup">
+          <Link to="/joinmeetup">
+            <b>Join Meetup</b>
+          </Link>
+        </button>
+        <button className="buttons__meetup">
+          <Link to="/createmeetup">
+            <b>Create Meetup</b>
+          </Link>
         </button>
       </div>
       <hr></hr>

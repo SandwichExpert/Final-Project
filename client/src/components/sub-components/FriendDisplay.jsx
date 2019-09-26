@@ -1,10 +1,5 @@
 import React, { useState } from 'react'
 
-const followersImgStyle = {
-  width: 50,
-  borderRadius: '50%',
-}
-
 export default function FriendsDisplay({ friends, count }) {
   return (
     <div className="followers">
@@ -17,12 +12,10 @@ export default function FriendsDisplay({ friends, count }) {
           if (index < 10) {
             return (
               <img
+                className="friend-image"
                 src={friend.avatar}
                 style={{
-                  width: 50,
-                  borderRadius: '50%',
                   zIndex: count - index,
-                  position: 'relative',
                   right: `${index * 2.5}%`,
                 }}
               ></img>
