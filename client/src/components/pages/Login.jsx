@@ -32,7 +32,7 @@ export default function Login(props) {
         <br />
         {/* <Link to="" className="forgotten">Forgotten password?</Link> */}
         {/* <span className="forgotten">Forgotten Password?</span> */}
-        <button className = "button">Login</button>
+        <button className = "button" id="Login"><b>Login</b></button>
         <br/>
         <Link className = "link" to='/signup'>Forgotten password?</Link><br/>
         <Link className = "link" to='/signup'>No account yet?</Link>

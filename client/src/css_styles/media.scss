@@ -7,13 +7,24 @@ height: 388px;
 left: 21px;
 top: 232px;
   }
+  .mobile-background_signup{
+    position: absolute;
+width: 373px;
+height: 438px;
+left: 21px;
+top: 182px;
+  }
   .inputs{
     width: 255px;
   height: 34px;
   }
-  .button{
+  #Login{
     margin-left:30px;
     margin-bottom : 10px;
+  }
+  #Signup{
+    margin-left:30px;
+    margin-bottom:10px;
   }
   .link{
     margin-left : 35px;
@@ -29,9 +40,16 @@ height: 388px;
 left: 21px;
 top: 232px;
   }
-  .button{
+  #Login{
     margin-left:28px;
     margin-bottom : 15px;
+  }
+  .mobile-background_signup{
+    position: absolute;
+width: 353px;
+height: 428px;
+left: 11px;
+top: 182px;
   }
   
 }
@@ -45,7 +63,7 @@ height: 388px;
 left: 21px;
 top: 232px;
   }
-  .button{
+  #Login{
     margin-left:28px;
     margin-bottom : 15px;
   }
@@ -60,7 +78,7 @@ height: 360px;
 left: 21px;
 top: 162px;
   }
-  .button{
+  #Login{
     margin-left:32px;
   }
   .main_logo{
