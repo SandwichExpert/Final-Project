@@ -18,6 +18,20 @@ router
       })
       .catch(err => console.log(err))
   })
+  .get('/friends/:friendid', (req, res, next) => {
+    const id = req.user._id
+    findUser(id)
+      .then(user => {
+        console.log('user requested', user)
+        if (user) {
+          user.password = undefined
+          res.json(user)
+        } else {
+          res.json({ msg: 'user not found' })
+        }
+      })
+      .catch(err => console.log(err))
+  })
 
   .delete('/', (req, res, next) => {
     const id = req.user._id

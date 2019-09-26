@@ -19,9 +19,14 @@ $five: #99ffff;
 // ----------------------------------------
 @import '../node_modules/bootstrap/scss/bootstrap.scss';
 @import url('https://fonts.googleapis.com/css?family=Karla|Playfair+Display&display=swap');
+<<<<<<< HEAD
 @import '../src/css_styles/landing.scss'; 
 @import '../src/css_styles/signup.scss';
 // --------------------
+=======
+@import '../src/css_styles/landing.scss';
+@import '../src/css_styles/home.scss'; // --------------------
+>>>>>>> f4a84cc... home page
 // Style reusable for all components
 * {
   box-sizing: border-box;

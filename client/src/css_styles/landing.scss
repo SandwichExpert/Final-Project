@@ -5,7 +5,12 @@
       rgba(255, 255, 255, 0) 44.44%
     ),
     $one;
+  display: flex;
+  flex-direction: column;
   width: 100%;
+  height: 100vh;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 #landing__signuplink,
@@ -20,29 +25,24 @@
   color: #ffffff;
 }
 
-#landing__signupbtn {
-  margin-bottom: 50%;
-}
 .landing__buttons {
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: space-between;
-  margin-top: 20%;
+  width: 60%;
+  height: 20%;
 }
 
 #landing__loginbtn,
 #landing__signupbtn {
-  width: 50%;
-
-  margin-top: 10%;
   background: $two;
   box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
   border-color: transparent;
+  width: 100%;
 }
 
 #landing__logo {
-  padding-top: 35%;
   width: 65%;
 }

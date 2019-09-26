@@ -11,9 +11,9 @@ import Landing from './pages/Landing'
 export default function App() {
   return (
     <div className="App">
-      {/* <MainNavbar /> */}
+      <MainNavbar />
       <Switch>
-        <Route path="/" exact component={Landing} />
+        <Route path="/" exact component={Home} />
         <Route path="/landing" component={Landing} />
         <Route path="/signup" component={Signup} />
         <Route path="/login" component={Login} />

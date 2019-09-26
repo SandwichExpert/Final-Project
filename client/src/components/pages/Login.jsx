@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 import api from '../../api'
 import { useForm } from '../../hooks'
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 import Logo from '../../assets/maptee_logo.svg'
-
-
 
 export default function Login(props) {
   const { formValues, getInputProps } = useForm({ lang: 'en' })
@@ -24,20 +22,40 @@ export default function Login(props) {
 
   return (
     <div className="mobile-container">
-      <img src={Logo} alt="Maptee" className="main_logo"/>
+      <img src={Logo} alt="Maptee" className="main_logo" />
       <div className="mobile-background">
-      <form onSubmit={handleSubmit} >
-        <b>Email</b> <br/> <input type="email" {...getInputProps('email')} placeholder="Your email" className="inputs"/> <br/>
-        <b>Password</b> <br/>  <input type="password" {...getInputProps('password')} placeholder="Your password" className="inputs" />
-        <br />
-        {/* <Link to="" className="forgotten">Forgotten password?</Link> */}
-        {/* <span className="forgotten">Forgotten Password?</span> */}
-        <button className = "button" id="Login"><b>Login</b></button>
-        <br/>
-        <Link className = "link" to='/signup'>Forgotten password?</Link><br/>
-        <Link className = "link" to='/signup'>No account yet?</Link>
-      </form>
-      {message && <div className="info info-danger">{message}</div>}
+        <form onSubmit={handleSubmit}>
+          <b>Email</b> <br />{' '}
+          <input
+            type="email"
+            {...getInputProps('email')}
+            placeholder="Your email"
+            className="inputs"
+          />{' '}
+          <br />
+          <b>Password</b> <br />{' '}
+          <input
+            type="password"
+            {...getInputProps('password')}
+            placeholder="Your password"
+            className="inputs"
+          />
+          <br />
+          {/* <Link to="" className="forgotten">Forgotten password?</Link> */}
+          {/* <span className="forgotten">Forgotten Password?</span> */}
+          <button className="button">
+            <b>Login</b>
+          </button>
+          <br />
+          <Link className="link" to="/signup">
+            Forgotten password?
+          </Link>
+          <br />
+          <Link className="link" to="/signup">
+            No account yet?
+          </Link>
+        </form>
+        {message && <div className="info info-danger">{message}</div>}
       </div>
     </div>
   )

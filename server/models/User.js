@@ -5,7 +5,10 @@ const userSchema = new Schema(
   {
     first_name: String,
     last_name: String,
-    avatar: { type: String, default: './static/media/default_avatar.png' },
+    avatar: {
+      type: String,
+      default: 'http://s3.amazonaws.com/37assets/svn/765-default-avatar.png',
+    },
     email: String,
     password: String,
     _friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
