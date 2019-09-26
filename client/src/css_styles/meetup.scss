@@ -1,0 +1,40 @@
+.map {
+  background-color: #c4c4c4c4;
+}
+
+.heading_meetup {
+  background-color: rgba(255, 255, 255, 0.55);
+  color: black;
+  text-align: left;
+  display: flex;
+  flex-direction: row wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.left_side {
+  padding-left: 20px;
+}
+
+.left_side h2 {
+  margin-bottom: 0px;
+}
+
+.right_side {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: flex-end;
+  text-align: right;
+  margin-right: 20px;
+}
+
+.mobile_meetup {
+  background: rgba(107, 125, 179, 0.8);
+  box-shadow: 10px 10px 4px rgba(0, 0, 0, 0.25);
+  color: white;
+  position: absolute;
+  width: 397px;
+  height: 247px;
+  left: 7px;
+  top: 423px;
+}
