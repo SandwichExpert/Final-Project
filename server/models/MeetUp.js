@@ -25,13 +25,15 @@ const schema = new Schema(
     _users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     meetup_date: { type: String, required: true },
     meetup_time: { type: String, required: true },
-    suggested_locations: [
-      {
-        name: String,
-        location: { type: pointSchema, required: true },
-        type_of_location: { type: String },
-      },
-    ],
+    suggested_locations:
+    String,
+    // [
+    //   {
+    //     name: String,
+    //     location: { type: pointSchema, required: true },
+    //     type_of_location: { type: String },
+    //   },
+    // ],
   },
   {
     timestamps: true,
