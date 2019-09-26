@@ -33,7 +33,8 @@ router.post('/', isLoggedIn, (req, res, next) => {
     name,
   }
 
-  MeetUp.create(newMeetUp).then(meetup => {
+  MeetUp.create(newMeetUp)
+  .then(meetup => {
     res.json(meetup)
   })
 })
@@ -41,15 +42,15 @@ router.post('/', isLoggedIn, (req, res, next) => {
 router.post('/:meetupId/suggested-location',isLoggedIn,(req,res,next)=>{
   const {lat,lng} = req.body;
   const options = { new: true };
-  const meetup = req.params.meetupId
+  const meetup = req.params.meetupId;
   const newLocation = {
     type_of_location:req.body.type_of,
     location: {
       coordinates:[lat,lng]
     }
   };
-  console.log(req.body.type_of,"WAAAAAAAAAAAAAAAAA-------------")
-  console.log(newLocation,"!!!! ---------------------------- !!!!")
+  // console.log(req.body.type_of,"WAAAAAAAAAAAAAAAAA-------------")
+  // console.log(newLocation,"!!!! ---------------------------- !!!!")
   Location.create(newLocation)
   .then(location =>{
     console.log(location, "a new location was added")
@@ -61,8 +62,8 @@ router.post('/:meetupId/suggested-location',isLoggedIn,(req,res,next)=>{
       }},options)
     .then(suggestedLocation =>{
       res.json(suggestedLocation)
-      .catch(err => next(err))
     })
+    .catch(err => next(err))
     
   });
   
