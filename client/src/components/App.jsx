@@ -7,15 +7,22 @@ import User from './pages/User'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Landing from './pages/Landing'
+<<<<<<< HEAD
 import Meetup from './pages/Meetup'
+=======
+import MeetUps from './pages/MeetUps'
+import MyMapComponent from './pages/MyMapComponent'
+import Maps from './pages/Map'
+>>>>>>> 195e197... map
 
 export default function App() {
   return (
     <div className="App">
-      <MainNavbar />
+      {/* <MainNavbar /> */}
       <Switch>
-        <Route path="/" exact component={Home} />
+        <Route path="/" exact component={Maps} />
         <Route path="/landing" component={Landing} />
+        <Route path="/meetups" component={MeetUps} />
         <Route path="/signup" component={Signup} />
         <Route path="/login" component={Login} />
         <Route path="/user/:userId" component={User} />

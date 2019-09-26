@@ -5,12 +5,8 @@
 
 
 <style type="text/css">
-<<<<<<< HEAD
 	
 	@import url('https://fonts.googleapis.com/css?family=Karla|Playfair+Display');
-=======
-	@import url('https://fonts.googleapis.com/css?family=Karla');
->>>>>>> f4a84cc... home page
 	.st0{fill:none;}
 	.st1{fill:#FFFFFF;}
 	.st2{font-family:'Karla',sans-serif;}
