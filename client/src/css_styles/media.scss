@@ -30,22 +30,43 @@ left: 21px;
 top: 232px;
   }
   .button{
-    margin-left:14px;
+    margin-left:28px;
     margin-bottom : 15px;
   }
   
 }
+
+@media only screen
+and(max-width : 360px){
+  .mobile-background{
+    position: absolute;
+width: 320px;
+height: 388px;
+left: 21px;
+top: 232px;
+  }
+  .button{
+    margin-left:28px;
+    margin-bottom : 15px;
+  }
+}
+
 @media only screen 
 and (max-width : 320px){
   .mobile-background{
     position: absolute;
 width: 280px;
-height: 388px;
+height: 360px;
 left: 21px;
 top: 162px;
   }
   .button{
     margin-left:32px;
+  }
+  .main_logo{
+    height: 145px;
+    width:auto;
+    margin-top : 15px; 
   }
   
 }

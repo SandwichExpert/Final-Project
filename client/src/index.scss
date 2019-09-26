@@ -34,6 +34,17 @@ body {
   text-align:left;
 }
 
+.mobile-container{
+  background-color:#c4c4c4;
+  height:100vh;
+}
+
+.main_logo{
+  height: 165px;
+  width:auto;
+  margin-top : 20px; 
+}
+
 .inputs{
   border-radius: 20px;
   border : 1px solid #ffffff;
@@ -146,7 +157,6 @@ color : white;
     font-size: 1.2em;
   }
 }
-<<<<<<< HEAD
 
 // --------------------
 // Style for Secret component
@@ -157,6 +167,4 @@ color : white;
   }
 }
 
-@import './media.scss';
-=======
->>>>>>> 6e2ed42... style changes
+@import './css_styles/media.scss';

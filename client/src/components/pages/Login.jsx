@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import api from '../../api'
 import { useForm } from '../../hooks'
 import { Link } from 'react-router-dom';
+import Logo from '../../assets/maptee_logo.svg'
+
 
 
 export default function Login(props) {
@@ -22,7 +24,7 @@ export default function Login(props) {
 
   return (
     <div className="mobile-container">
-      {/* <img src="" alt="Maptee" className="main_logo"/> */}
+      <img src={Logo} alt="Maptee" className="main_logo"/>
       <div className="mobile-background">
       <form onSubmit={handleSubmit} >
         <b>Email</b> <br/> <input type="email" {...getInputProps('email')} placeholder="Your email" className="inputs"/> <br/>
