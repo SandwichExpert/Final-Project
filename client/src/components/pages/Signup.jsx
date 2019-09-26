@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import api from '../../api'
+import Logo from '../../assets/maptee_logo.svg'
 
 export default function Signup(props) {
   const [state, setState] = useState({
@@ -35,52 +36,63 @@ export default function Signup(props) {
       .catch(err => setState({ message: err.toString() }))
   }
   return (
-    <div className="Signup">
-      <h2>Signup</h2>
+      <div className="mobile-container">
+      <img src={Logo} alt="Maptee" className="main_logo"/>
+      <div className="mobile-background_signup">
       <form>
-        email:{' '}
+        email{' '}<br/>
         <input
           type="email"
           value={state.email}
           name="email"
           onChange={handleInputChange}
+          className="inputs"
+          placeholder="Your email address"
         />{' '}
         <br />
-        First Name:{' '}
+        First Name:{' '}<br/>
         <input
           type="text"
           value={state.first_name}
           name="first_name"
           onChange={handleInputChange}
+          className="inputs"
+          placeholder="Your first name"
         />{' '}
         <br />
-        Last Name:{' '}
+        Last Name:{' '}<br/>
         <input
           type="text"
           value={state.last_name}
           name="last_name"
           onChange={handleInputChange}
+          className="inputs"
+          placeholder="Your last name"
         />{' '}
         <br />
-        Password:{' '}
+        Password:{' '}<br/>
         <input
           type="password"
           value={state.password}
           name="password"
           onChange={handleInputChange}
+          className="inputs"
+          placeholder="Your password"
         />{' '}
         <br />
-        Avatar:{' '}
+        Avatar:{' '}<br/>
         <input
           type="file"
           value={state.file}
           name="avatar"
           onChange={handleInputChange}
+          className="inputs"
         />{' '}
         <br />
-        <button onClick={e => handleClick(e)}>Signup</button>
+        <button onClick={e => handleClick(e)} className="button" id="Signup"><b>Signup</b></button>
       </form>
       {state.message && <div className="info info-danger">{state.message}</div>}
+      </div>
     </div>
   )
 }
