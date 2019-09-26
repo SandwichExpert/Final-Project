@@ -60,7 +60,8 @@ router.post('/login', (req, res, next) => {
     }
 
     if (!theUser) {
-      res.status(401).json(failureDetails)
+      res.status(401).json({message:'Wrong email/password'})
+      // failureDetails,
       return
     }
 

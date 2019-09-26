@@ -19,18 +19,69 @@ $five: #99ffff;
 // ----------------------------------------
 @import '../node_modules/bootstrap/scss/bootstrap.scss';
 @import url('https://fonts.googleapis.com/css?family=Karla|Playfair+Display&display=swap');
+
 // --------------------
 // Style reusable for all components
 *{
   box-sizing: border-box;
+  font-family: 'Karla', sans-serif;
+  
 }
 
 body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  text-align:left;
 }
 
+.inputs{
+  border-radius: 20px;
+  border : 1px solid #ffffff;
+  width: 225px;
+  height: 34px;
+  margin-bottom:5%;
+  padding-left:10px;
+}
+
+.button{
+  margin-top:5%;
+  width: 191px;
+height: 47px; 
+background:$two;
+color:white;
+border : none;
+box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.25);
+border-radius: 20px;
+font-size : 1.3rem;
+}
+
+.mobile-background{
+  background: rgba(107, 125, 179, 0.8);
+box-shadow: 10px 10px 4px rgba(0, 0, 0, 0.25);
+text-align : left;
+display : flex;
+flex-flow : column wrap;
+justify-content:center;
+align-items: center;
+color : white;
+}
+
+.password{
+  text-align:right;
+}
+
+.link{
+  text-decoration: none;
+  color:white;
+  margin-left : 18px;
+  margin-top:3%;
+}
+
+.link:hover{
+  text-decoration : underline;
+}
+//------ Original styling
 .info {
   margin: 20px;
   padding: 10px 20px;
@@ -105,3 +156,5 @@ body {
     color: $primary;
   }
 }
+
+@import './media.scss';
