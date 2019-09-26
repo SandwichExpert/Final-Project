@@ -70,6 +70,11 @@ body {
 .password {
   text-align: right;
 }
+.main_logo{
+  height: 165px;
+  width:auto;
+  margin-top : 15px; 
+}
 
 .link {
   text-decoration: none;
@@ -157,4 +162,4 @@ body {
   }
 }
 
-@import './media.scss';
+@import './css_styles/media.scss';
