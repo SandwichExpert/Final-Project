@@ -12,9 +12,14 @@ export default function Meetup(props) {
   const [meetup,setMeetup] = useState(null);
   const meetupId = props.match.params.meetupId;
 
+  console.log(meetupId)
+
   useEffect(()=>{
-    api.getMeetup()
-  })
+    api.getMeetUp(meetupId).then(meetup =>{
+      setMeetup(meetup)
+      console.log("DEBUG", meetup)
+    })
+  },[])
 
   function handleInputChange(event) {
     setLocation({
@@ -28,25 +33,26 @@ export default function Meetup(props) {
     let locationData = {
       departure: location.departure,
       suggested_location: location.suggested_location,
-      vote: [location.vote],
     }
   }
-
+  if(!meetup){
+    return(
+      <div className="mobile_loading">
+        <div className="loading-spinner"></div>
+      </div>
+    )
+  }
   return (
     <div className="map">
       <div className="heading_meetup">
         <div className="left_side">
           <h2>
-            {props.meetup.name}
-            Name
+            {meetup.name}
           </h2>
-          10/10/2019 - 20:00 | Bar
-          {/* {props.date} - {props.time} | {props.type} */}
+          {meetup.meetup_date} - {meetup.meetup_time} 
         </div>
         <div className="right_side">
-          <Link to="/"> Home</Link>
           <Link to="/my-page">My Page</Link>
-          <Link to="/logout">Logout</Link>
         </div>
       </div>
       <div className="mobile_meetup">

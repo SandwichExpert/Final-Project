@@ -8,6 +8,9 @@ const schema = new Schema(
       type: { type: String, enum: ['Point'], default: 'Point' },
       coordinates: [Number],
     },
+    created_by:{type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,}
   },
   {
     timestamps: true,

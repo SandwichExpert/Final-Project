@@ -23,7 +23,8 @@
 .right_side {
   display: flex;
   flex-flow: column wrap;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items:center;
   text-align: right;
   margin-right: 20px;
 }
@@ -38,3 +39,25 @@
   left: 7px;
   top: 423px;
 }
+
+.loading-spinner{
+  width:130px;
+  height:130px;
+  border-right:8px solid $one;
+  border-radius:50%;
+  animation : spin .8s linear infinite;
+}
+
+@keyframes spin{
+  100%{
+    transform : rotate(360deg)
+  }
+}
+
+.mobile_loading{
+  margin-top:45%;
+  margin-left: 35%;
+
+}
+
+

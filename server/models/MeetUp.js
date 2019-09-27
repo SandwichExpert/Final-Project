@@ -28,6 +28,9 @@ const schema = new Schema(
     _suggested_locations: [
       { type: mongoose.Schema.Types.ObjectId, ref: 'Location' },
     ],
+    _departure_location: [
+      {type: mongoose.Schema.Types.ObjectId, ref: 'Location' },
+    ],
   },
   {
     timestamps: true,

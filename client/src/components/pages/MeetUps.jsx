@@ -1,5 +1,8 @@
 import React from 'react'
 
 export default function MeetUps() {
-  return <div></div>
+  return (
+  <div>
+    Hello
+  </div>)
 }
