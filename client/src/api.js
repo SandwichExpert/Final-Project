@@ -32,7 +32,10 @@ export default {
   // This method returns the user from the localStorage
   // Be careful, the value is the one when the user logged in for the last time
   getLocalStorageUser() {
-    return JSON.parse(localStorage.getItem('user'))
+    let user = localStorage.getItem('user')
+    user = JSON.parse(user)
+    user.password = undefined
+    return user
   },
 
   // This method signs up and logs in the user

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import logo from '../../assets/maptee_logo.svg'
+import logo from '../../assets/maptee-logo.svg'
 
 export default function Landing() {
   return (
