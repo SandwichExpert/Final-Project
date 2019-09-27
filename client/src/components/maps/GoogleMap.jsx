@@ -1,12 +1,16 @@
 import React, { useRef, useState, useEffect } from 'react'
 import api from '../../api'
+<<<<<<< HEAD
 // import UserDisplay from '../sub-components/UserDisplay'
 // import useStateWithCallback from 'use-state-with-callback'
+=======
+>>>>>>> 40a8491... maps
 
 export default function GoogleMap(props) {
   // const meetupId = props.match.params.meetupId
   const [suggestedLocations, setSuggestedLocations] = useState([])
   const [departureLocations, setDepartureLocations] = useState([])
+  const [lookupLocation, setLookUpLocation] = useState('')
   const [user, setUser] = useState(null)
   const mapDomRef = useRef(null)
 
@@ -17,11 +21,23 @@ export default function GoogleMap(props) {
   }, [])
 
   useEffect(() => {
-    console.log('here')
+    // get all the locations and set the state of our departures and suggestions
+    renderMap()
+    setUser(api.getLocalStorageUser())
+  }, [])
+
+  useEffect(() => {
     console.log(suggestedLocations)
-    if (!suggestedLocations.length && user) return
+    if (!suggestedLocations && user) return
+    console.log('map will render')
     renderMap()
   }, [suggestedLocations, user])
+
+  function handleChange(e) {
+    const name = e.target.name
+    const value = e.target.value
+    setLookUpLocation(value)
+  }
 
   const getLocations = () => {
     api
@@ -36,9 +52,16 @@ export default function GoogleMap(props) {
   }
 
   const renderMap = () => {
+    // script to use the places api
+    loadScript(
+      `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GKEY}&libraries=places`
+    )
     loadScript(
       `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GKEY}&callback=initMap`
     )
+    // loadScript(
+    //   `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GKEY}&v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GKEY}`
+    // )
     window.initMap = initMap
     // when js tries to render the init map it does not find it
     // we keep it visible by converting it to the window object
@@ -68,6 +91,14 @@ export default function GoogleMap(props) {
       center: departureLocation,
       zoom: 15,
     })
+
+    var service = new window.google.maps.places.PlacesService(map)
+    console.log(service)
+
+    var request = {
+      query: 'Museum of Contemporary Art Australia',
+      fields: ['name', 'geometry'],
+    }
 
     suggestedLocations.map(location => {
       var marker = addMarker(
@@ -104,9 +135,29 @@ export default function GoogleMap(props) {
         map.setCenter(pos)
       })
     }
+
+    service.findPlaceFromQuery(request, function(results, status) {
+      console.log('hhhh')
+      if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+        console.log('here')
+        setLookUpLocation(results[0].geometry.location)
+        map.setCenter(results[0].geometry.location)
+      }
+    })
   }
 
-  return <div id="map" ref={mapDomRef}></div>
+  return (
+    <div>
+      <div id="map" ref={mapDomRef}></div>
+      <input
+        type="text"
+        value={lookupLocation}
+        onChange={handleChange}
+        name="lookupLocation"
+      />
+      <pre>{JSON.stringify(lookupLocation, null, 2)}</pre>
+    </div>
+  )
 }
 
 function loadScript(url) {

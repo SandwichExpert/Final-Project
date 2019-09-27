@@ -1,3 +1,5 @@
+// import MyMapComponent from './maps/MyMapComponent'
+// import Maps from './maps/Map'
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Route, Switch } from 'react-router-dom'
@@ -9,14 +11,9 @@ import Signup from './pages/Signup'
 import Landing from './pages/Landing'
 import MeetUps from './pages/MeetUps'
 import Meetup from './pages/Meetup'
-import MyMapComponent from './maps/MyMapComponent'
-import Maps from './maps/Map'
-<<<<<<< HEAD
-import GoogleMap from './maps/GoogleMap';
-=======
-import GoogleMap from './maps/GoogleMap'
->>>>>>> xavier
 import NewMeetup from './pages/NewEvent'
+import GoogleMap from './maps/GoogleMap'
+import GoogleReactMap from './maps/GoogleReactMap'
 
 export default function App() {
   return (
@@ -24,6 +21,7 @@ export default function App() {
       {/* <MainNavbar /> */}
       <Switch>
         <Route path="/" exact component={Landing} />
+        <Route path="/home" exact component={Home} />
         <Route path="/landing" component={Landing} />
         <Route path="/meetups" exact component={MeetUps} />
         <Route path="/signup" component={Signup} />
@@ -32,6 +30,7 @@ export default function App() {
         <Route path="/user/:userId" component={User} />
         <Route path="/my-meetup/:meetupId" component={Meetup} />
         <Route path="/map" exact component={GoogleMap} />
+        <Route path="/reactmap" exact component={GoogleReactMap} />
         <Route render={() => <h2>404</h2>} />
       </Switch>
     </div>
