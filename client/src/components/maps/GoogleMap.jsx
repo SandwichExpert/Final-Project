@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import api from '../../api'
-import UserDisplay from '../sub-components/UserDisplay'
-import useStateWithCallback from 'use-state-with-callback'
+// import UserDisplay from '../sub-components/UserDisplay'
+// import useStateWithCallback from 'use-state-with-callback'
 
 export default function GoogleMap(props) {
   const meetupId = props.match.params.meetupId

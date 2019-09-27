@@ -26,7 +26,7 @@ export default class NewMeetUp extends Component{
 
     api.addMeetUp(uploadData)
     .then(createdMeetUp => {
-      this.props.history.push('/my-meetup')
+      this.props.history.push(`/my-meetup/${createdMeetUp._id}`)
     })
     .catch(err=>{console.log("error adding the street art")})
   }
