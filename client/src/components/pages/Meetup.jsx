@@ -9,6 +9,12 @@ export default function Meetup(props) {
     suggested_location: '',
     vote: [false],
   })
+  const [meetup,setMeetup] = useState(null);
+  const meetupId = props.match.params.meetupId;
+
+  useEffect(()=>{
+    api.getMeetup()
+  })
 
   function handleInputChange(event) {
     setLocation({
