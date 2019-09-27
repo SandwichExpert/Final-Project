@@ -1,12 +1,21 @@
-import React, { useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect, useLayoutEffect } from 'react'
 import api from '../../api'
 import UserDisplay from '../sub-components/UserDisplay'
-import axios from 'axios'
+import useStateWithCallback from 'use-state-with-callback'
 
 export default function GoogleMap(props) {
+  const meetupId = props.match.params.meetupId
   const [suggestedLocations, setSuggestedLocations] = useState([])
+  const mapDomRef = useRef(null)
 
   useEffect(() => {
+    getLocations()
+  }, [])
+
+  useEffect(() => {
+    console.log('here')
+    console.log(suggestedLocations)
+    if (!suggestedLocations.length) return
     renderMap()
   }, [suggestedLocations])
 
@@ -14,8 +23,6 @@ export default function GoogleMap(props) {
     api
       .getMeetUp('5d8dabc8eb053440b49527b0')
       .then(meetup => {
-        console.log(meetup, '---------------')
-        console.log(meetup._suggested_locations)
         setSuggestedLocations(meetup._suggested_locations)
       })
       .catch(err => console.log(err))
@@ -31,12 +38,21 @@ export default function GoogleMap(props) {
   }
 
   const initMap = () => {
-    var map = new window.google.maps.Map(document.getElementById('map'), {
-      center: { lat: -34.397, lng: 150.644 },
+    // the location we want to zoom in on
+    var departureLocation = new window.google.maps.LatLng(
+      suggestedLocations[0].location.coordinates[0],
+      suggestedLocations[0].location.coordinates[1]
+    )
+
+    // creation of the map
+    var map = new window.google.maps.Map(mapDomRef.current, {
+      center: departureLocation,
       zoom: 8,
     })
 
+    // calling all suggested locations adding a marker
     suggestedLocations.map(location => {
+      console.log(location.location.coordinates, 'hehehe')
       var marker = new window.google.maps.Marker({
         position: {
           lat: location.location.coordinates[0],
@@ -48,7 +64,7 @@ export default function GoogleMap(props) {
     })
   }
 
-  return <div id="map"></div>
+  return <div id="map" ref={mapDomRef}></div>
 }
 
 function loadScript(url) {
@@ -60,9 +76,3 @@ function loadScript(url) {
   script.defer = true
   index.parentNode.insertBefore(script, index)
 }
-
-// ;<script
-//   src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"
-//   async
-//   defer
-// ></script>
