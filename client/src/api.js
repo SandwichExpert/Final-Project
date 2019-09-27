@@ -140,4 +140,11 @@ export default {
       .then(res => res.data)
       .catch(errHandler)
   },
+
+  getMeetUp(meetupId) {
+    return service
+      .get(`meetups/${meetupId}`)
+      .then(res => res.data)
+      .catch(errHandler)
+  },
 }

@@ -17,12 +17,12 @@ export default function Meetup(props) {
     })
   }
 
-  function handleClick(e){
+  function handleClick(e) {
     e.preventDefault()
-    let locationData ={
-      departure : location.departure,
-      suggested_location : location.suggested_location,
-      vote : [location.vote]
+    let locationData = {
+      departure: location.departure,
+      suggested_location: location.suggested_location,
+      vote: [location.vote],
     }
   }
 
@@ -34,10 +34,8 @@ export default function Meetup(props) {
             {props.meetup.name}
             Name
           </h2>
-          
-            10/10/2019 - 20:00 | Bar
-            {/* {props.date} - {props.time} | {props.type} */}
-        
+          10/10/2019 - 20:00 | Bar
+          {/* {props.date} - {props.time} | {props.type} */}
         </div>
         <div className="right_side">
           <Link to="/"> Home</Link>
@@ -46,8 +44,8 @@ export default function Meetup(props) {
         </div>
       </div>
       <div className="mobile_meetup">
-        <form >
-         <br/>
+        <form>
+          <br />
           <input
             type="text"
             name="departure"
@@ -56,7 +54,6 @@ export default function Meetup(props) {
             onChange={handleInputChange}
           />{' '}
           <br />
-          
           <input
             type="text"
             name="suggested_location"
@@ -67,7 +64,7 @@ export default function Meetup(props) {
           <br />
           {/* <Link to="" className="forgotten">Forgotten password?</Link> */}
           {/* <span className="forgotten">Forgotten Password?</span> */}
-          <button className="button" id="Confirm" >
+          <button className="button" id="Confirm">
             <b>Confirm</b>
           </button>
           <br />

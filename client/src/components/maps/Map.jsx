@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 // import './App.css'
 import { withScriptjs } from 'react-google-maps'
-import MyMapComponent from './../pages/MyMapComponent'
+import MyMapComponent from './MyMapComponent'
 // import SearchBox from './components/SearchBox'
 function Maps() {
   const MapLoader = withScriptjs(MyMapComponent)

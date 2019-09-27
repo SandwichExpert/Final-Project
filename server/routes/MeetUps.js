@@ -13,11 +13,14 @@ router.get('/my-meetups', isLoggedIn, (req, res, next) => {
     })
 })
 
-router.get('/:meetupId', isLoggedIn, (req, res, next) => {
+// add is logedin later
+router.get('/:meetupId', (req, res, next) => {
   const id = req.params.meetupId
-  MeetUp.findById(id).then(meetup => {
-    res.json(meetup)
-  })
+  MeetUp.findById(id)
+    .populate('_suggested_locations')
+    .then(meetup => {
+      res.json(meetup)
+    })
 })
 
 router.post('/', isLoggedIn, (req, res, next) => {
@@ -33,8 +36,7 @@ router.post('/', isLoggedIn, (req, res, next) => {
     name,
   }
 
-  MeetUp.create(newMeetUp)
-  .then(meetup => {
+  MeetUp.create(newMeetUp).then(meetup => {
     res.json(meetup)
   })
 })
@@ -49,17 +51,14 @@ router.post('/:meetupId/suggested-location', isLoggedIn, (req, res, next) => {
       coordinates: [lat, lng],
     },
   }
-  console.log(req.body.type_of, 'WAAAAAAAAAAAAAAAAA-------------')
-  console.log(newLocation, '!!!! ---------------------------- !!!!')
   Location.create(newLocation).then(location => {
     console.log(location, 'a new location was added')
-    res.json(location)
     const locationId = location._id
     MeetUp.findByIdAndUpdate(
       meetup,
       {
         $push: {
-          suggested_locations: locationId,
+          _suggested_locations: locationId,
         },
       },
       options
