@@ -99,6 +99,30 @@ router.post('/:meetupId/departure-location', isLoggedIn, (req, res, next) => {
   })
 })
 
+router.post(':/meetupId/:suggestedLocationId/vote', isLoggedIn, (req,res,next)=>{
+  const locationId = req.params.suggestedLocationId;
+  const userId = req.user._id
+  // const newVote={
+  //   vote : userId
+  // }
+  // Location.create(newVote).then(voteAddition=>{
+  //   console.log(voteAddition,'your vote will be counted')
+    Location.findByIdAndUpdate(
+      locationId,
+      {
+        $push: {
+          votes : userId
+        },
+      },
+      options 
+      .then(addedVote=>{
+        res.json(addedVote)
+      })
+    )
+  })
+// })
+
+
 router.post('/:meetupId', isLoggedIn, (req, res, next) => {
   const options = { new: true }
   const meetup = req.params.meetupId

@@ -10,10 +10,15 @@
   flex-direction: row wrap;
   align-items: flex-end;
   justify-content: space-between;
+  position:fixed;
+  top:0;
+  width:100vw;
+  z-index:99;
 }
 
 .left_side {
   padding-left: 20px;
+  padding-top:5px;
 }
 
 .left_side h2 {
@@ -30,14 +35,14 @@
 }
 
 .mobile_meetup {
-  background: rgba(107, 125, 179, 0.8);
+  background: rgba(107, 125, 179, 0.5);
   box-shadow: 10px 10px 4px rgba(0, 0, 0, 0.25);
   color: white;
   position: absolute;
-  width: 397px;
-  height: 247px;
-  left: 7px;
-  top: 423px;
+  width: 347px;
+  height: 217px;
+  left: 37px;
+  top: 463px;
 }
 
 .loading-spinner{

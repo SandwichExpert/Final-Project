@@ -150,4 +150,10 @@ export default {
       .then(res => res.data)
       .catch(errHandler)
   },
+
+  // getAdmin(meetupId){
+  //   return service
+  //     .find()
+  // }
+
 }

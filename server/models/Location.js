@@ -10,8 +10,10 @@ const schema = new Schema(
     },
     created_by:{type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      required: true,}
+      required: true},
+    votes : [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
   },
+
   {
     timestamps: true,
   }
