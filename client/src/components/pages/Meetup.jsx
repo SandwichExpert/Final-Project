@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import api from '../../api'
-import Logo from '../../assets/maptee_logo.svg'
+import GoogleMap from '../maps/GoogleMap'
+import UserDisplay from '../sub-components/UserDisplay'
+import { userInfo } from 'os'
+// import Logo from '../../assets/maptee_logo.svg'
 
 export default function Meetup(props) {
   const [location, setLocation] = useState({
@@ -11,6 +14,13 @@ export default function Meetup(props) {
   })
   const [meetup,setMeetup] = useState(null);
   const meetupId = props.match.params.meetupId;
+  
+
+  // function findAdmin(){
+  //   return Meetup.findById(hostedBy => hostedBy._id === Meetup._admin)
+  // }
+
+  // let administrator = findAdmin()
 
   console.log(meetupId)
 
@@ -28,13 +38,13 @@ export default function Meetup(props) {
     })
   }
 
-  function handleClick(e) {
-    e.preventDefault()
-    let locationData = {
-      departure: location.departure,
-      suggested_location: location.suggested_location,
-    }
-  }
+  // function handleClick(e) {
+  //   e.preventDefault()
+  //   let locationData = {
+  //     departure: location.departure,
+  //     suggested_location: location.suggested_location,
+  //   }
+  // }
   if(!meetup){
     return(
       <div className="mobile_loading">
@@ -44,6 +54,10 @@ export default function Meetup(props) {
   }
   return (
     <div className="map">
+      <GoogleMap style={{
+      zIndex:0
+    }} />
+    
       <div className="heading_meetup">
         <div className="left_side">
           <h2>
@@ -61,6 +75,7 @@ export default function Meetup(props) {
           <input
             type="text"
             name="departure"
+            required
             placeholder="Your starting point"
             className="inputs"
             onChange={handleInputChange}
@@ -69,7 +84,7 @@ export default function Meetup(props) {
           <input
             type="text"
             name="suggested_location"
-            placeholder="Your suggestion"
+            placeholder="Your suggestion (optional)"
             className="inputs"
             onChange={handleInputChange}
           />
