@@ -12,6 +12,7 @@ import Meetup from './pages/Meetup'
 import MyMapComponent from './maps/MyMapComponent'
 import Maps from './maps/Map'
 import GoogleMap from './maps/GoogleMap'
+import NewMeetup from './pages/NewEvent'
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
         <Route path="/meetups" exact component={MeetUps} />
         <Route path="/signup" component={Signup} />
         <Route path="/login" component={Login} />
+        <Route path="/new" component={NewMeetup} />
         <Route path="/user/:userId" component={User} />
         <Route path="/meetups/:meetupId" component={Meetup} />
         <Route path="/map" exact component={GoogleMap} />

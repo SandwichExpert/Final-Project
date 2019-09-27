@@ -1,20 +1,24 @@
 const express = require('express')
 const MeetUp = require('../models/MeetUp')
+const User = require('../models/User')
 const Location = require('../models/Location')
 const { isLoggedIn } = require('../middlewares')
 const router = express.Router()
 
-router.get('/my-meetups', isLoggedIn, (req, res, next) => {
-  MeetUp.find()
-    .populate('_admin')
-    .populate('_users')
-    .then(meetup => {
-      res.json(meetup)
+router.get('/my-meetups/user:id', isLoggedIn, (req, res, next) => {
+  const user = req.user._id
+  console.log(user)
+  User.findById(user)
+    .populate('_meetups')
+    // .populate('_users')
+    .then(user => {
+      res.json(user._meetups)
+      console.log(user)
     })
 })
 
 // add is logedin later
-router.get('/:meetupId', (req, res, next) => {
+router.get('/:meetupId', isLoggedIn, (req, res, next) => {
   const id = req.params.meetupId
   MeetUp.findById(id)
     .populate('_suggested_locations')
@@ -25,12 +29,14 @@ router.get('/:meetupId', (req, res, next) => {
 
 router.post('/', isLoggedIn, (req, res, next) => {
   const _admin = req.user._id
+  const _users = req.user._id
   const meetup_date = req.body.meetup_date
   const meetup_time = req.body.meetup_time
   const name = req.body.name
 
   const newMeetUp = {
     _admin,
+    _users,
     meetup_date,
     meetup_time,
     name,
@@ -99,9 +105,10 @@ router.post('/:meetupId/departure-location', isLoggedIn, (req, res, next) => {
   })
 })
 
-router.post(':/meetupId/:suggestedLocationId/vote', isLoggedIn, (req,res,next)=>{
+router.post('/:meetupId/:suggestedLocationId/vote', isLoggedIn, (req,res,next)=>{
   const locationId = req.params.suggestedLocationId;
   const userId = req.user._id
+  const options = { new: true }
   // const newVote={
   //   vote : userId
   // }
@@ -114,13 +121,14 @@ router.post(':/meetupId/:suggestedLocationId/vote', isLoggedIn, (req,res,next)=>
           votes : userId
         },
       },
-      options 
+      options )
       .then(addedVote=>{
         res.json(addedVote)
       })
-    )
+    
   })
-// })
+
+
 
 
 router.post('/:meetupId', isLoggedIn, (req, res, next) => {
@@ -218,5 +226,7 @@ async function findLocationThroughMeetup(
     return updateSuggestedLocation
   }
 }
+
+
 
 module.exports = router
