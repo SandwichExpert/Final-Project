@@ -24,7 +24,7 @@ export default function App() {
         <Route path="/signup" component={Signup} />
         <Route path="/login" component={Login} />
         <Route path="/user/:userId" component={User} />
-        <Route path="/meetups/:meetupId" component={Meetup} />
+        <Route path="/my-meetup/:meetupId" component={Meetup} />
         <Route path="/map" exact component={GoogleMap} />
         <Route render={() => <h2>404</h2>} />
       </Switch>
