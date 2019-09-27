@@ -4,7 +4,7 @@ import api from '../../api'
 // import useStateWithCallback from 'use-state-with-callback'
 
 export default function GoogleMap(props) {
-  const meetupId = props.match.params.meetupId
+  // const meetupId = props.match.params.meetupId
   const [suggestedLocations, setSuggestedLocations] = useState([])
   const [departureLocations, setDepartureLocations] = useState([])
   const [user, setUser] = useState(null)
@@ -25,8 +25,10 @@ export default function GoogleMap(props) {
 
   const getLocations = () => {
     api
-      .getMeetUp('5d8dabc8eb053440b49527b0')
+      .getMeetUp('5d8e12584b7e0d25684e246d')
+      
       .then(meetup => {
+        console.log(meetup._suggested_locations,'------------------------')
         setSuggestedLocations(meetup._suggested_locations)
         setDepartureLocations(meetup._departure_locations)
       })

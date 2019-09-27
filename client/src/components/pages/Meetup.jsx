@@ -11,9 +11,11 @@ export default function Meetup(props) {
     departure: '',
     suggested_location: '',
     vote: [false],
-  })
+  });
   const [meetup,setMeetup] = useState(null);
   const meetupId = props.match.params.meetupId;
+  
+  console.log(meetupId)
   
 
   // function findAdmin(){
@@ -30,6 +32,12 @@ export default function Meetup(props) {
       console.log("DEBUG", meetup)
     })
   },[])
+
+  // useEffect(()=>{
+  //   api.getAdmin(meetup).then(admin =>{
+  //     setAdmin(admin)
+  //   })
+  // },[])
 
   function handleInputChange(event) {
     setLocation({

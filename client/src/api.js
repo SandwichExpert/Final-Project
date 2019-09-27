@@ -151,9 +151,18 @@ export default {
       .catch(errHandler)
   },
 
-  // getAdmin(meetupId){
+  addMeetUp(uploadData){
+    return service
+    .post('/meetups',uploadData)
+    .then(res=>res.data)
+    .catch(errHandler)
+  }
+
+  // getAdmin(meetupAdmin){
   //   return service
-  //     .find()
+  //     .get(`meetups/${meetupAdmin}`)
+  //     .then(res => res.data)
+  //     .catch(errHandler)
   // }
 
 }
