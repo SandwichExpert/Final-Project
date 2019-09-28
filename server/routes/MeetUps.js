@@ -19,6 +19,7 @@ router.get("/my-meetups", isLoggedIn, (req, res, next) => {
 
 // add is logedin later
 router.get("/:meetupId", isLoggedIn, (req, res, next) => {
+  console.log("here");
   const id = req.params.meetupId;
   console.log(id);
   MeetUp.findById(id)
@@ -30,16 +31,21 @@ router.get("/:meetupId", isLoggedIn, (req, res, next) => {
 });
 
 router.post("/", isLoggedIn, (req, res, next) => {
+  const options = { new: true };
   const _admin = req.user._id;
   const _users = req.user._id;
   const meetup_date = req.body.meetup_date;
   const meetup_time = req.body.meetup_time;
   const name = req.body.name;
-  createMeetUpAddMeetupToUser(_admin, _users, meetup_date, meetup_time, name)
-    .then(NewMeetUp => {
-      res.json(NewMeetUp);
-    })
-    .catch(err => console.log(err));
+  createMeetUpAddMeetupToUser(
+    _admin,
+    _users,
+    meetup_date,
+    meetup_time,
+    name
+  ).then(NewMeetUp => {
+    res.json(NewMeetUp).catch(err => console.log(err));
+  });
 });
 
 router.post("/suggested-location/:meetupId", isLoggedIn, (req, res, next) => {
@@ -54,28 +60,17 @@ router.post("/suggested-location/:meetupId", isLoggedIn, (req, res, next) => {
     },
     created_by: req.user._id
   };
-  Location.create(newLocation).then(location => {
-    console.log("-----------");
-    console.log(location, "a new location was added");
-    const locationId = location._id;
 
-    MeetUp.findByIdAndUpdate(
-      meetupId,
-      {
-        $push: {
-          _suggested_locations: locationId
-        }
-      },
-      options
-    )
-      .then(suggestedLocation => {
-        res.json(suggestedLocation);
-      })
-      .catch(err => next(err));
-  });
+  addSuggestedLocation(lat, lng, meetupId, newLocation)
+    .then(updatedMeetup => {
+      res.json(updatedMeetup);
+    })
+    .catch(err => {
+      console.log(err);
+    });
 });
 
-router.post("/:meetupId/departure-location", isLoggedIn, (req, res, next) => {
+router.post("/departure-location/:meetupId", isLoggedIn, (req, res, next) => {
   const { lat, lng } = req.body;
   const options = { new: true };
   const meetup = req.params.meetupId;
@@ -215,6 +210,7 @@ async function findLocationThroughMeetup(
   const admin = meetup._admin;
   console.log(admin);
   console.log(currentUserId);
+
   if (currentUserId == admin.toString()) {
     const updateSuggestedLocation = await MeetUp.findByIdAndUpdate(
       meetupId,
@@ -252,8 +248,22 @@ async function createMeetUpAddMeetupToUser(
     },
     options
   );
-  console.log(UpdatedUser);
   return createdMeetUp;
+}
+
+async function addSuggestedLocation(lat, lng, meetupId, newLocation) {
+  const newLocation = await Location.create(newLocation);
+  const newLocationId = newLocation._id;
+  const updatedMeetup = await MeetUp.findByIdAndUpdate(
+    meetupId,
+    {
+      $push: {
+        _suggested_locations: locationId
+      }
+    },
+    options
+  );
+  return updatedMeetup;
 }
 
 module.exports = router;
