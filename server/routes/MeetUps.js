@@ -43,9 +43,18 @@ router.post("/", isLoggedIn, (req, res, next) => {
     .catch(err => console.log(err));
 });
 
+// delete a meetup -- check
+router.delete("/:meetupId", isLoggedIn, (req, res, next) => {
+  let userId = String(req.user._id);
+  let meetupId = req.params.meetupId;
+  deleteMeetupIfAdmin(userId, meetupId)
+    .then(deletedMeetup => res.json({ msg: "meetup was deleted" }))
+    .catch(err => console.log(err));
+});
+
 // add a user to a meetup -- check (no need to add admin)
 // we should do it only via user id in query so we use this one route (if user wants to add himself)
-router.post("/add-user/:meetupId/:userid", isLoggedIn, (req, res, next) => {
+router.put("/add-user/:meetupId/:userid", isLoggedIn, (req, res, next) => {
   const meetup = req.params.meetupId;
   const _users = req.params.userid;
   MeetUp.findByIdAndUpdate(meetup, { $addToSet: { _users } }, { new: true })
@@ -68,8 +77,8 @@ router.put("/delete-user/:meetupId/:userid", isLoggedIn, (req, res, next) => {
     .catch(err => next(err));
 });
 
-// add a suggested location to meetup
-router.post("/suggested-location/:meetupId", isLoggedIn, (req, res, next) => {
+// add a suggested location to meetup -- check
+router.put("/suggested-location/:meetupId", isLoggedIn, (req, res, next) => {
   const { lat, lng } = req.body;
   const options = { new: true };
   const meetupId = req.params.meetupId;
@@ -87,7 +96,7 @@ router.post("/suggested-location/:meetupId", isLoggedIn, (req, res, next) => {
     .catch(err => console.log(err));
 });
 
-// add a depature location
+// add a depature location -- check
 router.post("/departure-location/:meetupId", isLoggedIn, (req, res, next) => {
   const { lat, lng } = req.body;
   const options = { new: true };
@@ -106,66 +115,63 @@ router.post("/departure-location/:meetupId", isLoggedIn, (req, res, next) => {
     .catch(err => console.log(err));
 });
 
-router.post(
-  "/:meetupId/:suggestedLocationId/vote",
-  isLoggedIn,
-  (req, res, next) => {
-    const locationId = req.params.suggestedLocationId;
-    const userId = req.user._id;
-    const options = { new: true };
-    // const newVote={
-    //   vote : userId
-    // }
-    // Location.create(newVote).then(voteAddition=>{
-    //   console.log(voteAddition,'your vote will be counted')
-    Location.findByIdAndUpdate(
-      locationId,
-      {
-        $push: {
-          votes: userId
-        }
-      },
-      options
-    ).then(addedVote => {
-      res.json(addedVote);
-    });
-  }
-);
-
-router.delete(
-  "/:meetupId/:suggestedLocationId",
+// remove suggested location -- check
+router.put(
+  "/remove-suggestion/:meetupId/:suggestionId",
   isLoggedIn,
   (req, res, next) => {
     const currentUserId = req.user._id;
-    const options = { new: true };
     const meetupId = req.params.meetupId;
-    const suggestedLocationId = req.params.suggestedLocationId;
-    findLocationThroughMeetup(meetupId, suggestedLocationId, currentUserId)
-      .then(updateSuggestedLocation => {
-        console.log(updateSuggestedLocation, "HEEEEEEERE ---------");
-        res.json(updateSuggestedLocation);
+    const suggestionId = req.params.suggestionId;
+    removeSuggestedLocation(meetupId, suggestionId, currentUserId)
+      .then(updatedMeetup => {
+        res.json(updatedMeetup);
       })
       .catch(err => next(err));
   }
 );
 
-router.delete("/:meetupId", isLoggedIn, (req, res, next) => {
-  let adminId = req.user._id.toString();
-  MeetUp.findById(req.params.meetupId)
-    .then(deletedMeetUp => {
-      if (!deletedMeetUp) {
-        next({ success: false, status: 400 });
-      }
-      if (adminId == deletedMeetUp._admin.toString()) {
-        MeetUp.findByIdAndDelete(deletedMeetUp._id).then(() =>
-          res.json({ success: true })
-        );
-      } else {
-        res.json({ success: false });
-      }
-    })
-    .catch(err => next(err));
-});
+// remove departure location -- check
+router.put(
+  "/remove-departure/:meetupId/:departureId",
+  isLoggedIn,
+  (req, res, next) => {
+    const currentUserId = req.user._id;
+    const meetupId = req.params.meetupId;
+    const departureId = req.params.departureId;
+    removeDepartureLocation(meetupId, departureId, currentUserId)
+      .then(updatedMeetup => {
+        res.json(updatedMeetup);
+      })
+      .catch(err => next(err));
+  }
+);
+
+// add vote to suggestion -- check
+router.put(
+  "/add-vote/:meetupId/:suggestionId",
+  isLoggedIn,
+  (req, res, next) => {
+    const locationId = req.params.suggestionId;
+    const userId = req.user._id;
+    addVote(locationId, userId)
+      .then(updatedLocation => res.json({ msg: "vote was added!" }))
+      .catch(err => console.log(err));
+  }
+);
+
+// remove vote from suggestion -- check
+router.put(
+  "/remove-vote/:meetupId/:suggestionId",
+  isLoggedIn,
+  (req, res, next) => {
+    const locationId = req.params.suggestionId;
+    const userId = req.user._id;
+    removeVote(locationId, userId)
+      .then(updatedLocation => res.json({ msg: "vote was deleted!" }))
+      .catch(err => console.log(err));
+  }
+);
 
 async function deleteIfAdminOrUserDeleted(
   meetupId,
@@ -189,25 +195,34 @@ async function deleteIfAdminOrUserDeleted(
   return updatedMeetup;
 }
 
-async function findLocationThroughMeetup(
-  meetupId,
-  suggestedLocationId,
-  currentUserId
-) {
+async function removeSuggestedLocation(meetupId, suggestionId, currentUserId) {
   const meetup = await MeetUp.findById(meetupId);
-  console.log(meetup, '"!!!!!!!!!!!!!!!!!!!!!');
   const admin = meetup._admin;
-  console.log(admin);
-  console.log(currentUserId);
-  if (currentUserId == admin.toString()) {
-    const updateSuggestedLocation = await MeetUp.findByIdAndUpdate(
-      meetupId,
-      { $pull: { suggested_locations: suggestedLocationId } },
-      { new: true }
-    );
-    console.log(updateSuggestedLocation, "WATAAAAAAA");
-    return updateSuggestedLocation;
+  const meetupID = meetup._id;
+  if (currentUserId !== String(admin)) {
+    return console.log("not allowed to remove");
   }
+  const updateMeetup = await MeetUp.findByIdAndUpdate(
+    meetupID,
+    { $pull: { _suggested_locations: suggestionId } },
+    { new: true }
+  );
+  return updateMeetup;
+}
+
+async function removeDepartureLocation(meetupId, departureId, currentUserId) {
+  const meetup = await MeetUp.findById(meetupId);
+  const admin = meetup._admin;
+  const meetupID = meetup._id;
+  if (currentUserId !== String(admin)) {
+    return console.log("not allowed to remove");
+  }
+  const updateMeetup = await MeetUp.findByIdAndUpdate(
+    meetupID,
+    { $pull: { _departure_locations: departureId } },
+    { new: true }
+  );
+  return updateMeetup;
 }
 
 async function createMeetUpAddMeetupToUser(
@@ -240,33 +255,69 @@ async function createMeetUpAddMeetupToUser(
 }
 
 async function addSuggestedLocation(lat, lng, meetupId, newLocation) {
-  const newLocation = await Location.create(newLocation);
-  const newLocationId = newLocation._id;
-  const updatedMeetUp = await MeetUp.findByIdAndUpdate(
+  const createdLocation = await Location.create(newLocation);
+  const newLocationId = createdLocation._id;
+  const updatedMeetup = await MeetUp.findByIdAndUpdate(
     meetupId,
     {
       $addToSet: {
         _suggested_locations: newLocationId
       }
     },
-    options
+    { new: true }
   );
   return updatedMeetup;
 }
 
 async function addDepartureLocation(lat, lng, meetupId, newLocation) {
-  const newLocation = await Location.create(newLocation);
-  const newLocationId = newLocation._id;
-  const updatedMeetUp = await MeetUp.findByIdAndUpdate(
+  const createdLocation = await Location.create(newLocation);
+  const newLocationId = createdLocation._id;
+  const updatedMeetup = await MeetUp.findByIdAndUpdate(
     meetup,
     {
       $addToSet: {
         _departure_location: newLocationId
       }
     },
-    options
+    { new: true }
   );
   return updatedMeetup;
+}
+
+async function deleteMeetupIfAdmin(userId, meetupId) {
+  const meetup = await MeetUp.findById(meetupId);
+  const adminId = String(meetup._admin);
+  if (userId !== adminId) {
+    return console.log("not allowed to delete");
+  }
+  const deletedMeetup = await MeetUp.findByIdAndDelete(meetupId);
+  return deletedMeetup;
+}
+
+async function addVote(locationId, userId) {
+  const updatedLocation = await Location.findByIdAndUpdate(
+    locationId,
+    {
+      $addToSet: {
+        votes: userId
+      }
+    },
+    { new: true }
+  );
+  return updatedLocation;
+}
+
+async function removeVote(locationId, userId) {
+  const updatedLocation = await Location.findByIdAndUpdate(
+    locationId,
+    {
+      $pull: {
+        votes: userId
+      }
+    },
+    { new: true }
+  );
+  return updatedLocation;
 }
 
 module.exports = router;
