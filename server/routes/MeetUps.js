@@ -10,18 +10,15 @@ router.get("/my-meetups", isLoggedIn, (req, res, next) => {
   console.log(user);
   User.findById(user)
     .populate("_meetups")
-    // .populate('_users')
     .then(user => {
       res.json(user._meetups);
       console.log(user);
     });
 });
 
-// add is logedin later
 router.get("/:meetupId", isLoggedIn, (req, res, next) => {
-  console.log("here");
   const id = req.params.meetupId;
-  console.log(id);
+
   MeetUp.findById(id)
     .populate("_suggested_locations")
     .then(meetup => {
@@ -31,25 +28,20 @@ router.get("/:meetupId", isLoggedIn, (req, res, next) => {
 });
 
 router.post("/", isLoggedIn, (req, res, next) => {
-  const options = { new: true };
   const _admin = req.user._id;
   const _users = req.user._id;
   const meetup_date = req.body.meetup_date;
   const meetup_time = req.body.meetup_time;
   const name = req.body.name;
-  createMeetUpAddMeetupToUser(
-    _admin,
-    _users,
-    meetup_date,
-    meetup_time,
-    name
-  ).then(NewMeetUp => {
-    res.json(NewMeetUp).catch(err => console.log(err));
-  });
+  createMeetUpAddMeetupToUser(_admin, _users, meetup_date, meetup_time, name)
+    .then(NewMeetUp => {
+      res.json(NewMeetUp);
+    })
+    .catch(err => console.log(err));
 });
 
+// add a suggested location
 router.post("/suggested-location/:meetupId", isLoggedIn, (req, res, next) => {
-  console.log("---------fffffffffffffffff");
   const { lat, lng } = req.body;
   const options = { new: true };
   const meetupId = req.params.meetupId;
@@ -60,44 +52,30 @@ router.post("/suggested-location/:meetupId", isLoggedIn, (req, res, next) => {
     },
     created_by: req.user._id
   };
-
   addSuggestedLocation(lat, lng, meetupId, newLocation)
-    .then(updatedMeetup => {
-      res.json(updatedMeetup);
+    .then(updatedMeetUp => {
+      res.json(updatedMeetUp);
     })
-    .catch(err => {
-      console.log(err);
-    });
+    .catch(err => console.log(err));
 });
 
+// add a depature location
 router.post("/departure-location/:meetupId", isLoggedIn, (req, res, next) => {
   const { lat, lng } = req.body;
   const options = { new: true };
   const meetup = req.params.meetupId;
-  const newDeparture = {
+  const newLocation = {
     type_of_location: req.body.type_of,
     location: {
       coordinates: [lat, lng]
     },
     created_by: req.user._id
   };
-  Location.create(newDeparture).then(departureLocation => {
-    console.log(departureLocation, "You will start from there");
-    const locationId = departureLocation._id;
-    MeetUp.findByIdAndUpdate(
-      meetup,
-      {
-        $push: {
-          _departure_location: locationId
-        }
-      },
-      options
-    )
-      .then(departureLocation => {
-        res.json(departureLocation);
-      })
-      .catch(err => next(err));
-  });
+  addDepartureLocation(lat, lng, meetupId, newLocation)
+    .then(updatedMeetUp => {
+      res.json(updatedMeetUp);
+    })
+    .catch(err => console.log(err));
 });
 
 router.post(
@@ -210,7 +188,6 @@ async function findLocationThroughMeetup(
   const admin = meetup._admin;
   console.log(admin);
   console.log(currentUserId);
-
   if (currentUserId == admin.toString()) {
     const updateSuggestedLocation = await MeetUp.findByIdAndUpdate(
       meetupId,
@@ -254,11 +231,26 @@ async function createMeetUpAddMeetupToUser(
 async function addSuggestedLocation(lat, lng, meetupId, newLocation) {
   const newLocation = await Location.create(newLocation);
   const newLocationId = newLocation._id;
-  const updatedMeetup = await MeetUp.findByIdAndUpdate(
+  const updatedMeetUp = await MeetUp.findByIdAndUpdate(
     meetupId,
     {
       $push: {
-        _suggested_locations: locationId
+        _suggested_locations: newLocationId
+      }
+    },
+    options
+  );
+  return updatedMeetup;
+}
+
+async function addDepartureLocation(lat, lng, meetupId, newLocation) {
+  const newLocation = await Location.create(newLocation);
+  const newLocationId = newLocation._id;
+  const updatedMeetUp = await MeetUp.findByIdAndUpdate(
+    meetup,
+    {
+      $push: {
+        _departure_location: newLocationId
       }
     },
     options
