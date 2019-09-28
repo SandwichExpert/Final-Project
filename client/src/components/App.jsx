@@ -1,5 +1,3 @@
-// import MyMapComponent from './maps/MyMapComponent'
-// import Maps from './maps/Map'
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Route, Switch } from 'react-router-dom'
@@ -11,8 +9,10 @@ import Signup from './pages/Signup'
 import Landing from './pages/Landing'
 import MeetUps from './pages/MeetUps'
 import Meetup from './pages/Meetup'
-import NewMeetup from './pages/NewEvent'
+import MyMapComponent from './maps/MyMapComponent'
+import Maps from './maps/Map'
 import GoogleMap from './maps/GoogleMap'
+import NewMeetup from './pages/NewEvent'
 import GoogleReactMap from './maps/GoogleReactMap'
 
 export default function App() {
@@ -21,7 +21,6 @@ export default function App() {
       {/* <MainNavbar /> */}
       <Switch>
         <Route path="/" exact component={Landing} />
-        <Route path="/home" exact component={Home} />
         <Route path="/landing" component={Landing} />
         <Route path="/meetups" exact component={MeetUps} />
         <Route path="/signup" component={Signup} />

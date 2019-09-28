@@ -1,10 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
 import api from '../../api'
-<<<<<<< HEAD
-// import UserDisplay from '../sub-components/UserDisplay'
-// import useStateWithCallback from 'use-state-with-callback'
-=======
->>>>>>> 40a8491... maps
 
 export default function GoogleMap(props) {
   // const meetupId = props.match.params.meetupId
@@ -42,9 +37,8 @@ export default function GoogleMap(props) {
   const getLocations = () => {
     api
       .getMeetUp('5d8e12584b7e0d25684e246d')
-      
       .then(meetup => {
-        console.log(meetup._suggested_locations,'------------------------')
+        console.log(meetup._suggested_locations, '------------------------')
         setSuggestedLocations(meetup._suggested_locations)
         setDepartureLocations(meetup._departure_locations)
       })
