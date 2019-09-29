@@ -11,6 +11,7 @@ router.get("/my-meetups", isLoggedIn, (req, res, next) => {
   console.log(userId);
   User.findById(userId)
     .populate("_meetups")
+    .populate("friends")
     .then(user => {
       res.json(user._meetups);
       console.log(user);

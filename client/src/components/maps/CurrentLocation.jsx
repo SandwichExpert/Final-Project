@@ -11,5 +11,6 @@ export default function CurrentLocation() {
     centerAroundCurrentLocation: false,
     visible: true
   });
+  const [userLocation, setuserLocation] = useState(state.initialCenter);
   return <div></div>;
 }

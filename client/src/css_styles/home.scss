@@ -1,3 +1,8 @@
+.home {
+  height: 100vh;
+  background-color: white;
+}
+
 .user-display {
   width: 100%;
   margin: 0 auto;
@@ -116,4 +121,29 @@
 
 .followers__count {
   text-align: left;
+}
+
+.meetup-table {
+  margin: 0 auto;
+  margin-top: 5%;
+  text-align: left;
+}
+
+.meetup-table thead {
+  font-size: 14px;
+  font-weight: bolder;
+  color: #4a4a4a;
+  text-transform: uppercase;
+}
+.meetup-table td,
+.meetup-table th {
+  padding: 5%;
+}
+
+.meetup-table tr {
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.meetup-name {
+  cursor: pointer;
 }

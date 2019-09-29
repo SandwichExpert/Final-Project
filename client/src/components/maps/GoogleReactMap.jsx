@@ -86,6 +86,11 @@ function Map(props) {
       defaultZoom={3}
       defaultCenter={center}
       defaultOptions={{ styles: mapStyles }}
+      options={{
+        mapTypeControl: false,
+        zoomControl: false,
+        fullscreenControl: false
+      }}
     >
       {returnSuggestionMarkers(suggestedLocations, handleSuggestionMarkerClick)}
       {returnDepartureMarkers(departureLocations, setSelectedLocation)}
@@ -104,8 +109,8 @@ function Map(props) {
           </InfoWindow>
         </div>
       )}
-      <pre>{JSON.stringify(center, 2, null)}</pre>
-      <pre>{JSON.stringify(selectedLocation, 2, null)}</pre>
+      {/* <pre>{JSON.stringify(center, 2, null)}</pre>
+      <pre>{JSON.stringify(selectedLocation, 2, null)}</pre> */}
     </GoogleMap>
   );
 }
@@ -117,9 +122,9 @@ export default function GoogleReactMap() {
     <div style={{ width: "100vw", height: "100vh" }}>
       <WrapperMap
         googleMapURL={`https://maps.googleapis.com/maps/api/js?key=AIzaSyC4R6AN7SmujjPUIGKdyao2Kqitzr1kiRg&v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GKEY}`}
-        loadingElement={<div style={{ height: "80vh" }} />}
-        containerElement={<div style={{ height: "80vh" }} />}
-        mapElement={<div style={{ height: "80vh" }} />}
+        loadingElement={<div style={{ height: "100vh" }} />}
+        containerElement={<div style={{ height: "100vh" }} />}
+        mapElement={<div style={{ height: "100vh" }} />}
       />
     </div>
   );
