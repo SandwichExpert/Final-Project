@@ -11,11 +11,7 @@ import MeetUps from './pages/MeetUps'
 import Meetup from './pages/Meetup'
 import MyMapComponent from './maps/MyMapComponent'
 import Maps from './maps/Map'
-<<<<<<< HEAD
-import GoogleMap from './maps/GoogleMap';
-=======
 import GoogleMap from './maps/GoogleMap'
->>>>>>> xavier
 import NewMeetup from './pages/NewEvent'
 
 export default function App() {

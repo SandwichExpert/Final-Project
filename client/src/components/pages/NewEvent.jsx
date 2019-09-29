@@ -52,7 +52,7 @@ export default class NewMeetUp extends Component{
             onChange={this.handleInputChange}
             name='meetup_date'
           /><br/>
-          <b>Date</b> <br />{' '}
+          <b>Time</b> <br />{' '}
           <input
             type="time"
             className="inputs"
