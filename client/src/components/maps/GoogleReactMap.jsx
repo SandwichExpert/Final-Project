@@ -26,7 +26,7 @@ function Map(props) {
   // const meetupId = props.match.params.meetupId
   useEffect(() => {
     api
-      .getMeetUp("5d90304f11872b08d0026505")
+      .getMeetUp("5d8e12584b7e0d25684e246d")
       .then(meetup => {
         setSuggestedLocations(meetup._suggested_locations);
         setDepartureLocations(meetup._departure_locations);
@@ -83,7 +83,7 @@ function Map(props) {
 
   return (
     <GoogleMap
-      defaultZoom={3}
+      defaultZoom={10}
       defaultCenter={center}
       defaultOptions={{ styles: mapStyles }}
       options={{

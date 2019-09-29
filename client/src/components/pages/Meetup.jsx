@@ -14,6 +14,7 @@ export default function Meetup(props) {
   });
   const [meetup, setMeetup] = useState(null);
   const meetupId = props.match.params.meetupId;
+  const [user, setUser] = useState("")
 
   console.log(meetupId);
 
@@ -29,6 +30,13 @@ export default function Meetup(props) {
     api.getMeetUp(meetupId).then(meetup => {
       setMeetup(meetup);
       console.log("DEBUG", meetup);
+    });
+  }, []);
+
+  useEffect(() => {
+    api.getUserInfo().then(userInfo => {
+      setUser(userInfo);
+      console.log(user);
     });
   }, []);
 
@@ -73,7 +81,10 @@ export default function Meetup(props) {
           {meetup.meetup_date} - {meetup.meetup_time}
         </div>
         <div className="right_side">
-          <Link to="/my-page">My Page</Link>
+        <div className="circular-image" style ={{marginTop:5}}>
+          <img className="profile-image" src={user.avatar} style ={{height : 50,width:50}}></img>
+        </div>
+          <Link to="/home">{user.first_name}</Link>
         </div>
       </div>
       <div className="mobile_meetup">

@@ -20,7 +20,7 @@ export default function App() {
       {/* <MainNavbar /> */}
       <Switch>
         <Route path="/home" component={Home} />
-        <Route path="/landing" component={Landing} />
+        <Route exact path="/" component={Landing} />
         <Route path="/signup" component={Signup} />
         <Route path="/login" component={Login} />
         <Route path="/user/:userId" component={User} />
@@ -28,7 +28,7 @@ export default function App() {
         <Route path="/map" component={GoogleMap} />
         <Route path="/reactmap" component={GoogleReactMap} />
         <Route path="/createmeetup" component={CreateMeetup} />
-        <Route render={() => <h2>404</h2>} />
+        {/* <Route render={() => <h2>404</h2>} /> */}
       </Switch>
     </div>
   );
