@@ -19,10 +19,17 @@ router.get("/my-meetups", isLoggedIn, (req, res, next) => {
 });
 
 // get an individual meet up -- check
-router.get("/one-meetup/:meetupId", isLoggedIn, (req, res, next) => {
+router.get("/one-meetup/:meetupId", (req, res, next) => {
   const id = req.params.meetupId;
   MeetUp.findById(id)
-    .populate("_suggested_locations")
+    .populate({
+      path: "_suggested_locations",
+      populate: { path: "created_by" }
+    })
+    .populate({
+      path: "_departure_locations",
+      populate: { path: "created_by" }
+    })
     .then(meetup => {
       console.log("herer", meetup);
       res.json(meetup);
@@ -97,10 +104,9 @@ router.put("/suggested-location/:meetupId", isLoggedIn, (req, res, next) => {
 });
 
 // add a depature location -- check
-router.post("/departure-location/:meetupId", isLoggedIn, (req, res, next) => {
+router.put("/departure-location/:meetupId", isLoggedIn, (req, res, next) => {
   const { lat, lng } = req.body;
-  const options = { new: true };
-  const meetup = req.params.meetupId;
+  const meetupId = req.params.meetupId;
   const newLocation = {
     type_of_location: req.body.type_of,
     location: {
@@ -257,6 +263,7 @@ async function createMeetUpAddMeetupToUser(
 async function addSuggestedLocation(lat, lng, meetupId, newLocation) {
   const createdLocation = await Location.create(newLocation);
   const newLocationId = createdLocation._id;
+  console.log(meetupId);
   const updatedMeetup = await MeetUp.findByIdAndUpdate(
     meetupId,
     {
@@ -266,6 +273,7 @@ async function addSuggestedLocation(lat, lng, meetupId, newLocation) {
     },
     { new: true }
   );
+  console.log(updatedMeetup);
   return updatedMeetup;
 }
 
@@ -273,10 +281,10 @@ async function addDepartureLocation(lat, lng, meetupId, newLocation) {
   const createdLocation = await Location.create(newLocation);
   const newLocationId = createdLocation._id;
   const updatedMeetup = await MeetUp.findByIdAndUpdate(
-    meetup,
+    meetupId,
     {
       $addToSet: {
-        _departure_location: newLocationId
+        _departure_locations: newLocationId
       }
     },
     { new: true }

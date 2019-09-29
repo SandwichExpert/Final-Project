@@ -1,22 +1,21 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import api from '../../api'
-import GoogleMap from '../maps/GoogleMap'
-import UserDisplay from '../sub-components/UserDisplay'
-import { userInfo } from 'os'
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import api from "../../api";
+import GoogleReactMap from "../maps/GoogleReactMap";
+import UserDisplay from "../sub-components/UserDisplay";
+import { userInfo } from "os";
 // import Logo from '../../assets/maptee_logo.svg'
 
 export default function Meetup(props) {
   const [location, setLocation] = useState({
-    departure: '',
-    suggested_location: '',
-    vote: [false],
+    departure: "",
+    suggested_location: "",
+    vote: [false]
   });
-  const [meetup,setMeetup] = useState(null);
+  const [meetup, setMeetup] = useState(null);
   const meetupId = props.match.params.meetupId;
-  
-  console.log(meetupId)
-  
+
+  console.log(meetupId);
 
   // function findAdmin(){
   //   return Meetup.findById(hostedBy => hostedBy._id === Meetup._admin)
@@ -24,14 +23,14 @@ export default function Meetup(props) {
 
   // let administrator = findAdmin()
 
-  console.log(meetupId)
+  console.log(meetupId);
 
-  useEffect(()=>{
-    api.getMeetUp(meetupId).then(meetup =>{
-      setMeetup(meetup)
-      console.log("DEBUG", meetup)
-    })
-  },[])
+  useEffect(() => {
+    api.getMeetUp(meetupId).then(meetup => {
+      setMeetup(meetup);
+      console.log("DEBUG", meetup);
+    });
+  }, []);
 
   // useEffect(()=>{
   //   api.getAdmin(meetup).then(admin =>{
@@ -42,8 +41,8 @@ export default function Meetup(props) {
   function handleInputChange(event) {
     setLocation({
       ...location,
-      [event.target.name]: event.target.value,
-    })
+      [event.target.name]: event.target.value
+    });
   }
 
   // function handleClick(e) {
@@ -53,25 +52,25 @@ export default function Meetup(props) {
   //     suggested_location: location.suggested_location,
   //   }
   // }
-  if(!meetup){
-    return(
+  if (!meetup) {
+    return (
       <div className="mobile_loading">
         <div className="loading-spinner"></div>
       </div>
-    )
+    );
   }
   return (
     <div className="map">
-      <GoogleMap style={{
-      zIndex:0
-    }} />
-    
+      <GoogleReactMap
+        style={{
+          zIndex: 0
+        }}
+      />
+
       <div className="heading_meetup">
         <div className="left_side">
-          <h2>
-            {meetup.name}
-          </h2>
-          {meetup.meetup_date} - {meetup.meetup_time} 
+          <h2>{meetup.name}</h2>
+          {meetup.meetup_date} - {meetup.meetup_time}
         </div>
         <div className="right_side">
           <Link to="/my-page">My Page</Link>
@@ -87,7 +86,7 @@ export default function Meetup(props) {
             placeholder="Your starting point"
             className="inputs"
             onChange={handleInputChange}
-          />{' '}
+          />{" "}
           <br />
           <input
             type="text"
@@ -106,5 +105,5 @@ export default function Meetup(props) {
         </form>
       </div>
     </div>
-  )
+  );
 }

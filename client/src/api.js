@@ -1,24 +1,24 @@
-import axios from 'axios'
+import axios from "axios";
 
-console.log(process.env.NODE_ENV)
+console.log(process.env.NODE_ENV);
 
 const service = axios.create({
   baseURL:
-    process.env.NODE_ENV === 'production'
-      ? '/api'
+    process.env.NODE_ENV === "production"
+      ? "/api"
       : `http://${window.location.hostname}:2000/api`,
 
-  withCredentials: true,
-})
+  withCredentials: true
+});
 
 const errHandler = err => {
-  console.error(err)
+  console.error(err);
   if (err.response && err.response.data) {
-    console.error('API response', err.response.data)
-    throw err.response.data.message
+    console.error("API response", err.response.data);
+    throw err.response.data.message;
   }
-  throw err
-}
+  throw err;
+};
 
 export default {
   service: service,
@@ -26,56 +26,56 @@ export default {
   // This method is synchronous and returns true or false
   // To know if the user is connected, we just check if we have a value for localStorage.getItem('user')
   isLoggedIn() {
-    return localStorage.getItem('user') != null
+    return localStorage.getItem("user") != null;
   },
 
   // This method returns the user from the localStorage
   // Be careful, the value is the one when the user logged in for the last time
   getLocalStorageUser() {
-    let user = localStorage.getItem('user')
-    user = JSON.parse(user)
-    user.password = undefined
-    return user
+    let user = localStorage.getItem("user");
+    user = JSON.parse(user);
+    user.password = undefined;
+    return user;
   },
 
   // This method signs up and logs in the user
   signup(userInfo) {
-    const formData = new FormData()
-    const userInfoKeys = Object.keys(userInfo)
+    const formData = new FormData();
+    const userInfoKeys = Object.keys(userInfo);
     userInfoKeys.forEach(key => {
-      formData.append(`${key}`, userInfo[`${key}`])
-    })
+      formData.append(`${key}`, userInfo[`${key}`]);
+    });
     return service
-      .post('/signup', formData, {
+      .post("/signup", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+          "Content-Type": "multipart/form-data"
+        }
       })
       .then(res => {
         // If we have localStorage.getItem('user') saved, the application will consider we are loggedin
-        localStorage.setItem('user', JSON.stringify(res.data))
-        return res.data
+        localStorage.setItem("user", JSON.stringify(res.data));
+        return res.data;
       })
-      .catch(errHandler)
+      .catch(errHandler);
   },
 
   login(email, password) {
     return service
-      .post('/login', {
+      .post("/login", {
         email,
-        password,
+        password
       })
       .then(res => {
         // If we have localStorage.getItem('user') saved, the application will consider we are loggedin
-        localStorage.setItem('user', JSON.stringify(res.data))
-        return res.data
+        localStorage.setItem("user", JSON.stringify(res.data));
+        return res.data;
       })
-      .catch(errHandler)
+      .catch(errHandler);
   },
 
   logout() {
-    localStorage.removeItem('user')
-    return service.get('/logout')
+    localStorage.removeItem("user");
+    return service.get("/logout");
   },
 
   // API for users routes
@@ -84,41 +84,41 @@ export default {
     return service
       .get(`/users`)
       .then(res => res.data)
-      .catch(errHandler)
+      .catch(errHandler);
   },
 
   deleteUser() {
     return service
-      .delete('/users')
+      .delete("/users")
       .then(res => res.data)
-      .catch(errHandler)
+      .catch(errHandler);
   },
 
   editUser(userInfo) {
-    const formData = new FormData()
-    const userInfoKeys = Object.keys(userInfo)
+    const formData = new FormData();
+    const userInfoKeys = Object.keys(userInfo);
     userInfoKeys.foreach(key => {
-      formData.append(`${key}`, userInfo[`${key}`])
-    })
+      formData.append(`${key}`, userInfo[`${key}`]);
+    });
     return service
-      .put('/users/edit', formData)
+      .put("/users/edit", formData)
       .then(res => res.data)
-      .catch(errHandler)
+      .catch(errHandler);
   },
 
   addFriend(body) {
-    const email = { email: body.email }
+    const email = { email: body.email };
     return service
-      .post('users/addFriend')
+      .post("users/addFriend")
       .then(res => res.data)
-      .catch(errHandler)
+      .catch(errHandler);
   },
 
   removeFriend(friendId) {
     return service
       .post(`users/removeFriend/${friendId}`)
       .then(res => res.data)
-      .catch(errHandler)
+      .catch(errHandler);
   },
 
   // This is an example on how to use this method in a different file
@@ -126,36 +126,36 @@ export default {
 
   getSecret() {
     return service
-      .get('/secret')
+      .get("/secret")
       .then(res => res.data)
-      .catch(errHandler)
+      .catch(errHandler);
   },
 
   addPicture(file) {
-    const formData = new FormData()
-    formData.append('picture', file)
+    const formData = new FormData();
+    formData.append("picture", file);
     return service
-      .post('/endpoint/to/add/a/picture', formData, {
+      .post("/endpoint/to/add/a/picture", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+          "Content-Type": "multipart/form-data"
+        }
       })
       .then(res => res.data)
-      .catch(errHandler)
+      .catch(errHandler);
   },
 
   getMeetUp(meetupId) {
     return service
-      .get(`meetups/${meetupId}`)
+      .get(`/meetups/one-meetup/${meetupId}`)
       .then(res => res.data)
-      .catch(errHandler)
+      .catch(errHandler);
   },
 
-  addMeetUp(uploadData){
+  addMeetUp(uploadData) {
     return service
-    .post('/meetups',uploadData)
-    .then(res=>res.data)
-    .catch(errHandler)
+      .post("/meetups", uploadData)
+      .then(res => res.data)
+      .catch(errHandler);
   }
 
   // getAdmin(meetupAdmin){
@@ -164,5 +164,4 @@ export default {
   //     .then(res => res.data)
   //     .catch(errHandler)
   // }
-
-}
+};
