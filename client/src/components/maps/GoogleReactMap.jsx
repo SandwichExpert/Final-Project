@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import api from "../../api";
+import mapStyles from "./mapStyles";
 import {
   GoogleMap,
   withScriptjs,
@@ -6,18 +8,22 @@ import {
   Marker,
   InfoWindow
 } from "react-google-maps";
-import api from "../../api";
-const { InfoBox } = require("react-google-maps/lib/components/addons/InfoBox");
-// const meetupId = props.match.params.meetupId
+const {
+  MarkerWithLabel
+} = require("react-google-maps/lib/components/addons/MarkerWithLabel");
+const {
+  SearchBox
+} = require("react-google-maps/lib/components/places/SearchBox");
 
 function Map(props) {
   const [lookupLocation, setLookUpLocation] = useState("");
   const [suggestedLocations, setSuggestedLocations] = useState([]);
   const [departureLocations, setDepartureLocations] = useState([]);
-  const [center, setCenter] = useState({ lat: 50, lng: 50 });
+  const [center, setCenter] = useState({ lat: 48, lng: 3 });
   const [loading, setLoading] = useState(true);
   const [selectedLocation, setSelectedLocation] = useState(null);
 
+  // const meetupId = props.match.params.meetupId
   useEffect(() => {
     api
       .getMeetUp("5d90304f11872b08d0026505")
@@ -30,7 +36,6 @@ function Map(props) {
       .catch(err => console.log(err));
   }, []);
 
-  // useEffect(() => {}, [zoomInLocation]);
   function getCurrentLocation() {
     console.log("here", window.navigator.geolocation);
     if (window.navigator.geolocation) {
@@ -77,29 +82,34 @@ function Map(props) {
   }
 
   return (
-    <GoogleMap defaultZoom={3} defaultCenter={center}>
+    <GoogleMap
+      defaultZoom={3}
+      defaultCenter={center}
+      defaultOptions={{ styles: mapStyles }}
+    >
       {returnSuggestionMarkers(suggestedLocations, handleSuggestionMarkerClick)}
       {returnDepartureMarkers(departureLocations, setSelectedLocation)}
       {selectedLocation && (
-        <InfoWindow
-          position={{
-            lat: selectedLocation.location.coordinates[0],
-            lng: selectedLocation.location.coordinates[1]
-          }}
-          onCloseClick={() => {
-            selectedLocation(null);
-          }}
-        >
-          <div>{JSON.stringify(selectedLocation, 2, null)}</div>
-        </InfoWindow>
+        <div>
+          <InfoWindow
+            position={{
+              lat: selectedLocation.location.coordinates[0],
+              lng: selectedLocation.location.coordinates[1]
+            }}
+            onCloseClick={() => {
+              setSelectedLocation(null);
+            }}
+          >
+            {departureInfoDisplay(selectedLocation)}
+          </InfoWindow>
+        </div>
       )}
       <pre>{JSON.stringify(center, 2, null)}</pre>
       <pre>{JSON.stringify(selectedLocation, 2, null)}</pre>
     </GoogleMap>
   );
 }
-// what kind of scripts are required in the higher order
-// components to load the script correctly
+
 const WrapperMap = withScriptjs(withGoogleMap(Map));
 
 export default function GoogleReactMap() {
@@ -126,7 +136,7 @@ function returnSuggestionMarkers(locationsArr, handleClick) {
           lat: location.location.coordinates[0],
           lng: location.location.coordinates[1]
         }}
-        defaultLabel={location.type_of_location}
+        defaultLabel={location.created_by.first_name.substr(0, 1)}
         onClick={handleClick}
         id={location._id}
         creator={`${location.created_by.first_name} ${location.created_by.last_name}`}
@@ -147,29 +157,30 @@ function returnDepartureMarkers(locationsArr, setSelectedLocation) {
           lat: location.location.coordinates[0],
           lng: location.location.coordinates[1]
         }}
-        defaultLabel={location.type_of_location}
         onClick={() => {
           setSelectedLocation(location);
         }}
         id={location._id}
         creator={`${location.created_by.first_name} ${location.created_by.last_name}`}
+        // icon={{
+        //   url:
+        //     "https://res.cloudinary.com/dri8yyakb/image/upload/v1569755342/optimap_icons/pin_fv3znu.png",
+        //   scaledSize: new window.google.maps.Size(25, 25)
+        // }}
+        defaultLabel={location.created_by.first_name.substr(0, 1)}
       ></Marker>
     );
   });
   return markerArray;
 }
 
-{
-  /* <InfoBox
-  defaultPosition={new window.google.maps.LatLng(55, 55)}
-  options={{ closeBoxURL: ``, enableEventPropagation: true }}
->
-  <div
-    style={{ backgroundColor: `yellow`, opacity: 0.75, padding: `12px` }}
-  >
-    <div style={{ fontSize: `16px`, fontColor: `#08233B` }}>
-      Hello, Taipei!
+const departureInfoDisplay = selectedLoc => {
+  return (
+    <div>
+      <h5>departure</h5>
+      <p>
+        {selectedLoc.created_by.first_name} {selectedLoc.created_by.last_name}
+      </p>
     </div>
-  </div>
-</InfoBox>  */
-}
+  );
+};
