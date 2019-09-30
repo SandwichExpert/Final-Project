@@ -328,7 +328,7 @@ async function addDepartureLocation(lat, lng, meetupId, newLocation) {
       },
       { new: true }
     );
-    // console.log("departure location has been updated for", departureCreator);
+    console.log("departure location has been updated for", departureCreator);
     return addedMeetup;
   } else {
     const updatedMeetup = await MeetUp.findByIdAndUpdate(
