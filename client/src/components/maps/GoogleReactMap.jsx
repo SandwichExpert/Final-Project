@@ -204,8 +204,6 @@ export default function GoogleReactMap() {
   }
 
   return (
-<<<<<<< HEAD
-=======
     <GoogleMap
       defaultZoom={10}
       defaultCenter={center}
@@ -239,28 +237,27 @@ export default function GoogleReactMap() {
   );
 }
 
-const WrapperMap = withScriptjs(withGoogleMap(Map));
+// const WrapperMap = withScriptjs(withGoogleMap(Map));
 
-export default function GoogleReactMap() {
-  return (
->>>>>>> 33238c45c94c2e7e158fdc7f03a7e8a0bf213739
-    <div style={{ width: "100vw", height: "100vh" }}>
-      <WrapperMap
-        suggestedLocations={suggestedLocations}
-        departureLocations={departureLocations}
-        departureInfoDisplay={departureInfoDisplay}
-        // the map will zoom in on the average departure location
-        // or if not present the user location
-        zoomLocation={averagePosition || userLocation}
-        returnSuggestionMarkers={returnSuggestionMarkers}
-        returnDepartureMarkers={returnDepartureMarkers}
-        handleSuggestionMarkerClick={handleSuggestionMarkerClick}
-        handleDepartureMarkerClick={handleDepartureMarkerClick}
-        googleMapURL={`https://maps.googleapis.com/maps/api/js?key=AIzaSyC4R6AN7SmujjPUIGKdyao2Kqitzr1kiRg&v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GKEY}`}
-        loadingElement={<div style={{ height: "100vh" }} />}
-        containerElement={<div style={{ height: "100vh" }} />}
-        mapElement={<div style={{ height: "100vh" }} />}
-      />
-    </div>
-  );
-}
+// export default function GoogleReactMap() {
+//   return (
+//     <div style={{ width: "100vw", height: "100vh" }}>
+//       <WrapperMap
+//         suggestedLocations={suggestedLocations}
+//         departureLocations={departureLocations}
+//         departureInfoDisplay={departureInfoDisplay}
+//         // the map will zoom in on the average departure location
+//         // or if not present the user location
+//         zoomLocation={averagePosition || userLocation}
+//         returnSuggestionMarkers={returnSuggestionMarkers}
+//         returnDepartureMarkers={returnDepartureMarkers}
+//         handleSuggestionMarkerClick={handleSuggestionMarkerClick}
+//         handleDepartureMarkerClick={handleDepartureMarkerClick}
+//         googleMapURL={`https://maps.googleapis.com/maps/api/js?key=AIzaSyC4R6AN7SmujjPUIGKdyao2Kqitzr1kiRg&v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GKEY}`}
+//         loadingElement={<div style={{ height: "100vh" }} />}
+//         containerElement={<div style={{ height: "100vh" }} />}
+//         mapElement={<div style={{ height: "100vh" }} />}
+//       />
+//     </div>
+//   );
+// }
