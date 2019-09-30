@@ -4,6 +4,7 @@ const User = require("../models/User");
 const Location = require("../models/Location");
 const { isLoggedIn } = require("../middlewares");
 const router = express.Router();
+var mongoose = require("mongoose");
 
 // get a users meet ups -- check
 router.get("/my-meetups", isLoggedIn, (req, res, next) => {
@@ -295,22 +296,24 @@ async function addDepartureLocation(lat, lng, meetupId, newLocation) {
     }
   });
   // console.log("hghghg", duplicateDepartureId, "dep creator", departureCreator);
+
   if (duplicateDepartureId) {
-    console.log("nice", duplicateDepartureId);
+    console.log("nice", duplicateDepartureId, newLocation);
     const removedMeetup = await MeetUp.findByIdAndUpdate(
       meetupId,
       {
         $pull: {
-          _departure_locations: duplicateDepartureId
+          _departure_locations: mongoose.Types.ObjectId(duplicateDepartureId)
         }
       },
       { new: true }
     );
+    console.log(newLocation, "------");
     const addedMeetup = await MeetUp.findByIdAndUpdate(
       meetupId,
       {
         $addToSet: {
-          _departure_locations: newLocation
+          _departure_locations: mongoose.Types.ObjectId(newLocation)
         }
       },
       { new: true }
