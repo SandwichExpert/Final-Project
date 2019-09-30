@@ -45,7 +45,7 @@ router.post("/", isLoggedIn, (req, res, next) => {
   const meetup_time = req.body.meetup_time;
   const name = req.body.name;
 
-  console.log(req.body)
+  console.log(req.body);
 
   createMeetUpAddMeetupToUser(_admin, _users, meetup_date, meetup_time, name)
     .then(NewMeetUp => {
@@ -252,8 +252,7 @@ async function createMeetUpAddMeetupToUser(
   };
   console.log("********************");
   console.log(newMeetUp);
-  
-  
+
   const createdMeetUp = await MeetUp.create(newMeetUp);
   const createdMeetUpId = createdMeetUp._id;
   const UpdatedUser = await User.findByIdAndUpdate(
@@ -292,15 +291,17 @@ async function addDepartureLocation(lat, lng, meetupId, newLocation) {
   const meetup = await MeetUp.findById(meetupId).populate(
     "_departure_locations"
   );
+  console.log(meetup);
   let duplicateDepartureId = null;
-  const userWithDepartureLoc = meetup._departure_locations.forEach(loc => {
-    // console.log("creat by", loc.created_by, loc._id);
-    console.log(loc.created_by.equals(departureCreator));
-    if (loc.created_by.equals(departureCreator)) {
-      duplicateDepartureId = loc._id;
-      console.log("dup", duplicateDepartureId);
-    }
-  });
+  if (meetup._departure_locations[0] !== null) {
+    meetup._departure_locations.forEach(loc => {
+      console.log(loc.created_by.equals(departureCreator));
+      if (loc.created_by.equals(departureCreator)) {
+        duplicateDepartureId = loc._id;
+        console.log("dup", duplicateDepartureId);
+      }
+    });
+  }
   // console.log("hghghg", duplicateDepartureId, "dep creator", departureCreator);
   if (duplicateDepartureId) {
     console.log("nice", duplicateDepartureId);
@@ -316,9 +317,7 @@ async function addDepartureLocation(lat, lng, meetupId, newLocation) {
     const addedMeetup = await MeetUp.findByIdAndUpdate(
       meetupId,
       {
-        $addToSet: {
-          _departure_locations: newLocation
-        }
+        $addToSet: { _departure_locations: newLocation }
       },
       { new: true }
     );
