@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import api from "../../api";
+import { SearchBox } from "react-google-maps/lib/components/places/SearchBox";
 
 export default function CreateMeetup(props) {
   const [state, setState] = useState({
     name: "",
     meetup_date: "",
-    meetup_time: ""
+    meetup_time: "",
+    departure_location: ""
   });
 
   function handleInputChange(e) {
@@ -61,6 +63,18 @@ export default function CreateMeetup(props) {
         name="meetup_time"
       />
       <br />
+      {/* <SearchBox
+        ref={props.onSearchBoxMounted}
+        onPlacesChanged={props.onPlacesChanged}
+      >
+        <input
+          type="text"
+          className="inputs"
+          value={state.meetup_date.departure_location}
+          onChange={handleInputChange}
+          name="departure_location"
+        />
+      </SearchBox> */}
       {/* <Link to="" className="forgotten">Forgotten password?</Link> */}
       {/* <span className="forgotten">Forgotten Password?</span> */}
       <button className="button" onClick={addMeetupAndRedirectToMeetupPage}>
@@ -70,3 +84,5 @@ export default function CreateMeetup(props) {
     </div>
   );
 }
+
+

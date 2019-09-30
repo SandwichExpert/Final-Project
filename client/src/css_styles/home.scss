@@ -56,7 +56,7 @@
 .buttons__meetup {
   border: 2px solid transparent;
   border-radius: 60px;
-  background-color: #0042d0;
+  background-color: $two;
   font-size: 1rem;
 }
 
@@ -86,10 +86,13 @@
 
 .circular-image {
   position: relative;
+  display: flex; 
+  flex-flow:column wrap;
 }
 
 .info-container {
   display: flex;
+  flex-flow : row wrap;
   align-items: flex-end;
   justify-content: flex-start;
   position: relative;

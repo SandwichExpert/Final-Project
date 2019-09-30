@@ -46,6 +46,8 @@ router
   .put("/edit", uploader.single("avatar"), (req, res, next) => {
     let changes = req.body;
     const id = req.user._id;
+    console.log(changes,"Those are the changes")
+    console.log(id,'this should be the user id')
     req.file ? (changes.avatar = req.file.url) : null;
     console.log(req.body);
     updateUser(id, changes)
@@ -96,6 +98,7 @@ async function deleteUser(id) {
 }
 
 async function updateUser(id, changes) {
+  console.log(id,changes)
   const options = { new: true };
   try {
     const updatedUser = await User.findByIdAndUpdate(id, changes, options);

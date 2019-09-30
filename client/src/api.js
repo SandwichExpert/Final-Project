@@ -97,11 +97,16 @@ export default {
   editUser(userInfo) {
     const formData = new FormData();
     const userInfoKeys = Object.keys(userInfo);
-    userInfoKeys.foreach(key => {
+    console.log(userInfo,userInfoKeys)
+    userInfoKeys.forEach(key => {
       formData.append(`${key}`, userInfo[`${key}`]);
     });
     return service
-      .put("/users/edit", formData)
+      .put("/users/edit", formData,{
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      })
       .then(res => res.data)
       .catch(errHandler);
   },

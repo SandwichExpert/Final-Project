@@ -16,6 +16,7 @@ export default function UserDisplay(props) {
       <div className="info-container">
         <div className="circular-image">
           <img className="profile-image" src={props.user.avatar}></img>
+          <Link to="/edit-user">Edit profile</Link>
         </div>
         <div className="name-loc-container">
           <h1 className="username">Hi {props.user.first_name}</h1>

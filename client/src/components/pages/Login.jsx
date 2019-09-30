@@ -13,7 +13,7 @@ export default function Login(props) {
       .login(formValues.email, formValues.password)
       .then(result => {
         console.log('SUCCESS!')
-        props.history.push('/meetups') // Redirect to the home page
+        props.history.push('/home') // Redirect to the home page
       })
       .catch(err => setMessage(err.toString()))
   }
