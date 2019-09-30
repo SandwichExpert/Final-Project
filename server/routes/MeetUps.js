@@ -23,6 +23,7 @@ router.get("/my-meetups", isLoggedIn, (req, res, next) => {
 // get an individual meet up -- check
 router.get("/one-meetup/:meetupId", (req, res, next) => {
   const id = req.params.meetupId;
+  console.log(id);
   MeetUp.findById(id)
     .populate({
       path: "_suggested_locations",
