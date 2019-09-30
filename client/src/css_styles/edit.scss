@@ -1,0 +1,28 @@
+.edit-user{
+  display:flex;
+  flex-flow:column wrap;
+  margin: 5px 15px;
+}
+
+
+.inputs-edit {
+  border-radius: 20px;
+  border: 1px solid #ffffff;
+  width: 385px;
+  height: 34px;
+  margin-bottom: 5%;
+  padding-left: 10px;
+}
+
+.submit-button {
+  margin-top: 5%;
+  width: 191px;
+  height: 47px;
+  background: $two;
+  color: white;
+  border: none;
+  box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  font-size: 1.3rem;
+  margin-left:95px;
+}

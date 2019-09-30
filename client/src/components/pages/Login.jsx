@@ -12,8 +12,8 @@ export default function Login(props) {
     api
       .login(formValues.email, formValues.password)
       .then(result => {
-        console.log("SUCCESS!");
-        props.history.push("/home"); // Redirect to the home page
+        console.log('SUCCESS!')
+        props.history.push('/home') // Redirect to the home page
       })
       .catch(err => setMessage(err.toString()));
   }
