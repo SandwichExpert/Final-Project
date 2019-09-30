@@ -305,7 +305,7 @@ async function addDepartureLocation(lat, lng, meetupId, newLocation) {
       }
     });
   }
-
+  //can get rid of second else
   // console.log("hghghg", duplicateDepartureId, "dep creator", departureCreator);
   if (duplicateDepartureId !== null) {
     console.log("nice", duplicateDepartureId, createdLocationId);
