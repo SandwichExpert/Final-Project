@@ -280,17 +280,55 @@ async function addSuggestedLocation(lat, lng, meetupId, newLocation) {
 
 async function addDepartureLocation(lat, lng, meetupId, newLocation) {
   const createdLocation = await Location.create(newLocation);
+  const departureCreator = createdLocation.created_by;
   const newLocationId = createdLocation._id;
-  const updatedMeetup = await MeetUp.findByIdAndUpdate(
-    meetupId,
-    {
-      $addToSet: {
-        _departure_locations: newLocationId
-      }
-    },
-    { new: true }
+  const meetup = await MeetUp.findById(meetupId).populate(
+    "_departure_locations"
   );
-  return updatedMeetup;
+  let duplicateDepartureId = null;
+  const userWithDepartureLoc = meetup._departure_locations.forEach(loc => {
+    // console.log("creat by", loc.created_by, loc._id);
+    console.log(loc.created_by.equals(departureCreator));
+    if (loc.created_by.equals(departureCreator)) {
+      duplicateDepartureId = loc._id;
+      console.log("dup", duplicateDepartureId);
+    }
+  });
+  // console.log("hghghg", duplicateDepartureId, "dep creator", departureCreator);
+  if (duplicateDepartureId) {
+    console.log("nice", duplicateDepartureId);
+    const removedMeetup = await MeetUp.findByIdAndUpdate(
+      meetupId,
+      {
+        $pull: {
+          _departure_locations: duplicateDepartureId
+        }
+      },
+      { new: true }
+    );
+    const addedMeetup = await MeetUp.findByIdAndUpdate(
+      meetupId,
+      {
+        $addToSet: {
+          _departure_locations: newLocation
+        }
+      },
+      { new: true }
+    );
+    console.log("departure location has been updated for", departureCreator);
+    return addedMeetup;
+  } else {
+    const updatedMeetup = await MeetUp.findByIdAndUpdate(
+      meetupId,
+      {
+        $addToSet: {
+          _departure_locations: newLocationId
+        }
+      },
+      { new: true }
+    );
+    return updatedMeetup;
+  }
 }
 
 async function deleteMeetupIfAdmin(userId, meetupId) {

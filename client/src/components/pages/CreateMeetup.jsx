@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import api from "../../api";
+import DatePicker from "react-datepicker";
 
 export default function CreateMeetup(props) {
   const [state, setState] = useState({
@@ -7,6 +8,12 @@ export default function CreateMeetup(props) {
     meetup_date: "",
     meetup_time: ""
   });
+  const DateInput = () => {
+    const [startDate, setStartDate] = useState(new Date());
+    return (
+      <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
+    );
+  };
 
   function handleInputChange(e) {
     const name = e.target.name;
@@ -33,7 +40,7 @@ export default function CreateMeetup(props) {
   return (
     <div className="mobile-container-creation">
       {/* <div className="mobile-background"> */}
-      <b>Event Name</b> <br />{" "}
+      <label for="name">Event Name</label>
       <input
         type="text"
         placeholder="Name of the event"
@@ -43,16 +50,17 @@ export default function CreateMeetup(props) {
         name="name"
       />{" "}
       <br />
-      <b>Date</b> <br />{" "}
+      {/* <label for="meetup_date">Date</label>
       <input
         type="date"
         className="inputs"
         value={state.meetup_date}
         onChange={handleInputChange}
         name="meetup_date"
-      />
+      /> */}
+      <DateInput />
       <br />
-      <b>Time</b> <br />{" "}
+      <label for="meetup_time">Time</label>
       <input
         type="time"
         className="inputs"

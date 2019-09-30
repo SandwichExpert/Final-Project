@@ -1,42 +1,42 @@
-import React, { useState } from 'react'
-import api from '../../api'
-import { useForm } from '../../hooks'
-import { Link } from 'react-router-dom'
-import Logo from '../../assets/maptee_logo.svg'
+import React, { useState } from "react";
+import api from "../../api";
+import { useForm } from "../../hooks";
+import { Link } from "react-router-dom";
+import Logo from "../../assets/maptee_logo.svg";
 
 export default function Login(props) {
-  const { formValues, getInputProps } = useForm({ lang: 'en' })
+  const { formValues, getInputProps } = useForm({ lang: "en" });
 
   function handleSubmit(e) {
-    e.preventDefault()
+    e.preventDefault();
     api
       .login(formValues.email, formValues.password)
       .then(result => {
-        console.log('SUCCESS!')
-        props.history.push('/meetups') // Redirect to the home page
+        console.log("SUCCESS!");
+        props.history.push("/home"); // Redirect to the home page
       })
-      .catch(err => setMessage(err.toString()))
+      .catch(err => setMessage(err.toString()));
   }
 
-  const [message, setMessage] = useState(null)
+  const [message, setMessage] = useState(null);
 
   return (
     <div className="mobile-container">
       <img src={Logo} alt="Maptee" className="main_logo" />
       <div className="mobile-background">
         <form onSubmit={handleSubmit}>
-          <b>Email</b> <br />{' '}
+          <b>Email</b> <br />{" "}
           <input
             type="email"
-            {...getInputProps('email')}
+            {...getInputProps("email")}
             placeholder="Your email"
             className="inputs"
-          />{' '}
+          />{" "}
           <br />
-          <b>Password</b> <br />{' '}
+          <b>Password</b> <br />{" "}
           <input
             type="password"
-            {...getInputProps('password')}
+            {...getInputProps("password")}
             placeholder="Your password"
             className="inputs"
           />
@@ -58,5 +58,5 @@ export default function Login(props) {
         {message && <div className="info info-danger">{message}</div>}
       </div>
     </div>
-  )
+  );
 }
