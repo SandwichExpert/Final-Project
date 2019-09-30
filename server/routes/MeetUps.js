@@ -285,15 +285,18 @@ async function addSuggestedLocation(lat, lng, meetupId, newLocation) {
 }
 
 async function addDepartureLocation(lat, lng, meetupId, newLocation) {
+  const departureCreator = newLocation.created_by;
   const createdLocation = await Location.create(newLocation);
-  const departureCreator = createdLocation.created_by;
-  const newLocationId = createdLocation._id;
+  const createdLocationId = createdLocation._id;
   const meetup = await MeetUp.findById(meetupId).populate(
     "_departure_locations"
   );
-  console.log(meetup);
   let duplicateDepartureId = null;
-  if (meetup._departure_locations[0] !== null) {
+  console.log(createdLocationId, departureCreator);
+  if (
+    meetup._departure_locations.length !== 0 &&
+    meetup._departure_locations[0] !== null
+  ) {
     meetup._departure_locations.forEach(loc => {
       console.log(loc.created_by.equals(departureCreator));
       if (loc.created_by.equals(departureCreator)) {
@@ -302,9 +305,15 @@ async function addDepartureLocation(lat, lng, meetupId, newLocation) {
       }
     });
   }
+
   // console.log("hghghg", duplicateDepartureId, "dep creator", departureCreator);
+<<<<<<< HEAD
   if (duplicateDepartureId) {
     console.log("nice", duplicateDepartureId);
+=======
+  if (duplicateDepartureId !== null) {
+    console.log("nice", duplicateDepartureId, createdLocationId);
+>>>>>>> 7b30686... one user one departure
     const removedMeetup = await MeetUp.findByIdAndUpdate(
       meetupId,
       {
@@ -317,7 +326,13 @@ async function addDepartureLocation(lat, lng, meetupId, newLocation) {
     const addedMeetup = await MeetUp.findByIdAndUpdate(
       meetupId,
       {
+<<<<<<< HEAD
         $addToSet: { _departure_locations: newLocation }
+=======
+        $addToSet: {
+          _departure_locations: createdLocationId
+        }
+>>>>>>> 7b30686... one user one departure
       },
       { new: true }
     );
@@ -328,7 +343,7 @@ async function addDepartureLocation(lat, lng, meetupId, newLocation) {
       meetupId,
       {
         $addToSet: {
-          _departure_locations: newLocationId
+          _departure_locations: createdLocationId
         }
       },
       { new: true }
