@@ -8,26 +8,34 @@ export default function CreateMeetup(props) {
     name: "",
     meetup_date: "",
     meetup_time: "",
-    departure_location: ""
+    // departure_location: ""
   });
-  const DateInput = () => {
-    const [startDate, setStartDate] = useState(new Date());
-    return (
-      <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
-    );
-  };
+  // const DateInput = () => {
+  //   const [startDate, setStartDate] = useState(new Date());
+  //   return (
+  //     <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
+  //   );
+  // };
 
   function handleInputChange(e) {
     const name = e.target.name;
     const value = e.target.value;
     setState({ ...state, [name]: value });
+    console.log(state.name,state.meetup_date,state.meetup_time)
   }
 
-  function addMeetupAndRedirectToMeetupPage() {
-    const uploadData = new FormData();
-    uploadData.append("name", state.name);
-    uploadData.append("meetup_date", state.meetup_date);
-    uploadData.append("meetup_time", state.meetup_time);
+  function addMeetupAndRedirectToMeetupPage(e) {
+    e.preventDefault()
+    const uploadData = {
+      name:state.name,
+      meetup_date:state.meetup_date,
+      meetup_time:state.meetup_time
+    }
+    // new FormData();
+    // uploadData.append("name", state.name);
+    // uploadData.append("meetup_date", state.meetup_date);
+    // uploadData.append("meetup_time", state.meetup_time);
+  
 
     api
       .addMeetUp(uploadData)
@@ -42,7 +50,8 @@ export default function CreateMeetup(props) {
   return (
     <div className="mobile-container-creation">
       {/* <div className="mobile-background"> */}
-      <label for="name">Event Name</label>
+      <form onSubmit={addMeetupAndRedirectToMeetupPage}>
+      <label name="name">Event Name</label><br/>
       <input
         type="text"
         placeholder="Name of the event"
@@ -52,17 +61,17 @@ export default function CreateMeetup(props) {
         name="name"
       />{" "}
       <br />
-      {/* <label for="meetup_date">Date</label>
+      <label name="meetup_date">Date</label><br/>
       <input
         type="date"
         className="inputs"
         value={state.meetup_date}
         onChange={handleInputChange}
         name="meetup_date"
-      /> */}
-      <DateInput />
+      />
+      {/* <DateInput /> */}
       <br />
-      <label for="meetup_time">Time</label>
+      <label name="meetup_time">Time</label><br/>
       <input
         type="time"
         className="inputs"
@@ -85,9 +94,11 @@ export default function CreateMeetup(props) {
       </SearchBox> */}
       {/* <Link to="" className="forgotten">Forgotten password?</Link> */}
       {/* <span className="forgotten">Forgotten Password?</span> */}
-      <button className="button" onClick={addMeetupAndRedirectToMeetupPage}>
+      <button className="button">
         <b>Create</b>
       </button>
+      {/* <pre>{JSON.stringify(state,null,2)}</pre> */}
+      </form>
       <br />
     </div>
   );

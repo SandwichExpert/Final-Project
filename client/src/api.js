@@ -111,6 +111,24 @@ export default {
       .catch(errHandler);
   },
 
+  // editUserPictures(userInfo){
+  //   const formData= new FormData();
+  //   const userInfoKeys = Object.keys(userInfo);
+  //   const imageType = userInfoKeys[0];
+  //   console.log(userInfo,userInfoKeys)
+  //   userInfoKeys.forEach(key => {
+  //     formData.append(`${key}`, userInfo[`${key}`]);
+  //   });
+  //   return service
+  //     .put(`/users/edit/${imageType}`, formData,{
+  //       headers: {
+  //         "Content-Type": "multipart/form-data"
+  //       }
+  //     })
+  //     .then(res => res.data)
+  //     .catch(errHandler);
+  // },
+
   addFriend(body) {
     const email = { email: body.email };
     return service

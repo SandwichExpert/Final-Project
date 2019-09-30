@@ -43,24 +43,52 @@ router
       })
       .catch(err => console.log(err));
   })
-  .put("/edit", uploader.single("avatar"), (req, res, next) => {
-    let changes = req.body;
-    const id = req.user._id;
-    console.log(changes,"Those are the changes")
-    console.log(id,'this should be the user id')
-    req.file ? (changes.avatar = req.file.url) : null;
-    console.log(req.body);
-    updateUser(id, changes)
-      .then(user => {
-        console.log("user updated");
-        user.password = undefined;
-        res.json(user);
-      })
-      .catch(err => console.log(err));
-  })
+
+  // .put("/changeBackground", uploader.single)
+
+  // .put('/edit/:imageType',uploader.single(req.params.imageType),
+  // (req, res, next)=> {
+  //   // console.log(changes,"Those are the changes")
+  //     // console.log(id,'this should be the user id')
+  //     let changes = {[req.params.imageType]: req.file.url}
+  //     console.log(changes);
+  //     updateUser(id, changes)
+  //     .then(user => {
+  //       console.log("user updated");
+  //       user.password = undefined;
+  //       res.json(user);
+  //     })
+  //     .catch(err => console.log(err));
+
+  // } )
+
+  .put(
+    "/edit", 
+    uploader.fields([{name:"avatar",maxCount:1},{name:"background_image",maxCount:1}]),
+    (req, res, next) => {
+      let changes = req.body;
+      const id = req.user._id;
+      
+      if(req.files["background_image"]){
+        changes.background_image = req.files["background_image"][0].url
+      }
+      if(req.files["avatar"]){
+        changes.avatar = req.files["avatar"][0].url;
+      }
+      
+      console.log(req.files, "***********************************");
+      updateUser(id, changes)
+        .then(user => {
+          console.log("user updated");
+          user.password = undefined;
+          res.json(user);
+        })
+        .catch(err => console.log(err));
+    }
+  )
   .put("/addFriend", (req, res, next) => {
     const email = req.body.email;
-    console.log(req.user, "----------", email);
+    // console.log(req.user, "----------", email);
     const userId = req.user._id;
     addFriendToUser(userId, email).then(user => {
       console.log("friend was added to user");
@@ -98,7 +126,7 @@ async function deleteUser(id) {
 }
 
 async function updateUser(id, changes) {
-  console.log(id,changes)
+  console.log(id, changes);
   const options = { new: true };
   try {
     const updatedUser = await User.findByIdAndUpdate(id, changes, options);

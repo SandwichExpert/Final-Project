@@ -9,6 +9,10 @@ const userSchema = new Schema(
       type: String,
       default: 'http://s3.amazonaws.com/37assets/svn/765-default-avatar.png',
     },
+    background_image:{
+      type:String,
+      default:'https://wallpaperaccess.com/full/97836.jpg',
+    },
     email: String,
     password: String,
     _friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
