@@ -21,7 +21,7 @@ export default function CreateMeetup(props) {
     setState({ ...state, [name]: value });
   }
 
-  function addMeetupAdRedirectToMeetupPage() {
+  function addMeetupAndRedirectToMeetupPage() {
     const uploadData = new FormData();
     uploadData.append("name", state.name);
     uploadData.append("meetup_date", state.meetup_date);
@@ -71,7 +71,7 @@ export default function CreateMeetup(props) {
       <br />
       {/* <Link to="" className="forgotten">Forgotten password?</Link> */}
       {/* <span className="forgotten">Forgotten Password?</span> */}
-      <button className="button" onClick={addMeetupAdRedirectToMeetupPage}>
+      <button className="button" onClick={addMeetupAndRedirectToMeetupPage}>
         <b>Create</b>
       </button>
       <br />

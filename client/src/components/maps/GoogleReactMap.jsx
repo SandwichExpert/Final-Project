@@ -72,7 +72,7 @@ export default function GoogleReactMap() {
   useEffect(() => {
     getCurrentLocation();
     api
-      .getMeetUp("5d90304f11872b08d0026505")
+      .getMeetUp("5d8e12584b7e0d25684e246d")
       .then(meetup => {
         setSuggestedLocations(meetup._suggested_locations);
         setDepartureLocations(meetup._departure_locations);
@@ -204,6 +204,46 @@ export default function GoogleReactMap() {
   }
 
   return (
+<<<<<<< HEAD
+=======
+    <GoogleMap
+      defaultZoom={10}
+      defaultCenter={center}
+      defaultOptions={{ styles: mapStyles }}
+      options={{
+        mapTypeControl: false,
+        zoomControl: false,
+        fullscreenControl: false
+      }}
+    >
+      {returnSuggestionMarkers(suggestedLocations, handleSuggestionMarkerClick)}
+      {returnDepartureMarkers(departureLocations, setSelectedLocation)}
+      {selectedLocation && (
+        <div>
+          <InfoWindow
+            position={{
+              lat: selectedLocation.location.coordinates[0],
+              lng: selectedLocation.location.coordinates[1]
+            }}
+            onCloseClick={() => {
+              setSelectedLocation(null);
+            }}
+          >
+            {departureInfoDisplay(selectedLocation)}
+          </InfoWindow>
+        </div>
+      )}
+      {/* <pre>{JSON.stringify(center, 2, null)}</pre>
+      <pre>{JSON.stringify(selectedLocation, 2, null)}</pre> */}
+    </GoogleMap>
+  );
+}
+
+const WrapperMap = withScriptjs(withGoogleMap(Map));
+
+export default function GoogleReactMap() {
+  return (
+>>>>>>> 33238c45c94c2e7e158fdc7f03a7e8a0bf213739
     <div style={{ width: "100vw", height: "100vh" }}>
       <WrapperMap
         suggestedLocations={suggestedLocations}
