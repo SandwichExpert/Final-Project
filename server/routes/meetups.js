@@ -7,6 +7,7 @@ const router = express.Router();
 var mongoose = require("mongoose");
 
 // get a users meet ups -- check
+// nice
 router.get("/my-meetups", isLoggedIn, (req, res, next) => {
   const userId = req.user._id;
   console.log(userId);
