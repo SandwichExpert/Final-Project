@@ -7,7 +7,6 @@ const router = express.Router();
 var mongoose = require("mongoose");
 
 // get a users meet ups -- check
-// nice
 router.get("/my-meetups", isLoggedIn, (req, res, next) => {
   const userId = req.user._id;
   console.log(userId);
@@ -24,7 +23,6 @@ router.get("/my-meetups", isLoggedIn, (req, res, next) => {
 // get an individual meet up -- check
 router.get("/one-meetup/:meetupId", (req, res, next) => {
   const id = req.params.meetupId;
-  console.log(id);
   MeetUp.findById(id)
     .populate({
       path: "_suggested_locations",
@@ -47,6 +45,9 @@ router.post("/", isLoggedIn, (req, res, next) => {
   const meetup_date = req.body.meetup_date;
   const meetup_time = req.body.meetup_time;
   const name = req.body.name;
+
+  console.log(req.body);
+
   createMeetUpAddMeetupToUser(_admin, _users, meetup_date, meetup_time, name)
     .then(NewMeetUp => {
       res.json(NewMeetUp);
@@ -250,6 +251,9 @@ async function createMeetUpAddMeetupToUser(
     meetup_time,
     name
   };
+  console.log("********************");
+  console.log(newMeetUp);
+
   const createdMeetUp = await MeetUp.create(newMeetUp);
   const createdMeetUpId = createdMeetUp._id;
   const UpdatedUser = await User.findByIdAndUpdate(
@@ -289,13 +293,13 @@ async function addDepartureLocation(lat, lng, meetupId, newLocation) {
     "_departure_locations"
   );
   let duplicateDepartureId = null;
-  // console.log(createdLocationId, departureCreator);
+  console.log(createdLocationId, departureCreator);
   if (
     meetup._departure_locations.length !== 0 &&
     meetup._departure_locations[0] !== null
   ) {
     meetup._departure_locations.forEach(loc => {
-      // console.log(loc.created_by.equals(departureCreator));
+      console.log(loc.created_by.equals(departureCreator));
       if (loc.created_by.equals(departureCreator)) {
         duplicateDepartureId = loc._id;
         // console.log("dup", duplicateDepartureId);
