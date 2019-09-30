@@ -307,13 +307,8 @@ async function addDepartureLocation(lat, lng, meetupId, newLocation) {
   }
 
   // console.log("hghghg", duplicateDepartureId, "dep creator", departureCreator);
-<<<<<<< HEAD
-  if (duplicateDepartureId) {
-    console.log("nice", duplicateDepartureId);
-=======
   if (duplicateDepartureId !== null) {
     console.log("nice", duplicateDepartureId, createdLocationId);
->>>>>>> 7b30686... one user one departure
     const removedMeetup = await MeetUp.findByIdAndUpdate(
       meetupId,
       {
@@ -326,9 +321,6 @@ async function addDepartureLocation(lat, lng, meetupId, newLocation) {
     const addedMeetup = await MeetUp.findByIdAndUpdate(
       meetupId,
       {
-<<<<<<< HEAD
-        $addToSet: { _departure_locations: newLocation }
-=======
         $addToSet: {
           _departure_locations: createdLocationId
         }
