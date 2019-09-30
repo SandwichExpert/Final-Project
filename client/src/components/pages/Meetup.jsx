@@ -4,6 +4,7 @@ import api from "../../api";
 import GoogleReactMap from "../maps/GoogleReactMap";
 import UserDisplay from "../sub-components/UserDisplay";
 import { userInfo } from "os";
+import moment from 'moment'
 // import Logo from '../../assets/maptee_logo.svg'
 
 export default function Meetup(props) {
@@ -16,6 +17,11 @@ export default function Meetup(props) {
   const meetupId = props.match.params.meetupId;
   const [user, setUser] = useState("")
 
+  function dateDisplay(dateString){
+    const date = moment(dateString).format("MMM DD")
+    console.log(date,'--------------*************----------')
+    return date
+  }
   console.log(meetupId);
 
   // function findAdmin(){
@@ -78,7 +84,7 @@ export default function Meetup(props) {
       <div className="heading_meetup">
         <div className="left_side">
           <h2>{meetup.name}</h2>
-          {meetup.meetup_date} - {meetup.meetup_time}
+          {dateDisplay(meetup.meetup_date)} - {meetup.meetup_time}
         </div>
         <div className="right_side">
         <div className="circular-image" style ={{marginTop:5}}>

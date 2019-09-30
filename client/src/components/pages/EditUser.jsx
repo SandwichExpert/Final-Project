@@ -8,7 +8,7 @@ export default function EditUser(props) {
     background_image:null,
     first_name: "",
     last_name: "",
-    location: ""
+    city: ""
   });
   const [state, setState] = useState("");
 
@@ -29,7 +29,7 @@ export default function EditUser(props) {
   function handleFileChange(e) {
     const name = e.target.name;
     const file = e.target.files;
-    console.log(e.target.files,"GEEEEEET MEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+    
     setUser({ ...user, [name]: e.target.files[0] });
 
     // if(!e.target.files[0]){
@@ -50,7 +50,8 @@ export default function EditUser(props) {
       first_name: user.first_name,
       last_name: user.last_name,
       avatar: user.avatar,
-      background_image:user.background_image
+      background_image:user.background_image,
+      city : user.city
     };
     api
       .editUser(data)
@@ -106,14 +107,14 @@ export default function EditUser(props) {
             name="last_name"
             placeholder={user.last_name}
           />
-          <b>Location</b>{" "}
+          <b>City</b>{" "}
           <input
             type="text"
             className="inputs-edit"
-            value={user.location}
+            value={user.city}
             onChange={handleInputChange}
-            name="location"
-            placeholder={user.location}
+            name="city"
+            placeholder={user.city}
           />
           <button className="submit-button">
             <b>Edit</b>

@@ -8,6 +8,7 @@ export default function Signup(props) {
     first_name: "",
     last_name: "",
     password: "",
+    city:"",
     avatar: ""
   });
 
@@ -30,6 +31,7 @@ export default function Signup(props) {
       first_name: state.first_name,
       last_name: state.last_name,
       password: state.password,
+      city:state.city,
       avatar: state.avatar
     };
     api
@@ -83,6 +85,16 @@ export default function Signup(props) {
             onChange={handleInputChange}
             className="inputs"
             placeholder="Your password"
+          />{" "}
+          <br />
+          City: <br />
+          <input
+            type="text"
+            value={state.city}
+            name="city"
+            onChange={handleInputChange}
+            className="inputs"
+            placeholder="Your city"
           />{" "}
           <br />
           Avatar: <br />

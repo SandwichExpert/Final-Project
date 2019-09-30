@@ -5,6 +5,7 @@ const userSchema = new Schema(
   {
     first_name: String,
     last_name: String,
+    city: String,
     avatar: {
       type: String,
       default: 'http://s3.amazonaws.com/37assets/svn/765-default-avatar.png',

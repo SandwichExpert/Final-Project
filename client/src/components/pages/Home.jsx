@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../../api";
 import UserDisplay from "../sub-components/UserDisplay";
+import moment from "moment";
 
 export default function Home() {
   const [user, setUser] = useState("");
@@ -13,11 +14,17 @@ export default function Home() {
       setFriends(userInfo._friends);
       setCount(userInfo._friends.length);
       userInfo._friends = undefined;
-      setMeetups(userInfo._meetups);
+      var filterMeetups = filteredMeetups(userInfo._meetups);
+      setMeetups(filterMeetups);
       userInfo._meetups = undefined;
       setUser(userInfo);
     });
   }, []);
+
+    function filteredMeetups(meetups){
+      return meetups.sort((a,b)=> new moment(a.meetup_date)- new moment(b.meetup_date))
+    }
+
   return (
     <div className="home">
       {user !== "" && (
