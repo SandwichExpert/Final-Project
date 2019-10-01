@@ -62,3 +62,17 @@
   margin-top: 45%;
   margin-left: 35%;
 }
+
+.close_window{
+  top:0;
+  display:flex;
+  flex-direction: row-reverse;
+  padding-top:25px;
+  position:absolute;
+  width:100vw;
+}
+
+.fa-times{
+  margin-right:25px;
+  font-size:2em;
+}
