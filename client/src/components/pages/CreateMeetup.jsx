@@ -96,7 +96,7 @@ export default function CreateMeetup(props) {
           Leaving from?
         </label> */}
         <LocationSearchBox suggestion={false}></LocationSearchBox>
-        <button className="button">
+        <button className="button" id="create">
           <b>Create</b>
         </button>
         {/* <pre>{JSON.stringify(state,null,2)}</pre> */}

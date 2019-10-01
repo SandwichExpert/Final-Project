@@ -6,12 +6,14 @@
 
 
 .inputs-edit {
-  border-radius: 20px;
-  border: 1px solid #ffffff;
-  width: 385px;
-  height: 34px;
-  margin-bottom: 5%;
-  padding-left: 10px;
+  height: 34px; 
+  border: 1px solid transparent;
+  padding: 0px 12px;
+  border-radius: 3px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 6px;
+  font-size: 14px;
+  outline: none;
+  margin-bottom:5px;
 }
 
 .submit-button {
@@ -22,29 +24,32 @@
   color: white;
   border: none;
   box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 20px;
+  border-radius: 3px;
   font-size: 1.3rem;
   margin-left:95px;
 }
 
+.inputs-edit-file::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
 .inputs-edit-file{
-    width: 0.1px;
-    height: 0.1px;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    z-index: -1;
-}
-
-.inputs-edit-file + label {
-  font-size: 1.25em;
+  background-color: $two;
+  text-align:center;
+  border-radius: 3px;
+  padding: 5px 5px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
   font-weight: 700;
-  color: white;
-  background-color: $one;
-  display: inline-block;
+  font-size: 10pt;
+  box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.25);
+  margin-bottom :15px;
+
 }
 
-.inputs-edit-file:focus + label,
-.inputs-edit-file + label:hover {
-    background-color: $two;
+.inputs-edit-file:hover{
+  border:solid white 1px;
+  cursor:pointer;
 }

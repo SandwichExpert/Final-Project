@@ -1,10 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { render } from "react-dom";
 import { Link } from "react-router-dom";
 import api from "../../api";
 import moment from "moment";
 
-function contentEditable(MeetupTable) {
+
+function foo(e) {
+  // e.preventDefault();
+  //   const name = e.target.name;
+  //   const value = e.target.value;
+    
+
+  //   let data = {
+  //     name: meetups.name,
+  //     meetup_date : meetups.meetup_date,
+  //     meetup_time : meetups.meetup_time
+  //   };
+  //   api
+  //   .editMeetup(data)
+  //   .then(updatedMeetup =>{
+  //     setMeetup({ ...meetup, [name]: value });
+  //   })
+  console.log(e)
+  console.log("yaaaaaayyyy");
+}
+
+
+function contentEditable(MeetupTable, saveClbk) {
   
   return class extends React.Component {
     state = {
@@ -32,13 +54,17 @@ function contentEditable(MeetupTable) {
     };
 
     save = () => {
+
+      console.log("so far so cool")
       this.setState(
         {
           editing: false
         },
         () => {
-          if (this.props.onSave && this.isValueChanged()) {
+          if (this.isValueChanged()) {
             console.log("Value is changed", this.domElm.textContent);
+            saveClbk()
+          
           }
         }
       );
@@ -52,8 +78,6 @@ function contentEditable(MeetupTable) {
       return this.props.value !== this.domElm.textContent;
     };
 
-    
-
     handleKeyDown = e => {
       const { key } = e;
       switch (key) {
@@ -63,6 +87,7 @@ function contentEditable(MeetupTable) {
           break;
       }
     };
+
     render() {
       let editOnClick = true;
       const { editing } = this.state;
@@ -89,17 +114,24 @@ function contentEditable(MeetupTable) {
 }
 
 export default function MeetupTable(props) {
-  let EditableTd = contentEditable("td");
   const [meetup,setMeetup] = useState({
     name:"",
     meetup_date:"",
-    meetup_time:""
-  })
+    meetup_time:"",
+  });
+  const [meetups,setMeetups]=useState(null)
+
+  let EditableTd = contentEditable("td",editingValue);
   const [isAdmin, setIsAdmin] = useState(false);
   function dateDisplay(dateString) {
     const date = moment(dateString).format("MMM DD");
     return date;
   }
+
+  useEffect(()=>{
+      setMeetups(props.meetups)
+  },[])
+
 
   // function handleInputChange(e) {
   //   const name = e.target.name;
@@ -107,24 +139,28 @@ export default function MeetupTable(props) {
   //   setMeetup({ ...meetup, [name]: value });
   // }
 
-  // function editingValue(e){
-  //   e.preventDefault();
+  function editingValue(e){
+  //  e.preventDefault()
   //   const name = e.target.name;
   //   const value = e.target.value;
-  //   setMeetup({ ...meetup, [name]: value });
-  //   let data = {
-  //     name: meetup.name,
-  //     meetup_date : meetup.meetup_date,
-  //     meetup_time : meetup.meetup_time
-  //   };
-  //   api
-  //   .editMeetup(data)
-  //   .then(updatedMeetup =>{
-  //     this.props.history.push("/home");
-  //   })
-  // }
+  
+  let data = {
+    name: meetup.name,
+    meetup_date : meetup.meetup_date,
+    meetup_time : meetup.meetup_time
+  };
+
+    api
+    .editMeetup(data)
+    .then(updatedMeetup =>{
+      this.props.history.push("/home");
+    })
+
+
+  }
   return (
     <table className="meetup-table">
+      {/* <pre>{JSON.stringify(meetups,null,2)}</pre> */}
       <thead>
         <tr>
           <th>Name</th>
@@ -139,10 +175,9 @@ export default function MeetupTable(props) {
             setIsAdmin(true);
           }
           return (
-            <tr key={index}>
-              {props.user._id == meetup._admin ? (
+            <tr key={meetup._id} >
+              {props.user._id === meetup._admin ? (
                 <EditableTd
-                // onChange={editingValue}
                   value={meetup.name}
                   name = 'name'
                   style={{
@@ -155,8 +190,8 @@ export default function MeetupTable(props) {
                 <td className="meetup-name">{meetup.name}</td>
               )}
 
-              {props.user._id == meetup._admin ? (
-                <EditableTd value={meetup.meetup_time} name="meetup_time"/>
+              {props.user._id === meetup._admin ? (
+                <EditableTd meetups={meetup} value={meetup.meetup_time} name="meetup_time"/>
               ) : (
                 <td>{meetup.meetup_time}</td>
               )}
@@ -185,9 +220,12 @@ export default function MeetupTable(props) {
                 </Link>
               </td>
             </tr>
+            
           );
         })}
       </tbody>
+   
     </table>
+    
   );
 }

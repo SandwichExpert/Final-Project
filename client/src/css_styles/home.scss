@@ -46,16 +46,17 @@
 
 .buttons__follow {
   border: 2px solid #226fbe;
-  padding: 1% 13%;
-  border-radius: 60px;
+  padding: 3% 13%;
+  border-radius: 3px;
   background-color: #226fbe;
   color: aliceblue;
   font-size: 1rem;
+
 }
 
 .buttons__meetup {
   border: 2px solid transparent;
-  border-radius: 60px;
+  border-radius: 3px;
   background-color: $two;
   font-size: 1rem;
 }
@@ -94,9 +95,17 @@
   display: flex;
   flex-flow : row wrap;
   align-items: flex-end;
-  justify-content: flex-start;
+  justify-content: space-between;
   position: relative;
   bottom: 40px;
+}
+.user-left{
+  display:flex;
+  flex-direction : row wrap;
+  align-items:flex-end;
+}
+.user-right{
+  padding-right:10px;
 }
 
 .name-loc-container {
