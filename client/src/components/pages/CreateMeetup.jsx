@@ -9,8 +9,10 @@ export default function CreateMeetup(props) {
     name: "",
     meetup_date: "",
     meetup_time: "",
-    departure_location: ""
+    departure_location: "Paris"
   });
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [useCurrentLocation, setChecked] = useState(false);
   // const DateInput = () => {
   //   const [startDate, setStartDate] = useState(new Date());
   //   return (
@@ -19,14 +21,40 @@ export default function CreateMeetup(props) {
   // };
   useEffect(() => {
     const returnedLocation = getCurrentLocation();
-    setState({ ...state, departure_location: returnedLocation });
+    console.log(returnedLocation);
+
+    // setState({
+    //   ...state,
+    //   departure_location: {
+    //     lat: returnedLocation.lat,
+    //     lng: returnedLocation.lng
+    //   }
+    // });
   }, []);
+
+  function handleCheck(e) {
+    console.log(e.target);
+    useCurrentLocation ? setChecked(false) : setChecked(true);
+  }
 
   function handleInputChange(e) {
     const name = e.target.name;
     const value = e.target.value;
     setState({ ...state, [name]: value });
     console.log(state.name, state.meetup_date, state.meetup_time);
+  }
+
+  function getCurrentLocation() {
+    // console.log("here", window.navigator.geolocation);
+    if (window.navigator.geolocation) {
+      window.navigator.geolocation.getCurrentPosition(function(position) {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        const pos = { lat, lng };
+        setCurrentLocation(pos);
+      });
+    }
+    return null;
   }
 
   function addMeetupAndRedirectToMeetupPage(e) {
@@ -36,11 +64,21 @@ export default function CreateMeetup(props) {
       meetup_date: state.meetup_date,
       meetup_time: state.meetup_time
     };
-    // new FormData();
-    // uploadData.append("name", state.name);
-    // uploadData.append("meetup_date", state.meetup_date);
-    // uploadData.append("meetup_time", state.meetup_time);
-
+    // if use current location is checked this location will be used
+    // as a departure location
+    if (useCurrentLocation) {
+      uploadData.departure_location = currentLocation;
+    } else {
+      // give the lat and long of the searched place as uploaddata
+      console.log("---", state.departure_location);
+      const coordinates = {
+        lat: state.departure_location.geometry.location.lat(),
+        lng: state.departure_location.geometry.location.lng()
+      };
+      console.log("---", coordinates);
+      uploadData.departure_location = coordinates;
+    }
+    console.log(uploadData, "-------------");
     api
       .addMeetUp(uploadData)
       .then(createdMeetUp => {
@@ -68,6 +106,7 @@ export default function CreateMeetup(props) {
         </label>
         <br />
         <input
+          required
           type="text"
           placeholder="What do we call your meetup?"
           className="inputs"
@@ -81,6 +120,7 @@ export default function CreateMeetup(props) {
         </label>
         <br />
         <input
+          required
           type="date"
           className="inputs"
           value={state.meetup_date}
@@ -94,6 +134,7 @@ export default function CreateMeetup(props) {
         </label>
         <br />
         <input
+          required
           type="time"
           className="inputs"
           value={state.meetup_time}
@@ -105,7 +146,22 @@ export default function CreateMeetup(props) {
         {/* <label className="creation-label" name="departure_location">
           Leaving from?
         </label> */}
-        <LocationSearchBox suggestion={false}></LocationSearchBox>
+        <LocationSearchBox
+          suggestion={false}
+          setInputFormState={setState}
+          inputFormState={state}
+        ></LocationSearchBox>
+        <section title=".squaredFour">
+          <div class="squaredFour">
+            <label for="usecurrent">current location</label>
+            <input
+              type="checkbox"
+              id="squaredFour"
+              name="usecurrent"
+              onChange={handleCheck}
+            />
+          </div>
+        </section>
         <button className="button">
           <b>Create</b>
         </button>
@@ -113,20 +169,8 @@ export default function CreateMeetup(props) {
       </form>
       <br />
       <pre>{JSON.stringify(state, null, 2)}</pre>
+      <pre>{JSON.stringify(useCurrentLocation, null, 2)}</pre>
+      <pre>{JSON.stringify(currentLocation, null, 2)}</pre>
     </div>
   );
-}
-
-function getCurrentLocation() {
-  // console.log("here", window.navigator.geolocation);
-  if (window.navigator.geolocation) {
-    window.navigator.geolocation.getCurrentPosition(function(position) {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-      const pos = { lat, lng };
-      console.log(pos, "-----------");
-      return pos;
-    });
-  }
-  return null;
 }

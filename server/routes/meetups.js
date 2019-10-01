@@ -45,14 +45,28 @@ router.post("/", isLoggedIn, (req, res, next) => {
   const meetup_date = req.body.meetup_date;
   const meetup_time = req.body.meetup_time;
   const name = req.body.name;
-
+  // comes from the form is either current location or
+  // looked up location
+  const departureLatLng = req.body.departure_location;
+  const newLocation = {
+    type_of_location: "departure",
+    location: {
+      coordinates: [departureLatLng.lat, departureLatLng.lng]
+    },
+    created_by: req.user._id
+  };
+  createDepartureLocation(newLocation).then(createdLocation => {
+    const departureId = createdLocation._id;
+    // this function will create a meetup and add the admin / user and
+    // admin departure location to the meetup
+    createMeetUp(_admin, _users, meetup_date, meetup_time, name, departureId)
+      .then(NewMeetUp => {
+        console.log("new meetup created hooray!", NewMeetUp);
+        res.json(NewMeetUp);
+      })
+      .catch(err => console.log(err));
+  });
   console.log(req.body);
-
-  createMeetUpAddMeetupToUser(_admin, _users, meetup_date, meetup_time, name)
-    .then(NewMeetUp => {
-      res.json(NewMeetUp);
-    })
-    .catch(err => console.log(err));
 });
 
 // delete a meetup -- check
@@ -245,12 +259,13 @@ async function removeDepartureLocation(meetupId, departureId, currentUserId) {
   return updateMeetup;
 }
 
-async function createMeetUpAddMeetupToUser(
+async function createMeetUp(
   _admin,
   _users,
   meetup_date,
   meetup_time,
-  name
+  name,
+  departureId
 ) {
   const options = { new: true };
   const newMeetUp = {
@@ -258,10 +273,9 @@ async function createMeetUpAddMeetupToUser(
     _users,
     meetup_date,
     meetup_time,
-    name
+    name,
+    _departure_locations: departureId
   };
-  console.log("********************");
-  console.log(newMeetUp);
 
   const createdMeetUp = await MeetUp.create(newMeetUp);
   const createdMeetUpId = createdMeetUp._id;
@@ -378,6 +392,12 @@ async function removeDuplicateDepartureLocation(newLocation, meetupId) {
     return createdLocationId;
   }
   return createdLocationId;
+}
+
+async function createDepartureLocation(newLocation) {
+  const createdLocation = await Location.create(newLocation);
+  console.log("new departure created", newLocation);
+  return createdLocation;
 }
 
 module.exports = router;

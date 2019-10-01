@@ -15,7 +15,7 @@ function SearchBox(props) {
       >
         <input type="text" placeholder="leaving from?" className="inputs" />
       </StandaloneSearchBox>
-      {props.departureCheck && props.placesFound && (
+      {props.suggestionCheck && props.placesFound && (
         <div
           style={{
             display: "flex",
@@ -58,6 +58,26 @@ export default function LocationSearchBox(props) {
   const onPlacesChanged = () => {
     // we created a ref to the searchbox upon mounting
     const newPlaces = refs.searchBox.getPlaces();
+    // this if statement makes sure
+    // this is to change the state of the
+    // input form that is the parent of the searchbox
+    // inputFormState={props.inputFormState}
+    // setInputFormState={props.setInputFormState}
+    if (props.setInputFormState) {
+      if (props.inputFormState.departure_location) {
+        props.setInputFormState({
+          ...props.inputFormState,
+          departure_location: newPlaces[0]
+        });
+      }
+      if (props.inputFormState.suggestion_location) {
+        props.setInputFormState({
+          ...props.inputFormState,
+          departure_locations: newPlaces[0]
+        });
+      }
+    }
+
     setQueriedPlaces(newPlaces);
   };
 
@@ -94,7 +114,7 @@ export default function LocationSearchBox(props) {
         // if to the searchbox this prop was given
         // as true a list with locations will appear
         // out of which you have to pick
-        suugestionCheck={props.suggestion}
+        suggestionCheck={props.suggestion}
         radioSelected={radioSelected}
         handleSearchRadioSelection={handleSearchRadioSelection}
         onSearchBoxMounted={onSearchBoxMounted}
