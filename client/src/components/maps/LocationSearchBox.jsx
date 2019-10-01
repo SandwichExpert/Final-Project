@@ -1,8 +1,8 @@
 import React from "react";
+import { GoogleMap, withScriptjs, withGoogleMap } from "react-google-maps";
 const {
   StandaloneSearchBox
 } = require("react-google-maps/lib/components/places/StandaloneSearchBox");
-import { GoogleMap, withScriptjs, withGoogleMap } from "react-google-maps";
 
 export default function LocationSearchBox({
   inputQuery,

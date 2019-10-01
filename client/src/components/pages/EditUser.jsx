@@ -1,5 +1,6 @@
 import React, { useState, useEffect, setMessage } from "react";
 import api from "../../api";
+import {Link} from "react-router-dom";
 // import { STATES } from 'mongoose';
 
 export default function EditUser(props) {
@@ -66,13 +67,16 @@ export default function EditUser(props) {
   return (
     <div className="mobile-container-creation">
       {/* <div className="mobile-background"> */}
+      <div className="close_window">
+        <Link to='/home' style={{color:"white"}}><i className="fas fa-times"></i></Link>
+      </div>
       <form onSubmit={handleSubmit}>
-        <b>Profile picture</b> <br />{" "}
         <div className="edit-user">
-          <div className="info-container">
-            <div className="circular-image">
+           {/* <div className="info-container">  */}
+             <div className="circular-image">
               <img className="profile-image" src={user.avatar}></img>
-            </div>
+            </div> 
+        <b>Profile picture</b> <br />{" "}
             <input
               type="file"
               placeholder="Update profile pic"
@@ -80,7 +84,7 @@ export default function EditUser(props) {
               onChange={handleFileChange}
               name="avatar"
             />{" "}
-          </div>
+          {/* </div>  */}
           <b>Background Image</b>
           <input
             type="file"

@@ -51,7 +51,7 @@ export default function CreateMeetup(props) {
   return (
     <div className="mobile-container-creation">
       <div className="close_window">
-        <Link to='/home' style={{color:"white"}}><i class="fas fa-times"></i></Link>
+        <Link to='/home' style={{color:"white"}}><i className="fas fa-times"></i></Link>
       </div>
       {/* <div className="mobile-background"> */}
       <form onSubmit={addMeetupAndRedirectToMeetupPage}>
@@ -84,18 +84,16 @@ export default function CreateMeetup(props) {
         name="meetup_time"
       />
       <br />
-      <SearchBox
+      {/* <SearchBox
         ref={props.onSearchBoxMounted}
         onPlacesChanged={props.onPlacesChanged}
+        className="inputs"
+        value={state.meetup_date.departure_location}
+        onChange={handleInputChange}
+        name="departure_location"
       >
-        <input
-          type="text"
-          className="inputs"
-          value={state.meetup_date.departure_location}
-          onChange={handleInputChange}
-          name="departure_location"
         />
-      </SearchBox>
+      </SearchBox> */}
       {/* <Link to="" className="forgotten">Forgotten password?</Link> */}
       {/* <span className="forgotten">Forgotten Password?</span> */}
       <button className="button">

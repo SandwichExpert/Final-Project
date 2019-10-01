@@ -9,10 +9,7 @@ import Signup from "./pages/Signup";
 import Landing from "./pages/Landing";
 import Meetup from "./pages/Meetup";
 import CreateMeetup from "./pages/CreateMeetup";
-import MyMapComponent from "./maps/MyMapComponent";
-import Maps from "./maps/Map";
 import EditUser from "./pages/EditUser";
-import GoogleMap from "./maps/GoogleMap";
 import GoogleReactMap from "./maps/GoogleReactMap";
 
 export default function App() {
@@ -26,7 +23,6 @@ export default function App() {
         <Route path="/login" component={Login} />
         <Route path="/user/:userId" component={User} />
         <Route path="/my-meetup/:meetupId" component={Meetup} />
-        <Route path="/map" component={GoogleMap} />
         <Route path="/reactmap" component={GoogleReactMap} />
         <Route path="/createmeetup" component={CreateMeetup} />
         <Route path="/edit-user" component={EditUser}/>

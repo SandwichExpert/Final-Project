@@ -26,3 +26,25 @@
   font-size: 1.3rem;
   margin-left:95px;
 }
+
+.inputs-edit-file{
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.inputs-edit-file + label {
+  font-size: 1.25em;
+  font-weight: 700;
+  color: white;
+  background-color: $one;
+  display: inline-block;
+}
+
+.inputs-edit-file:focus + label,
+.inputs-edit-file + label:hover {
+    background-color: $two;
+}

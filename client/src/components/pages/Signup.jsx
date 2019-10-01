@@ -38,7 +38,7 @@ export default function Signup(props) {
       .signup(data)
       .then(result => {
         console.log("SUCCESS!");
-        props.history.push("/"); // Redirect to the home page
+        props.history.push("/home"); // Redirect to the home page
       })
       .catch(err => setState({ message: err.toString() }));
   }

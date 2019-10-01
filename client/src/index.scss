@@ -5,6 +5,12 @@ $two: #6bb39a;
 $three: #99b3ff;
 $four: #bb99ff;
 $five: #99ffff;
+
+@function vh($quantity) {
+  @return calc(var(--vh, 1vh) * #{$quantity});
+  }
+  
+  
 // ----------------------------------------
 // To install Boostrap:
 // 1) Run in the client folder: $ npm i bootstrap

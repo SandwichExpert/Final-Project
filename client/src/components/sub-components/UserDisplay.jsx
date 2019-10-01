@@ -1,32 +1,53 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import FriendDisplay from "./FriendDisplay";
 import { Link } from "react-router-dom";
-import moment from 'moment'
+import moment from "moment";
+import api from '../../api';
+import MeetupTable from './MeetupTable';
 
 
 export default function UserDisplay(props) {
   console.log(props.meetups);
-  const [isAdmin, setIsAdmin]=useState(false);
-  const [editMeetup, setEditMeetup]=useState(null);
-
-  function dateDisplay(dateString){
-    const date = moment(dateString).format("MMM DD")
-    console.log(date,'--------------*************----------')
-    return date
-  }
-
-  function handleEditClick(e){
-    console.log(e.target._data);
-    const meetupId= e.target._data;
-    setEditMeetup(meetupId) 
-
-
-
-  }
   
+  const [editMeetup, setEditMeetup] = useState("");
+  const [state, setState] = useState({
+    name:"",
+    meetup_date:"",
+    meetup_time:""
+  });
+
+  
+
+  function handleEditClick(e) {
+    console.log(e.target._data);
+    const meetupId = e.target._data;
+    setEditMeetup(meetupId);
+  }
+
+  // function handleInputChange(e){
+  //   const name=e.target.name;
+  //   const value = e.target.value;
+  //   setState({...state, [name]:value});
+  // }
+
+  // function editMeetupAndRemoveTheLine(e){
+  //   e.preventDefault()
+  //   const editData ={
+  //     name:state.name,
+  //     meetup_date:state.meetup_date,
+  //     meetup_time:state.meetup_time
+  //   }
+  //   api
+  //     .editMeetup(editData)
+  //     .then(editedMeetup => {
+  //       props.history.push('/home')
+  //     })
+      
+  // }
+
   return (
     <div className="user-display">
-    <div
+      <div
         className="background-image"
         style={{
           backgroundImage: `url(${props.user.background_image})`,
@@ -47,7 +68,6 @@ export default function UserDisplay(props) {
         </div>
       </div>
       <div className="buttons">
-        
         <button className="buttons__meetup">
           <Link to="/joinmeetup">
             <b>Join Meetup</b>
@@ -65,47 +85,10 @@ export default function UserDisplay(props) {
         friends={props.friends}
         count={props.count}
       ></FriendDisplay>
-      <table className="meetup-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Time</th>
-            <th>Date</th>
-            {isAdmin && <th>Edit</th> }
-          </tr>
-        </thead>
-        <tbody>
-          {props.meetups.map((meetup, index) => {
-            if(props.user._id === meetup._admin && !isAdmin){
-              setIsAdmin(true);
-            }
-            return (
-              <tr key={index}>
-                <td className="meetup-name" >
-                  <Link to={`/my-meetup/${meetup._id}`} 
-                  style ={{color:`${props.user._id===meetup._admin ? 'red': 'black'}`}}>{meetup.name}</Link>
-                </td>
-                <td>{meetup.meetup_time}</td>
-                <td>{dateDisplay(meetup.meetup_date)}</td>
-                {props.user._id==meetup._admin ? <td>
-                  <button _data={meetup._id} style={{border:"none",background:"none"}} onClick={
-                    handleEditClick
-                  }>
-                    <i className="fas fa-edit" _data={meetup._id}></i>
-</button>
-                  </td>
-                  :null}
-              </tr>
-            );
-          })}
-          {/* {editMeetup && <tr>
-            <td className="meetup-name" >
-                  <Link to={`/my-meetup/${meetupId}`} 
-                  style ={{color:`${props.user._id===props.meetups._admin ? 'red': 'black'}`}}>{pmeetups.name}</Link>
-                </td>
-          </tr> } */}
-        </tbody>
-      </table>
+
+      <MeetupTable meetups={props.meetups} user={props.user}>
+        
+      </MeetupTable>
       {/* <div>{JSON.stringify(props.meetups)}</div> */}
     </div>
   );

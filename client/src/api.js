@@ -111,6 +111,19 @@ export default {
       .catch(errHandler);
   },
 
+  editMeetup(editData,meetupId){
+    const formData = new FormData();
+    const editDataKeys = Object.keys(editData);
+    console.log(editData,editDataKeys)
+    editDataKeys.forEach(key => {
+      formData.append(`${key}`, editData[`${key}`]);
+    });
+    return service
+    .put(`/meetups/${meetupId}`)
+    .then(res =>res.data)
+    .catch(errHandler);
+  },
+
   // editUserPictures(userInfo){
   //   const formData= new FormData();
   //   const userInfoKeys = Object.keys(userInfo);
