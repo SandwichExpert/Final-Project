@@ -96,7 +96,7 @@ export default function CreateMeetup(props) {
     >
       <div className="close_window">
         <Link to="/home" style={{ color: "white" }}>
-          <i class="fas fa-times"></i>
+          <i className="fas fa-times"></i>
         </Link>
       </div>
       {/* <div className="mobile-background"> */}
@@ -151,17 +151,17 @@ export default function CreateMeetup(props) {
           setInputFormState={setState}
           inputFormState={state}
         ></LocationSearchBox>
-        <section title=".squaredFour">
-          <div class="squaredFour">
-            <label for="usecurrent">current location</label>
-            <input
-              type="checkbox"
-              id="squaredFour"
-              name="usecurrent"
-              onChange={handleCheck}
-            />
-          </div>
-        </section>
+        <div className="current-location-wrapper" onClick={handleCheck}>
+          <span style={{ fontSize: "0.6rem" }}>
+            or click here to use current location as departure
+          </span>
+          {useCurrentLocation && (
+            <i class="fas fa-compass" onClick={handleCheck}></i>
+          )}
+          {!useCurrentLocation && (
+            <i class="far fa-compass" onClick={handleCheck}></i>
+          )}
+        </div>
         <button className="button">
           <b>Create</b>
         </button>
