@@ -216,9 +216,11 @@ export default function MeetupTable(props) {
                         }`
                       }}
                     ></i>
+                    {"  "}<i class="fas fa-link"></i>
                   </button>
                 </Link>
               </td>
+             
             </tr>
             
           );
