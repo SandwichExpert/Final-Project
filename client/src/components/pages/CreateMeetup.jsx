@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import api from "../../api";
 import DatePicker from "react-datepicker";
-import { SearchBox } from "react-google-maps/lib/components/places/SearchBox";
+import SearchBox  from "../maps/LocationSearchBox";
+import {Link} from "react-router-dom";
 
 export default function CreateMeetup(props) {
   const [state, setState] = useState({
@@ -49,6 +50,9 @@ export default function CreateMeetup(props) {
 
   return (
     <div className="mobile-container-creation">
+      <div className="close_window">
+        <Link to='/home' style={{color:"white"}}><i class="fas fa-times"></i></Link>
+      </div>
       {/* <div className="mobile-background"> */}
       <form onSubmit={addMeetupAndRedirectToMeetupPage}>
       <label name="name">Event Name</label><br/>
@@ -80,7 +84,7 @@ export default function CreateMeetup(props) {
         name="meetup_time"
       />
       <br />
-      {/* <SearchBox
+      <SearchBox
         ref={props.onSearchBoxMounted}
         onPlacesChanged={props.onPlacesChanged}
       >
@@ -91,7 +95,7 @@ export default function CreateMeetup(props) {
           onChange={handleInputChange}
           name="departure_location"
         />
-      </SearchBox> */}
+      </SearchBox>
       {/* <Link to="" className="forgotten">Forgotten password?</Link> */}
       {/* <span className="forgotten">Forgotten Password?</span> */}
       <button className="button">
