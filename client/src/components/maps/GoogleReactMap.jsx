@@ -329,7 +329,7 @@ export default function GoogleReactMap() {
   }
 
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div style={{ width: "100vw", height: window.innerHeight }}>
       <WrapperMap
         suggestedLocations={suggestedLocations}
         departureLocations={departureLocations}
@@ -349,9 +349,9 @@ export default function GoogleReactMap() {
         newSuggestions={state.newSuggestions}
         bounds={state.bounds}
         googleMapURL={`https://maps.googleapis.com/maps/api/js?key=AIzaSyC4R6AN7SmujjPUIGKdyao2Kqitzr1kiRg&v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GKEY}`}
-        loadingElement={<div style={{ height: "100vh" }} />}
-        containerElement={<div style={{ height: "100vh" }} />}
-        mapElement={<div style={{ height: "100vh" }} />}
+        loadingElement={<div style={{ height: window.innerHeight }} />}
+        containerElement={<div style={{ height: window.innerHeight }} />}
+        mapElement={<div style={{ height: window.innerHeight }} />}
       />
     </div>
   );
