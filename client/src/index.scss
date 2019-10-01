@@ -93,8 +93,8 @@ body {
 .link {
   text-decoration: none;
   color: white;
-  margin-left: 18px;
-  margin-top: 3%;
+  margin: 3% 0;
+
 }
 
 .link:hover {
@@ -164,6 +164,15 @@ body {
   padding-top: 20%;
   height: 100vh;
   color: white;
+  display:flex;
+  justify-content : center;
+  align-content:center;
+}
+
+.mobile-container{
+  height:vh(100);
+  width:vw(100);
+  background-color:$one;
 }
 
 
