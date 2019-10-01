@@ -14,7 +14,12 @@ export default function Meetup(props) {
     suggested_location: "",
     vote: [false]
   });
-  const [state, setState] = useState({ suggestion: null });
+  const [state, setState] = useState({
+    oldDeparture: null,
+    oldSuggestion: null,
+    suggestion: null,
+    departure: null
+  });
   const [meetup, setMeetup] = useState(null);
   const meetupId = props.match.params.meetupId;
   const [user, setUser] = useState("");
@@ -26,27 +31,67 @@ export default function Meetup(props) {
   }
   console.log(meetupId);
 
-  // function findAdmin(){
-  //   return Meetup.findById(hostedBy => hostedBy._id === Meetup._admin)
-  // }
+  function getOldSuggestionAndDeparture(userId, suggestions, departures) {
+    let foundsuggestion = null;
+    let founddeparture = null;
+    suggestions.forEach(suggestion => {
+      if (suggestion.created_by._id == userId) {
+        foundsuggestion = suggestion;
+        foundsuggestion.meetupid = meetupId;
+        return;
+      }
+    });
+    departures.forEach(departure => {
+      if (departure.created_by._id == userId) {
+        founddeparture = departure;
+        // add the meetup id for the departure
+        founddeparture.meetupid = meetupId;
+        return;
+      }
+    });
+    setState({
+      ...state,
+      oldSuggestion: foundsuggestion,
+      oldDeparture: founddeparture
+    });
+  }
 
-  // let administrator = findAdmin()
-
-  console.log(meetupId);
+  function handleButtonClick(e) {
+    if (state.suggestion) {
+      api
+        .addSuggestion(state.suggestion)
+        .then()
+        .catch();
+    }
+    if (state.departure) {
+      api
+        .addDeparture(state.departure)
+        .then()
+        .catch();
+    }
+    props.history.push(`/home`);
+  }
 
   useEffect(() => {
     api.getMeetUp(meetupId).then(meetup => {
       setMeetup(meetup);
+      const suggestions = meetup._suggested_locations;
+      const departures = meetup._departure_locations;
       console.log("DEBUG", meetup);
+      api.getUserInfo().then(userInfo => {
+        setUser(userInfo);
+        console.log(userInfo, "is the user");
+        const userid = userInfo._id;
+        // function to loop through departures and
+        // suggestions and check if this user is in it
+        getOldSuggestionAndDeparture(userid, suggestions, departures);
+      });
     });
   }, []);
 
-  useEffect(() => {
-    api.getUserInfo().then(userInfo => {
-      setUser(userInfo);
-      console.log(user);
-    });
-  }, []);
+  // useEffect(() => {
+
+  // }, []);
 
   if (!meetup) {
     return (
@@ -84,16 +129,26 @@ export default function Meetup(props) {
       <div className="mobile_meetup">
         {state.suggestion && (
           <span>
-            current suggestion {state.suggestion.name}{" "}
+            new suggestion {state.suggestion.name}{" "}
             {state.suggestion.position.lat}
             {state.suggestion.position.lng}
             and rating {state.suggestion.rating}/5
           </span>
         )}
+        {state.oldSuggestion && (
+          <span>current suggestion {state.oldSuggestion.type_of_location}</span>
+        )}
+        {state.oldDeparture && (
+          <span>
+            your current departure {state.oldDeparture.type_of_location}
+            is at location {state.oldDeparture.location.coordinates[0]} lat and{" "}
+            {state.oldDeparture.location.coordinates[1]} lng
+          </span>
+        )}
         <br />
         {/* <Link to="" className="forgotten">Forgotten password?</Link> */}
         {/* <span className="forgotten">Forgotten Password?</span> */}
-        <button className="button" id="Confirm">
+        <button className="button" id="Confirm" onClick={handleButtonClick}>
           <b>Confirm</b>
         </button>
         <br />

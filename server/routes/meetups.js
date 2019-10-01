@@ -123,6 +123,7 @@ router.put("/suggested-location/:meetupId", isLoggedIn, (req, res, next) => {
 });
 
 // add a depature location -- check
+// make sure user only has one departure location
 router.put("/departure-location/:meetupId", isLoggedIn, (req, res, next) => {
   const { lat, lng } = req.body;
   const meetupId = req.params.meetupId;
@@ -150,6 +151,7 @@ router.put("/departure-location/:meetupId", isLoggedIn, (req, res, next) => {
 });
 
 // remove suggested location -- check
+// make sure user only has one suggested location
 router.put(
   "/remove-suggestion/:meetupId/:suggestionId",
   isLoggedIn,

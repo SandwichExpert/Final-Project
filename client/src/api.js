@@ -97,12 +97,12 @@ export default {
   editUser(userInfo) {
     const formData = new FormData();
     const userInfoKeys = Object.keys(userInfo);
-    console.log(userInfo,userInfoKeys)
+    console.log(userInfo, userInfoKeys);
     userInfoKeys.forEach(key => {
       formData.append(`${key}`, userInfo[`${key}`]);
     });
     return service
-      .put("/users/edit", formData,{
+      .put("/users/edit", formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
@@ -111,17 +111,17 @@ export default {
       .catch(errHandler);
   },
 
-  editMeetup(editData,meetupId){
+  editMeetup(editData, meetupId) {
     const formData = new FormData();
     const editDataKeys = Object.keys(editData);
-    console.log(editData,editDataKeys)
+    console.log(editData, editDataKeys);
     editDataKeys.forEach(key => {
       formData.append(`${key}`, editData[`${key}`]);
     });
     return service
-    .put(`/meetups/${meetupId}`)
-    .then(res =>res.data)
-    .catch(errHandler);
+      .put(`/meetups/${meetupId}`)
+      .then(res => res.data)
+      .catch(errHandler);
   },
 
   // editUserPictures(userInfo){
@@ -192,6 +192,35 @@ export default {
       .post("/meetups", uploadData)
       .then(res => res.data)
       .catch(errHandler);
+  },
+
+  addDeparture(meetupmapdepartureinfo) {
+    const meetupId = meetupmapdepartureinfo.meetupid;
+    const lat = meetupmapdepartureinfo.position.lat;
+    const lng = meetupmapdepartureinfo.position.lng;
+    const type_of = "departure";
+    return service.put(`/departure-location/${meetupId}`, {
+      type_of,
+      lat,
+      lng,
+      meetupId
+    });
+  },
+
+  addSuggestion(meetupmapsuggestioninfo) {
+    const meetupId = meetupmapsuggestioninfo.meetupid;
+    const lat = meetupmapsuggestioninfo.position.lat;
+    const lng = meetupmapsuggestioninfo.position.lng;
+    // this will give us the google maps name and the type
+    // of location
+    const type_of =
+      meetupmapsuggestioninfo.name + meetupmapsuggestioninfo.types[0];
+    return service.put(`/suggested-location/${meetupId}`, {
+      type_of,
+      lat,
+      lng,
+      meetupId
+    });
   }
 
   // getAdmin(meetupAdmin){

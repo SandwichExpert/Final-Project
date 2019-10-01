@@ -167,6 +167,28 @@ export default function GoogleReactMap(props) {
     if (places.length == 0) {
       return;
     }
+    // this is so the state changes if only
+    // one place is returned and thus only
+    // there is no click necesarry because it is already specific
+    if (places.length == 1) {
+      const specificPlace = places[0];
+      console.log(places, "place object....");
+      props.setInputFormState({
+        ...props.inputFormState,
+        suggestion: {
+          name: specificPlace.name,
+          types: specificPlace.types,
+          position: {
+            lat: specificPlace.geometry.location.lat(),
+            lng: specificPlace.geometry.location.lng()
+          },
+          rating: specificPlace.rating,
+          website: specificPlace.website,
+          place_id: specificPlace.place_id
+        }
+      });
+    }
+
     // clear all the previous markers
     // setState({...state, markers: null})
 
