@@ -100,7 +100,7 @@ export default function CreateMeetup(props) {
         </Link>
       </div>
       {/* <div className="mobile-background"> */}
-      <form onSubmit={addMeetupAndRedirectToMeetupPage}>
+      <form>
         <label name="name" className="creation-label">
           Event Name
         </label>
@@ -162,7 +162,7 @@ export default function CreateMeetup(props) {
             <i class="far fa-compass" onClick={handleCheck}></i>
           )}
         </div>
-        <button className="button">
+        <button className="button" onClick={addMeetupAndRedirectToMeetupPage}>
           <b>Create</b>
         </button>
         {/* <pre>{JSON.stringify(state,null,2)}</pre> */}

@@ -37,14 +37,14 @@ function Map(props) {
     >
       <SearchBox
         ref={props.onSearchBoxMounted}
-        controlPosition={window.google.maps.ControlPosition.TOP_CENTER}
+        controlPosition={window.google.maps.ControlPosition.BOTTOM_CENTER}
         bounds={props.bounds}
         // listen for the event when the user selects
         // a prediction
         onPlacesChanged={props.onPlacesChanged}
       >
         <input
-          placeholder="type in your suggestion"
+          placeholder="type in a keyword and select a suggestion on the map or specific suggestion"
           type="text"
           style={{
             boxSizing: `border-box`,
@@ -91,7 +91,19 @@ function Map(props) {
       {props.newSuggestions.map((marker, i) => {
         return (
           <Marker
-            onClick={props.handleNewSuggestionClick}
+            // this changes the state defined in Meetup.jsx
+            onClick={e => {
+              props.setInputFormState({
+                ...props.inputFormState,
+                suggestion: {
+                  name: marker.name,
+                  types: marker.types,
+                  position: marker.position,
+                  rating: marker.rating
+                }
+              });
+              props.handleNewSuggestionClick(e, marker.name);
+            }}
             defaultTitle={marker.name}
             icon={{
               url: `${marker.icon}`,
@@ -102,9 +114,6 @@ function Map(props) {
             }}
             key={i}
             position={marker.position}
-            _name={marker.name}
-            _rating={marker.rating}
-            _types={marker.types}
             animation={window.google.maps.Animation.DROP}
           />
         );
@@ -117,7 +126,7 @@ function Map(props) {
 
 const WrapperMap = withScriptjs(withGoogleMap(Map));
 
-export default function GoogleReactMap() {
+export default function GoogleReactMap(props) {
   const [loading, setLoading] = useState(true);
   const [userLocation, setUserLocation] = useState({ lat: 48, lng: 3 });
   const [averagePosition, setAverage] = useState(null);
@@ -129,7 +138,7 @@ export default function GoogleReactMap() {
   useEffect(() => {
     getCurrentLocation();
     api
-      .getMeetUp("5d90304f11872b08d0026505")
+      .getMeetUp(props.meetupId)
       .then(meetup => {
         setSuggestedLocations(meetup._suggested_locations);
         setDepartureLocations(meetup._departure_locations);
@@ -279,7 +288,8 @@ export default function GoogleReactMap() {
     return { lat: avgLat, lng: avgLng };
   }
 
-  function handleSuggestionMarkerClick(e) {
+  function handleSuggestionMarkerClick(e, name) {
+    console.log("----", name);
     const lat = e.latLng.lat();
     const lng = e.latLng.lng();
     console.log(lat, lng);
@@ -309,6 +319,8 @@ export default function GoogleReactMap() {
 
   function handleNewSuggestionClick(e) {
     console.log(e);
+    console.log(e.latLng.lat());
+    console.log(e.latLng.lng());
   }
 
   function handleMouseOver(e) {}
@@ -331,6 +343,10 @@ export default function GoogleReactMap() {
   return (
     <div style={{ width: "100vw", height: window.innerHeight }}>
       <WrapperMap
+        // these two come from meetup.jsx the higher state
+        // lives there
+        inputFormState={props.inputFormState}
+        setInputFormState={props.setInputFormState}
         suggestedLocations={suggestedLocations}
         departureLocations={departureLocations}
         departureInfoDisplay={departureInfoDisplay}

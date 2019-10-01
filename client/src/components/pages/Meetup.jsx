@@ -14,6 +14,7 @@ export default function Meetup(props) {
     suggested_location: "",
     vote: [false]
   });
+  const [state, setState] = useState({ suggestion: null });
   const [meetup, setMeetup] = useState(null);
   const meetupId = props.match.params.meetupId;
   const [user, setUser] = useState("");
@@ -47,26 +48,6 @@ export default function Meetup(props) {
     });
   }, []);
 
-  // useEffect(()=>{
-  //   api.getAdmin(meetup).then(admin =>{
-  //     setAdmin(admin)
-  //   })
-  // },[])
-
-  function handleInputChange(event) {
-    setLocation({
-      ...location,
-      [event.target.name]: event.target.value
-    });
-  }
-
-  // function handleClick(e) {
-  //   e.preventDefault()
-  //   let locationData = {
-  //     departure: location.departure,
-  //     suggested_location: location.suggested_location,
-  //   }
-  // }
   if (!meetup) {
     return (
       <div className="mobile_loading">
@@ -77,11 +58,13 @@ export default function Meetup(props) {
   return (
     <div className="map">
       <GoogleReactMap
+        inputFormState={state}
+        setInputFormState={setState}
+        meetupId={meetupId}
         style={{
           zIndex: 0
         }}
       />
-
       <div className="heading_meetup">
         <div className="left_side">
           <h2>{meetup.name}</h2>
@@ -99,33 +82,23 @@ export default function Meetup(props) {
         </div>
       </div>
       <div className="mobile_meetup">
-        <form>
-          <br />
-          <input
-            type="text"
-            name="departure"
-            required
-            placeholder="Your starting point"
-            className="inputs"
-            onChange={handleInputChange}
-          />{" "}
-          <br />
-          <input
-            type="text"
-            name="suggested_location"
-            placeholder="Your suggestion (optional)"
-            className="inputs"
-            onChange={handleInputChange}
-          />
-          <br />
-          {/* <Link to="" className="forgotten">Forgotten password?</Link> */}
-          {/* <span className="forgotten">Forgotten Password?</span> */}
-          <button className="button" id="Confirm">
-            <b>Confirm</b>
-          </button>
-          <br />
-        </form>
+        {state.suggestion && (
+          <span>
+            current suggestion {state.suggestion.name}{" "}
+            {state.suggestion.position.lat}
+            {state.suggestion.position.lng}
+            and rating {state.suggestion.rating}/5
+          </span>
+        )}
+        <br />
+        {/* <Link to="" className="forgotten">Forgotten password?</Link> */}
+        {/* <span className="forgotten">Forgotten Password?</span> */}
+        <button className="button" id="Confirm">
+          <b>Confirm</b>
+        </button>
+        <br />
       </div>
+      <pre>{JSON.stringify(state, null, 2)}</pre>
     </div>
   );
 }
