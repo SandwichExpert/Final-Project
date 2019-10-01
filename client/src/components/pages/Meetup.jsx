@@ -4,7 +4,8 @@ import api from "../../api";
 import GoogleReactMap from "../maps/GoogleReactMap";
 import UserDisplay from "../sub-components/UserDisplay";
 import { userInfo } from "os";
-import moment from 'moment'
+import moment from "moment";
+import LocationSearchBox from "../maps/LocationSearchBox";
 // import Logo from '../../assets/maptee_logo.svg'
 
 export default function Meetup(props) {
@@ -15,12 +16,12 @@ export default function Meetup(props) {
   });
   const [meetup, setMeetup] = useState(null);
   const meetupId = props.match.params.meetupId;
-  const [user, setUser] = useState("")
+  const [user, setUser] = useState("");
 
-  function dateDisplay(dateString){
-    const date = moment(dateString).format("MMM DD")
-    console.log(date,'--------------*************----------')
-    return date
+  function dateDisplay(dateString) {
+    const date = moment(dateString).format("MMM DD");
+    console.log(date, "--------------*************----------");
+    return date;
   }
   console.log(meetupId);
 
@@ -87,9 +88,13 @@ export default function Meetup(props) {
           {dateDisplay(meetup.meetup_date)} - {meetup.meetup_time}
         </div>
         <div className="right_side">
-        <div className="circular-image" style ={{marginTop:5}}>
-          <img className="profile-image" src={user.avatar} style ={{height : 50,width:50}}></img>
-        </div>
+          <div className="circular-image" style={{ marginTop: 5 }}>
+            <img
+              className="profile-image"
+              src={user.avatar}
+              style={{ height: 50, width: 50 }}
+            ></img>
+          </div>
           <Link to="/home">{user.first_name}</Link>
         </div>
       </div>

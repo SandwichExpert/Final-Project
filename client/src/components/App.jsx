@@ -11,6 +11,7 @@ import Meetup from "./pages/Meetup";
 import CreateMeetup from "./pages/CreateMeetup";
 import EditUser from "./pages/EditUser";
 import GoogleReactMap from "./maps/GoogleReactMap";
+import LocationSearchBox from "./maps/LocationSearchBox";
 
 export default function App() {
   return (
@@ -25,7 +26,8 @@ export default function App() {
         <Route path="/my-meetup/:meetupId" component={Meetup} />
         <Route path="/reactmap" component={GoogleReactMap} />
         <Route path="/createmeetup" component={CreateMeetup} />
-        <Route path="/edit-user" component={EditUser}/>
+        <Route path="/edit-user" component={EditUser} />
+        <Route path="/searchbox" component={LocationSearchBox} />
         {/* <Route render={() => <h2>404</h2>} /> */}
       </Switch>
     </div>
