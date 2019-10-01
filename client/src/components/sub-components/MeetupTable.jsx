@@ -196,7 +196,7 @@ export default function MeetupTable(props) {
                 <td>{meetup.meetup_time}</td>
               )}
               {props.user._id === meetup._admin ? (
-                <EditableTd value={meetup.meetup_date} name="meetup_date"/>
+                <EditableTd value={dateDisplay(meetup.meetup_date)} name="meetup_date"/>
               ) : (
                 <td>{dateDisplay(meetup.meetup_date)}</td>
               )}

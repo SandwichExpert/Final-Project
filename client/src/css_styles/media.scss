@@ -1,48 +1,47 @@
-@media only screen 
-and (max-width : 414px){
-  .mobile-background{
+@media only screen and (max-width: 414px) {
+  .mobile-background {
     position: absolute;
-width: 373px;
-height: 418px;
-left: 21px;
-top: 232px;
+    width: 373px;
+    height: 418px;
+    left: 21px;
+    top: 232px;
   }
-  .button#Confirm{
-    margin-left:0;
+  .button#Confirm {
+    margin-left: 0;
   }
-  .mobile-background_signup{
+  .mobile-background_signup {
     position: absolute;
-width: 373px;
-height: 498px;
-left: 21px;
-top: 182px;
+    width: 373px;
+    height: 498px;
+    left: 21px;
+    top: 182px;
   }
-  .inputs{
+  .inputs {
     width: 255px;
-  height: 34px;
+    height: 34px;
   }
-  .button{
-    margin-left:30px;
-    margin-bottom : 10px;
+  .button {
+    margin-left: 30px;
+    margin-bottom: 10px;
   }
 
-  .button#create{
+  .button#create {
     margin-left: 0;
   }
 
-  #Signup{
-    margin-left:30px;
-    margin-bottom:10px;
+  #Signup {
+    margin-left: 30px;
+    margin-bottom: 10px;
   }
-  .link{
-    margin-left : 35px;
+  .link {
+    margin-left: 35px;
   }
 
-  .meetup-table{
+  .meetup-table {
     table-layout: fixed;
-    width:380px;
-    font-size : 1em;
-    text-align:center;
+    width: 380px;
+    font-size: 1em;
+    text-align: center;
   }
 
   .mobile_meetup {
@@ -55,38 +54,33 @@ top: 182px;
     padding: 3% 3%;
     padding-top: 1.5%;
   }
-
 }
 
-
-@media only screen 
-and (max-width : 375px){
-  .mobile-background{
+@media only screen and (max-width: 375px) {
+  .mobile-background {
     position: absolute;
-width: 333px;
-height: 388px;
-left: 21px;
-top: 232px;
+    width: 333px;
+    height: 388px;
+    left: 21px;
+    top: 232px;
   }
-  .button{
-    margin-left:28px;
-    margin-bottom : 15px;
+  .button {
+    margin-left: 28px;
+    margin-bottom: 15px;
   }
-  .mobile-background_signup{
+  .mobile-background_signup {
     position: absolute;
-width: 353px;
-height: 428px;
-left: 11px;
-top: 182px;
+    width: 353px;
+    height: 428px;
+    left: 11px;
+    top: 182px;
   }
 
-  
-
-  .meetup-table{
+  .meetup-table {
     table-layout: fixed;
-    width:350px;
-    font-size : 1em;
-    text-align:center;
+    width: 350px;
+    font-size: 1em;
+    text-align: center;
   }
 
   .mobile_meetup {
@@ -99,29 +93,26 @@ top: 182px;
     padding: 3% 3%;
     padding-top: 1.5%;
   }
-  
 }
 
-@media only screen
-and(max-width : 360px){
-  .mobile-background{
+@media only screen and(max-width : 360px) {
+  .mobile-background {
     position: absolute;
-width: 320px;
-height: 388px;
-left: 21px;
-top: 232px;
+    width: 320px;
+    height: 388px;
+    left: 21px;
+    top: 232px;
   }
-  .button{
-    margin-left:28px;
-    margin-bottom : 15px;
+  .button {
+    margin-left: 28px;
+    margin-bottom: 15px;
   }
-  
 
-  .meetup-table{
+  .meetup-table {
     table-layout: fixed;
-    width:320px;
-    font-size : 0.8em;
-    text-align:center;
+    width: 320px;
+    font-size: 0.8em;
+    text-align: center;
   }
 
   .mobile_meetup {
@@ -134,39 +125,37 @@ top: 232px;
     padding: 3% 3%;
     padding-top: 1.5%;
   }
-  .submit-button{
-    margin-left:68px;
-
+  .submit-button {
+    margin-left: 68px;
   }
 }
 
-@media only screen 
-and (max-width : 320px){
-  .mobile-background{
+@media only screen and (max-width: 320px) {
+  .mobile-background {
     position: absolute;
-width: 280px;
-height: 360px;
-left: 21px;
-top: 162px;
+    width: 280px;
+    height: 360px;
+    left: 21px;
+    top: 162px;
   }
-  .button{
-    margin-left:32px;
+  .button {
+    margin-left: 32px;
   }
-  .main_logo{
+  .main_logo {
     height: 145px;
-    width:auto;
-    margin-top : 15px; 
+    width: auto;
+    margin-top: 15px;
   }
-  
-  .meetup-table{
+
+  .meetup-table {
     table-layout: fixed;
-    width:300px;
-    font-size : 0.8em;
-    text-align:center;
+    width: 300px;
+    font-size: 0.8em;
+    text-align: center;
   }
-  .general-container{
-    height:vh(100);
-    width:vw(100);
+  .general-container {
+    height: vh(100);
+    width: vw(100);
   }
 
   .mobile_meetup {
@@ -180,32 +169,402 @@ top: 162px;
     padding-top: 1.5%;
   }
 
-  .close_window{
-    padding-top: 15px; 
+  .close_window {
+    padding-top: 15px;
   }
-  .mobile-container-creation{
-    padding-top:10%;
-  }
-
-  .submit-button{
-    margin-left:48px;
-
+  .mobile-container-creation {
+    padding-top: 10%;
   }
 
-  
+  .submit-button {
+    margin-left: 48px;
+  }
+}
+@media only screen and (max-width: 768px) {
+  #landing__logo {
+    max-width: 50%;
+  }
+  .button {
+    height: 60px;
+    font-size: 2em;
+    width: 180px;
+    margin-bottom: 20px;
+  }
+  .mobile-container {
+    height: 100vh;
+    background-color: $one;
+  }
+  .mobile-background {
+    position: absolute;
+    width: 640px;
+    height: 650px;
+    left: 400px;
+    top: 232px;
+    box-shadow: none;
+  }
+  .inputs {
+    width: 400px;
+  }
+  .main_logo {
+    height: 350px;
+    width: auto;
+  }
+  .user-left {
+    margin-left: 50px;
+  }
+  .user-right {
+    margin-right: 50px;
+  }
+
+  .buttons__meetup {
+    height: 50px;
+    width: 150px;
+    font-size: 1em;
+  }
+
+  .profile-image {
+    width: 150px;
+    height: 150px;
+  }
+
+  .meetup-table {
+    table-layout: fixed;
+    width: 850px;
+    text-align: center;
+  }
+
+  .meetup-table td {
+    padding: 10px;
+  }
+  .meetup-table th {
+    padding: 10px;
+  }
+
+  .mobile-container-creation {
+    padding-top: 5%;
+  }
+  .inputs-edit-file {
+    max-width: 500px;
+    margin-bottom: 20px;
+  }
+  .inputs-edit {
+    max-width: 500px;
+    margin-bottom: 20px;
+  }
+  .edit-user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
+  .submit-button {
+    margin-left: 0;
+  }
+  .mobile_meetup {
+    left: 500px;
+  }
+
+  .mobile-background_signup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
+  .mobile-background_signup form {
+    text-align: center;
+  }
+}
+@media only screen and (max-width: 1024px) {
+  #landing__logo {
+    max-width: 40%;
+  }
+  .button {
+    height: 60px;
+    font-size: 2em;
+    width: 180px;
+    margin-bottom: 20px;
+  }
+  .mobile-container {
+    height: 100vh;
+    background-color: $one;
+    display:flex;
+    justify-content : center;
+    align-content:center;
+    align-items:center;
+
+  }
+  .mobile-background {
+    position: absolute;
+    width: 640px;
+    height: 650px;
+    left: 200px;
+    top: 100px;
+    box-shadow: none;
+  }
+  .inputs {
+    width: 400px;
+  }
+  .main_logo {
+    max-height: 200px;
+    width: auto;
+  }
+  .user-left {
+    margin-left: 50px;
+  }
+  .user-right {
+    margin-right: 50px;
+  }
+
+  .buttons__meetup {
+    height: 50px;
+    width: 150px;
+    font-size: 1em;
+  }
+
+  .profile-image {
+    width: 150px;
+    height: 150px;
+  }
+
+  .meetup-table {
+    table-layout: fixed;
+    width: 800px;
+    text-align: center;
+  }
+
+  .meetup-table td {
+    padding: 10px;
+  }
+  .meetup-table th {
+    padding: 10px;
+  }
+
+  .mobile-container-creation {
+    padding-top: 5%;
+  }
+  .inputs-edit-file {
+    max-width: 500px;
+    margin-bottom: 20px;
+  }
+  .inputs-edit {
+    max-width: 500px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .inputs {
+    text-align: center;
+  }
+  .edit-user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
+  .submit-button {
+    margin-left: 0;
+  }
+  .mobile_meetup {
+    left: 300px;
+  }
+
+  .mobile-background_signup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
+  .mobile-background_signup form {
+    text-align: center;
+  }
+}
+
+@media only screen and (max-width: 1280px) {
+  #landing__logo {
+    max-width: 50%;
+  }
+  .button {
+    height: 60px;
+    font-size: 2em;
+    width: 180px;
+    margin-bottom: 20px;
+  }
+  .mobile-container {
+    height: 100vh;
+    background-color: $one;
+  }
+  .mobile-background {
+    position: absolute;
+    width: 640px;
+    height: 650px;
+    left: 200px;
+    top: 150px;
+    box-shadow: none;
+  }
+  .inputs {
+    width: 400px;
+  }
+  .main_logo {
+    height: 350px;
+    width: auto;
+  }
+  .user-left {
+    margin-left: 50px;
+  }
+  .user-right {
+    margin-right: 50px;
+  }
+
+  .buttons__meetup {
+    height: 50px;
+    width: 150px;
+    font-size: 1em;
+  }
+
+  .profile-image {
+    width: 150px;
+    height: 150px;
+  }
+
+  .meetup-table {
+    table-layout: fixed;
+    max-width: 950px;
+    text-align: center;
+  }
+
+  .meetup-table td {
+    padding: 10px;
+  }
+  .meetup-table th {
+    padding: 10px;
+  }
+
+  .mobile-container-creation {
+    padding-top: 5%;
+  }
+  .inputs-edit-file {
+    max-width: 500px;
+    margin-bottom: 20px;
+  }
+  .inputs-edit {
+    max-width: 500px;
+    margin-bottom: 20px;
+  }
+  .edit-user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
+  .submit-button {
+    margin-left: 0;
+  }
   
 
+  .mobile-background_signup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
+  .mobile-background_signup form {
+    text-align: center;
+  }
 }
-@media only screen 
-and (max-width : 768px){
-  
-}
-@media only screen 
-and (max-width : 1024px){
-  
+.mobile_meetup {
+  margin-left: 500px;
 }
 
-@media only screen 
-and (max-width : 1280px){
-  
+@media only screen and (max-width: 1444px) {
+  #landing__logo {
+    max-width: 50%;
+  }
+  .button {
+    height: 60px;
+    font-size: 2em;
+    width: 180px;
+    margin-bottom: 20px;
+  }
+  .mobile-container {
+    height: 100vh;
+    background-color: $one;
+  }
+  .mobile-background {
+    position: absolute;
+    max-width: 640px;
+    max-height: 650px;
+    left: 400px;
+    top: 232px;
+    box-shadow: none;
+  }
+  .inputs {
+    width: 400px;
+  }
+  .main_logo {
+    height: 350px;
+    width: auto;
+  }
+  .user-left {
+    margin-left: 50px;
+  }
+  .user-right {
+    margin-right: 50px;
+  }
+
+  .buttons__meetup {
+    height: 50px;
+    width: 150px;
+    font-size: 1em;
+  }
+
+  .profile-image {
+    width: 150px;
+    height: 150px;
+  }
+
+  .meetup-table {
+    table-layout: fixed;
+    max-width: 1050px;
+    text-align: center;
+  }
+
+  .meetup-table td {
+    padding: 10px;
+  }
+  .meetup-table th {
+    padding: 10px;
+  }
+
+  .mobile-container-creation {
+    padding-top: 5%;
+  }
+  .inputs-edit-file {
+    max-width: 500px;
+    margin-bottom: 20px;
+  }
+  .inputs-edit {
+    max-width: 500px;
+    margin-bottom: 20px;
+  }
+  .edit-user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
+  .submit-button {
+    margin-left: 0;
+  }
+  .mobile_meetup {
+    margin-left: 700px;
+  }
+
+  .mobile-background_signup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
+  .mobile-background_signup form {
+    text-align: center;
+  }
 }
