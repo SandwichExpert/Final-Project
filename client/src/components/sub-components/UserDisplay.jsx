@@ -55,6 +55,7 @@ export default function UserDisplay(props) {
         }}
       ></div>
       <div className="info-container">
+        <div className="user-left">
         <div className="circular-image">
           <img className="profile-image" src={props.user.avatar}></img>
           <Link to="/edit-user">Edit profile</Link>
@@ -65,6 +66,10 @@ export default function UserDisplay(props) {
             <i className="fas fa-map-marker-alt"></i>
             {props.user.city}
           </p>
+        </div>
+        </div>
+        <div className="user-right">
+          <Link to="/logout">Logout</Link>
         </div>
       </div>
       <div className="buttons">
@@ -85,10 +90,11 @@ export default function UserDisplay(props) {
         friends={props.friends}
         count={props.count}
       ></FriendDisplay>
-
+      
       <MeetupTable meetups={props.meetups} user={props.user}>
         
       </MeetupTable>
+     
       {/* <div>{JSON.stringify(props.meetups)}</div> */}
     </div>
   );

@@ -43,6 +43,7 @@ export default function Signup(props) {
       .catch(err => setState({ message: err.toString() }));
   }
   return (
+    <div className="general-container">
     <div className="mobile-container">
       <img src={Logo} alt="Maptee" className="main_logo" />
       <div className="mobile-background_signup">
@@ -103,7 +104,7 @@ export default function Signup(props) {
             // value={state.file}
             name="avatar"
             onChange={handleFileChange}
-            className="inputs"
+            className="inputs-edit-file"
           />{" "}
           <br />
           <button onClick={e => handleClick(e)} className="button" id="Signup">
@@ -114,6 +115,7 @@ export default function Signup(props) {
           <div className="info info-danger">{state.message}</div>
         )}
       </div>
+    </div>
     </div>
   );
 }

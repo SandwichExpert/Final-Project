@@ -76,11 +76,11 @@ export default function EditUser(props) {
              <div className="circular-image">
               <img className="profile-image" src={user.avatar}></img>
             </div> 
-        <b>Profile picture</b> <br />{" "}
+        <b>Profile picture</b>
             <input
               type="file"
               placeholder="Update profile pic"
-              className="inputs-edit"
+              className="inputs-edit-file"
               onChange={handleFileChange}
               name="avatar"
             />{" "}
@@ -89,7 +89,7 @@ export default function EditUser(props) {
           <input
             type="file"
             placeholder="Update cover picture"
-            className="inputs-edit"
+            className="inputs-edit-file"
             onChange={handleFileChange}
             name="background_image"
           />
