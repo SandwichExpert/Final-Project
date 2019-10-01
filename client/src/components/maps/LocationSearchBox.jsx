@@ -15,25 +15,23 @@ function SearchBox(props) {
       >
         <input type="text" placeholder="leaving from?" className="inputs" />
       </StandaloneSearchBox>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-          overflow: "hidden",
-          overflowY: "scroll",
-          height: 100
-        }}
-      >
-        {props.departureCheck && props.placesFound && (
+      {props.departureCheck && props.placesFound && (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            overflow: "hidden",
+            overflowY: "scroll",
+            height: 100
+          }}
+        >
           <h2 style={{ margin: "0 auto" }}>check your departure</h2>
-        )}
-        {props.departureCheck &&
-          props.placesFound &&
-          props.placesFound.slice(0, 3).map(place => {
+          {props.placesFound.slice(0, 3).map(place => {
             return <PlaceDisplay place={place} />;
           })}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

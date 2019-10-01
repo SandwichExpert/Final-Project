@@ -52,7 +52,10 @@ export default function CreateMeetup(props) {
   }
 
   return (
-    <div className="mobile-container-creation">
+    <div
+      className="mobile-container-creation"
+      style={{ height: window.innerHeight }}
+    >
       <div className="close_window">
         <Link to="/home" style={{ color: "white" }}>
           <i class="fas fa-times"></i>
@@ -60,7 +63,9 @@ export default function CreateMeetup(props) {
       </div>
       {/* <div className="mobile-background"> */}
       <form onSubmit={addMeetupAndRedirectToMeetupPage}>
-        <label name="name">Event Name</label>
+        <label name="name" className="creation-label">
+          Event Name
+        </label>
         <br />
         <input
           type="text"
@@ -71,7 +76,9 @@ export default function CreateMeetup(props) {
           name="name"
         />
         <br />
-        <label name="meetup_date">Date</label>
+        <label className="creation-label" name="meetup_date">
+          Date
+        </label>
         <br />
         <input
           type="date"
@@ -82,7 +89,9 @@ export default function CreateMeetup(props) {
         />
         {/* <DateInput /> */}
         <br />
-        <label name="meetup_time">Time</label>
+        <label className="creation-label" name="meetup_time">
+          Time
+        </label>
         <br />
         <input
           type="time"
@@ -90,6 +99,7 @@ export default function CreateMeetup(props) {
           value={state.meetup_time}
           onChange={handleInputChange}
           name="meetup_time"
+          style={{ marginBottom: "1rem" }}
         />
         <br />
         {/* <label className="creation-label" name="departure_location">
