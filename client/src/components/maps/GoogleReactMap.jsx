@@ -19,7 +19,6 @@ function Map(props) {
   const [lookupLocation, setLookUpLocation] = useState("");
   const [selectedLocation, setSelectedLocation] = useState(null);
   // const meetupId = props.match.params.meetupId
-  // useEffect(() => {}, []);
 
   return (
     <GoogleMap
