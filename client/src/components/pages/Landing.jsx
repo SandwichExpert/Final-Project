@@ -5,7 +5,7 @@ import logo from '../../assets/maptee-logo.svg'
 export default function Landing() {
   return (
     <div className="landing">
-      <img src={logo} id="landing__logo"></img>
+      <img src={logo} className="landing__logo"></img>
       <div className="landing__buttons">
         <button className="button">
           <b>
