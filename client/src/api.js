@@ -87,6 +87,13 @@ export default {
       .catch(errHandler);
   },
 
+  getMeetupInfo() {
+    return service
+      .get(`/meetups`)
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
   deleteUser() {
     return service
       .delete("/users")
@@ -119,7 +126,7 @@ export default {
       formData.append(`${key}`, editData[`${key}`]);
     });
     return service
-      .put(`/meetups/${meetupId}`)
+      .put(`/meetups/edit`)
       .then(res => res.data)
       .catch(errHandler);
   },
@@ -150,12 +157,28 @@ export default {
       .catch(errHandler);
   },
 
+  addUserToMeetup(userId,meetupId) {
+    return service
+      .put("meetups/join", {userId: userId, meetupId: meetupId})
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
+  removeUserFromMeetup(userId,meetupId){
+    
+    return service 
+    .put("meetups/delete-user", {userid : userId, meetupid : meetupId })
+    .then(res=> res.data)
+    .catch(errHandler);
+  },
+
   removeFriend(friendId) {
     return service
       .post(`users/removeFriend/${friendId}`)
       .then(res => res.data)
       .catch(errHandler);
   },
+
 
   // This is an example on how to use this method in a different file
   // api.getCountries().then(countries => { /* ... */ })

@@ -80,27 +80,49 @@ router.delete("/:meetupId", isLoggedIn, (req, res, next) => {
 
 // add a user to a meetup -- check (no need to add admin)
 // we should do it only via user id in query so we use this one route (if user wants to add himself)
-router.put("/add-user/:meetupId/:userid", isLoggedIn, (req, res, next) => {
-  const meetup = req.params.meetupId;
-  const _users = req.params.userid;
-  MeetUp.findByIdAndUpdate(meetup, { $addToSet: { _users } }, { new: true })
+router.put("/join", isLoggedIn, (req, res, next) => {
+
+  const meetup = req.body.meetupId;
+  const _users = req.body.userId;
+  console.log(meetup,_users,"----------------------------")
+  MeetUp.findByIdAndUpdate(meetup, { $addToSet: { _users:_users  } }, { new: true })
     .then(updatedMeetup => {
-      res.json(updatedMeetup);
+      console.log("heeeere")
+      User.findByIdAndUpdate(_users, { $addToSet: { _meetups: meetup } }, { new: true }).then(
+        updatedUser => {
+          console.log(updatedUser)
+          res.status(200).json("coucou");
+        }
+      ).catch(err => next(err))
+     
     })
     .catch(err => next(err));
+ 
 });
 
 // remove a user from the meetup -- check
-router.put("/delete-user/:meetupId/:userid", isLoggedIn, (req, res, next) => {
-  const meetupId = req.params.meetupId;
-  const deleteUserId = req.params.userid;
+router.put("/delete-user", isLoggedIn, (req, res, next) => {
+  const meetup = req.body.meetupid;
+  const user = req.user._id;
   const currentUserId = req.user._id;
-  console.log(meetupId, "---", deleteUserId, "----", currentUserId, "-----");
-  deleteIfAdminOrUserDeleted(meetupId, deleteUserId, currentUserId)
+  console.log(meetup, "---");
+  MeetUp.findByIdAndUpdate(meetup, { $pull: { _users:user  } }, { new: true })
     .then(updatedMeetup => {
-      res.json(updatedMeetup);
+      console.log("heeeere")
+      User.findByIdAndUpdate(user, { $pull: { _meetups: meetup } }, { new: true }).then(
+        updatedUser => {
+          console.log(updatedUser)
+          res.status(200).json("coucou");
+        }
+      ).catch(err => next(err))
+     
     })
     .catch(err => next(err));
+  // deleteIfAdminOrUserDeleted(meetupId, deleteUserId, currentUserId)
+  //   .then(updatedMeetup => {
+  //     res.json(updatedMeetup);
+  //   })
+  //   .catch(err => next(err));
 });
 
 // add a suggested location to meetup -- check
