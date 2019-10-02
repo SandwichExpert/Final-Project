@@ -231,15 +231,6 @@ export default {
     // this will give us the google maps name and the type
     // of location
     const type_of =
-<<<<<<< HEAD
-      meetupmapsuggestioninfo.name + meetupmapsuggestioninfo.types[0];
-    return service.put(`/suggested-location/${meetupId}`, {
-      type_of,
-      lat,
-      lng,
-      meetupId
-    });
-=======
       meetupmapsuggestioninfo.name + "," + meetupmapsuggestioninfo.types[0];
     return service
       .put(`/meetups/suggested-location/${meetupId}`, {
@@ -249,7 +240,6 @@ export default {
       })
       .then(res => res.data)
       .catch(errHandler);
->>>>>>> 8da7115... working but breaking on submit
   }
 
   // getAdmin(meetupAdmin){
