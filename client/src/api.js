@@ -120,7 +120,7 @@ export default {
 
   editMeetup(meetupId, data) {
     return service
-      .patch(`/meetups/edit/${meetupId}`,data )
+      .patch(`/meetups/edit/${meetupId}`, data)
       .then(res => res.data)
       .catch(errHandler);
   },
@@ -151,19 +151,18 @@ export default {
       .catch(errHandler);
   },
 
-  addUserToMeetup(userId,meetupId) {
+  addUserToMeetup(userId, meetupId) {
     return service
-      .put("meetups/join", {userId: userId, meetupId: meetupId})
+      .put("meetups/join", { userId: userId, meetupId: meetupId })
       .then(res => res.data)
       .catch(errHandler);
   },
 
-  removeUserFromMeetup(userId,meetupId){
-    
-    return service 
-    .put("meetups/delete-user", {userid : userId, meetupid : meetupId })
-    .then(res=> res.data)
-    .catch(errHandler);
+  removeUserFromMeetup(userId, meetupId) {
+    return service
+      .put("meetups/delete-user", { userid: userId, meetupid: meetupId })
+      .then(res => res.data)
+      .catch(errHandler);
   },
 
   removeFriend(friendId) {
@@ -172,7 +171,6 @@ export default {
       .then(res => res.data)
       .catch(errHandler);
   },
-
 
   // This is an example on how to use this method in a different file
   // api.getCountries().then(countries => { /* ... */ })
@@ -221,7 +219,7 @@ export default {
       lat,
       lng,
       meetupId
-    })
+    });
   },
 
   addSuggestion(meetupmapsuggestioninfo) {

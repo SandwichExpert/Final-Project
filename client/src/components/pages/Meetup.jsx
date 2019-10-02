@@ -80,12 +80,32 @@ export default function Meetup(props) {
   function handleSubmitClick(e) {
     let suggestion = null;
     let departure = null;
-    if (state.suggestion) suggestion = state.suggestion;
+    let suggestionNew = {
+      location: { coordinates: null },
+      type_of_location: null,
+      created_by: { first_name: null, last_name: null }
+    };
+    suggestionNew.location.coordinates = {
+      lat: Number(state.suggestion.position.lat),
+      lng: Number(state.suggestion.position.lng)
+    };
+    suggestionNew.type_of_location = `${state.suggestion.name} ${
+      state.suggestion.types[0]
+    }`;
+    suggestionNew.created_by.first_name = user.first_name;
+    suggestionNew.created_by.last_name = user.last_name;
+    if (state.suggestion) {
+      setState({ ...state, oldSuggestion: suggestionNew });
+    }
     if (state.departure) departure = state.departure;
-    submitNewDepartureAndSuggestion(suggestion, departure)
-      .then()
-      .catch();
-    props.history.push(`/home`);
+    // submitNewDepartureAndSuggestion(suggestion, departure)
+    //   .then()
+    //   .catch();
+    // props.history.push(`/home`);
+  }
+
+  function handleRemoveClick(e) {
+    setState({ ...state, suggestion: null, departure: null });
   }
 
   async function submitNewDepartureAndSuggestion(suggestion, departure) {
@@ -150,7 +170,7 @@ export default function Meetup(props) {
               style={{ height: 50, width: 50 }}
             ></img>
           </div>
-          <Link to={"/home/"+user._id}>{user.first_name}</Link>
+          <Link to={"/home/" + user._id}>{user.first_name}</Link>
         </div>
       </div>
       {(state.suggestion || state.departure) && (
@@ -181,7 +201,11 @@ export default function Meetup(props) {
               >
                 <b>Submit new</b>
               </button>
-              <button className="meetup-clear-btn" id="Confirm">
+              <button
+                className="meetup-clear-btn"
+                id="Confirm"
+                onClick={handleRemoveClick}
+              >
                 <b>Remove new</b>
               </button>
             </div>

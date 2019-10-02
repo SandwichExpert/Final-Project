@@ -24,7 +24,8 @@ function Map(props) {
   const googlemapOptions = {
     mapTypeControl: false,
     zoomControl: false,
-    fullscreenControl: false
+    fullscreenControl: false,
+    styles: mapStyles
   };
   const UserMarker = (userSuggestion, color) => {
     return (
@@ -564,13 +565,6 @@ function onSelectionInfoDisplay(selectedLoc) {
           </div>
         </div>
       )}
-      {/* <ul>
-        <li>
-          creator: {selectedLoc.created_by.first_name}{" "}
-          {selectedLoc.created_by.last_name}
-        </li>
-        <li>type: {selectedLoc.type_of_location}</li>
-      </ul> */}
       {/* <pre>{JSON.stringify(selectedLoc, null, 2)}</pre> */}
     </div>
   );
