@@ -26,7 +26,6 @@ export default function Meetup(props) {
 
   function dateDisplay(dateString) {
     const date = moment(dateString).format("MMM DD");
-    console.log(date, "--------------*************----------");
     return date;
   }
   console.log(meetupId);
@@ -58,16 +57,36 @@ export default function Meetup(props) {
 
   function handleButtonClick(e) {
     if (state.suggestion) {
+      const infoforSuggestion = { ...state.suggestion, meetupid: meetupId };
       api
-        .addSuggestion(state.suggestion)
-        .then()
-        .catch();
+        .addSuggestion(infoforSuggestion)
+        .then(createdSuggestion => {
+          setState({
+            ...state,
+            oldSuggestion: createdSuggestion,
+            suggestion: null
+          });
+        })
+        .catch(err => {
+          console.log("error changing suggestion", err);
+        });
     }
     if (state.departure) {
+      console.log("deppepepepe", state.departure);
+      const infoforDeparture = { ...state.departure, meetupid: meetupId };
+      console.log(infoforDeparture);
       api
-        .addDeparture(state.departure)
-        .then()
-        .catch();
+        .addDeparture(infoforDeparture)
+        .then(createdDeparture => {
+          // setState({
+          //   ...state,
+          //   oldDeparture: createdDeparture,
+          //   departure: null
+          // });
+        })
+        .catch(err => {
+          console.log("error changing departure", err);
+        });
     }
     props.history.push(`/home`);
   }
@@ -80,7 +99,6 @@ export default function Meetup(props) {
       console.log("DEBUG", meetup);
       api.getUserInfo().then(userInfo => {
         setUser(userInfo);
-        console.log(userInfo, "is the user");
         const userid = userInfo._id;
         // function to loop through departures and
         // suggestions and check if this user is in it
@@ -88,10 +106,6 @@ export default function Meetup(props) {
       });
     });
   }, []);
-
-  // useEffect(() => {
-
-  // }, []);
 
   if (!meetup) {
     return (
@@ -126,34 +140,42 @@ export default function Meetup(props) {
           <Link to="/home">{user.first_name}</Link>
         </div>
       </div>
-      <div className="mobile_meetup">
-        {state.suggestion && (
-          <span>
-            new suggestion {state.suggestion.name}{" "}
-            {state.suggestion.position.lat}
-            {state.suggestion.position.lng}
-            and rating {state.suggestion.rating}/5
-          </span>
-        )}
-        {state.oldSuggestion && (
-          <span>current suggestion {state.oldSuggestion.type_of_location}</span>
-        )}
-        {state.oldDeparture && (
-          <span>
-            your current departure {state.oldDeparture.type_of_location}
-            is at location {state.oldDeparture.location.coordinates[0]} lat and{" "}
-            {state.oldDeparture.location.coordinates[1]} lng
-          </span>
-        )}
-        <br />
-        {/* <Link to="" className="forgotten">Forgotten password?</Link> */}
-        {/* <span className="forgotten">Forgotten Password?</span> */}
-        <button className="button" id="Confirm" onClick={handleButtonClick}>
-          <b>Confirm</b>
-        </button>
-        <br />
-      </div>
-      <pre>{JSON.stringify(state, null, 2)}</pre>
+      {(state.suggestion || state.departure) && (
+        <div className="suggestion-departure-wrapper">
+          <div className="button-suggestion-departure-display">
+            {state.suggestion && (
+              <div className="newSuggestion">
+                <span>
+                  <i class="fas fa-bullseye"></i>
+                  suggestion: {state.suggestion.name}
+                </span>
+              </div>
+            )}
+            {state.departure && (
+              <span className="newDeparture">
+                <i class="fas fa-bullseye"></i>
+                departure: {state.departure.name}
+              </span>
+            )}
+            <br />
+            {/* <Link to="" className="forgotten">Forgotten password?</Link> */}
+            {/* <span className="forgotten">Forgotten Password?</span> */}
+            <div className="btn-wrapper">
+              <button
+                className="meetup-submit-btn"
+                id="Confirm"
+                onClick={handleButtonClick}
+              >
+                <b>Submit new</b>
+              </button>
+              <button className="meetup-clear-btn" id="Confirm">
+                <b>Remove new</b>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* <pre>{JSON.stringify(state, null, 2)}</pre> */}
     </div>
   );
 }

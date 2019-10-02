@@ -196,31 +196,38 @@ export default {
 
   addDeparture(meetupmapdepartureinfo) {
     const meetupId = meetupmapdepartureinfo.meetupid;
+    console.log("pppppp", meetupId);
     const lat = meetupmapdepartureinfo.position.lat;
     const lng = meetupmapdepartureinfo.position.lng;
     const type_of = "departure";
-    return service.put(`/departure-location/${meetupId}`, {
-      type_of,
-      lat,
-      lng,
-      meetupId
-    });
+    return service
+      .put(`/meetups/departure-location`, {
+        type_of,
+        lat,
+        lng,
+        meetupId
+      })
+      .then(res => res.data)
+      .catch(errHandler);
   },
 
   addSuggestion(meetupmapsuggestioninfo) {
+    console.log("infoooo", meetupmapsuggestioninfo);
     const meetupId = meetupmapsuggestioninfo.meetupid;
     const lat = meetupmapsuggestioninfo.position.lat;
     const lng = meetupmapsuggestioninfo.position.lng;
     // this will give us the google maps name and the type
-    // of location
+    // of location (which comes from array because one location can have multiple types)
     const type_of =
-      meetupmapsuggestioninfo.name + meetupmapsuggestioninfo.types[0];
-    return service.put(`/suggested-location/${meetupId}`, {
-      type_of,
-      lat,
-      lng,
-      meetupId
-    });
+      meetupmapsuggestioninfo.name + "," + meetupmapsuggestioninfo.types[0];
+    return service
+      .put(`meetups/suggested-location/${meetupId}`, {
+        type_of,
+        lat,
+        lng
+      })
+      .then(res => res.data)
+      .catch(errHandler);
   }
 
   // getAdmin(meetupAdmin){

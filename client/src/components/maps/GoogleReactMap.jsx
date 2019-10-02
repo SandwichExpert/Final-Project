@@ -35,35 +35,39 @@ function Map(props) {
       // we want our searches to be relevant to the current bounds
       onBoundsChanged={props.onBoundsChanged}
     >
-      <SearchBox
-        ref={props.onSearchBoxMounted}
-        controlPosition={window.google.maps.ControlPosition.BOTTOM_CENTER}
-        bounds={props.bounds}
-        // listen for the event when the user selects
-        // a prediction
-        onPlacesChanged={props.onPlacesChanged}
-      >
-        <input
-          placeholder="type in a keyword and select a suggestion on the map or specific suggestion"
-          type="text"
-          style={{
-            boxSizing: `border-box`,
-            backgroundColor: "black",
-            color: "white",
-            border: `1px solid transparent`,
-            width: `240px`,
-            height: `32px`,
-            marginTop: `27px`,
-            padding: `0 12px`,
-            borderRadius: `3px`,
-            boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-            fontSize: `14px`,
-            outline: `none`,
-            textOverflow: `ellipsis`,
-            overflow: "hidden"
-          }}
-        />
-      </SearchBox>
+      <div className="searchbox-wrapper">
+        <SearchBox
+          className="departure-searchbox"
+          ref={props.onSearchBoxMountedTwo}
+          controlPosition={window.google.maps.ControlPosition.RIGHT_TOP}
+          bounds={props.bounds}
+          // listen for the event when the user selects
+          // a prediction
+          onPlacesChanged={props.onPlacesChangedTwo}
+        >
+          <input
+            placeholder="set a new departure"
+            type="text"
+            className="departure-input"
+          />
+        </SearchBox>
+        <SearchBox
+          className="suggestion-searchbox"
+          ref={props.onSearchBoxMounted}
+          controlPosition={window.google.maps.ControlPosition.RIGHT_TOP}
+          bounds={props.bounds}
+          // listen for the event when the user selects
+          // a prediction
+          onPlacesChanged={props.onPlacesChanged}
+        >
+          <input
+            placeholder="make a new suggestion"
+            type="text"
+            className="suggestion-input"
+          />
+        </SearchBox>
+      </div>
+
       {/* maybe these could be lifted up inside a markers array in our map wrapper */}
       {props.returnSuggestionMarkers(
         props.suggestedLocations,
@@ -118,6 +122,36 @@ function Map(props) {
           />
         );
       })}
+      {props.newDepartures.map((marker, i) => {
+        return (
+          <Marker
+            // this changes the state defined in Meetup.jsx
+            onClick={e => {
+              props.setInputFormState({
+                ...props.inputFormState,
+                departure: {
+                  name: marker.name,
+                  types: marker.types,
+                  position: marker.position,
+                  rating: marker.rating
+                }
+              });
+              props.handleNewSuggestionClick(e, marker.name);
+            }}
+            defaultTitle={marker.name}
+            icon={{
+              url: `${marker.icon}`,
+              scaledSize: new window.google.maps.Size(16, 16),
+              size: new window.google.maps.Size(71, 71),
+              origin: new window.google.maps.Point(0, 0),
+              anchor: new window.google.maps.Point(17, 34)
+            }}
+            key={i}
+            position={marker.position}
+            animation={window.google.maps.Animation.DROP}
+          />
+        );
+      })}
       {/* <pre>{JSON.stringify(center, 2, null)}</pre>
       <pre>{JSON.stringify(selectedLocation, 2, null)}</pre> */}
     </GoogleMap>
@@ -132,7 +166,11 @@ export default function GoogleReactMap(props) {
   const [averagePosition, setAverage] = useState(null);
   const [suggestedLocations, setSuggestedLocations] = useState([]);
   const [departureLocations, setDepartureLocations] = useState([]);
-  const [state, setState] = useState({ bounds: null, newSuggestions: [] });
+  const [state, setState] = useState({
+    bounds: null,
+    newSuggestions: [],
+    newDepartures: []
+  });
   const refs = {};
 
   useEffect(() => {
@@ -150,6 +188,7 @@ export default function GoogleReactMap(props) {
   }, []);
 
   const onSearchBoxMounted = ref => (refs.searchBox = ref);
+  const onSearchBoxMountedTwo = ref => (refs.searchBoxTwo = ref);
   const onMapMounted = ref => (refs.map = ref);
   // we are going to update the bounds of the
   // bounds of everytime they change in the map
@@ -188,6 +227,36 @@ export default function GoogleReactMap(props) {
         }
       });
     }
+  };
+
+  const onPlacesChangedTwo = () => {
+    const places = refs.searchBoxTwo.getPlaces();
+    const bounds = new window.google.maps.LatLngBounds();
+    // if no places found for the query stop
+    if (places.length == 0) {
+      return;
+    }
+    // this is so the state changes if only
+    // one place is returned and thus only
+    // there is no click necesarry because it is already specific
+    if (places.length == 1) {
+      const specificPlace = places[0];
+      console.log(places, "place object....");
+      props.setInputFormState({
+        ...props.inputFormState,
+        departure: {
+          name: specificPlace.name,
+          types: specificPlace.types,
+          position: {
+            lat: specificPlace.geometry.location.lat(),
+            lng: specificPlace.geometry.location.lng()
+          },
+          rating: specificPlace.rating,
+          website: specificPlace.website,
+          place_id: specificPlace.place_id
+        }
+      });
+    }
 
     // clear all the previous markers
     // setState({...state, markers: null})
@@ -210,7 +279,7 @@ export default function GoogleReactMap(props) {
       types: place.types,
       rating: place.rating
     }));
-    setState({ ...state, newSuggestions: newMarkers });
+    setState({ ...state, newDepartures: newMarkers });
 
     console.log(places, state.markers);
   };
@@ -363,7 +432,7 @@ export default function GoogleReactMap(props) {
   }
 
   return (
-    <div style={{ width: "100vw", height: window.innerHeight }}>
+    <div style={{ width: window.innerWidth, height: window.innerHeight }}>
       <WrapperMap
         // these two come from meetup.jsx the higher state
         // lives there
@@ -382,9 +451,12 @@ export default function GoogleReactMap(props) {
         handleNewSuggestionClick={handleNewSuggestionClick}
         onMapMounted={onMapMounted}
         onSearchBoxMounted={onSearchBoxMounted}
+        onSearchBoxMountedTwo={onSearchBoxMountedTwo}
         onBoundsChanged={onBoundsChanged}
         onPlacesChanged={onPlacesChanged}
+        onPlacesChangedTwo={onPlacesChangedTwo}
         newSuggestions={state.newSuggestions}
+        newDepartures={state.newDepartures}
         bounds={state.bounds}
         googleMapURL={`https://maps.googleapis.com/maps/api/js?key=AIzaSyC4R6AN7SmujjPUIGKdyao2Kqitzr1kiRg&v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GKEY}`}
         loadingElement={<div style={{ height: window.innerHeight }} />}

@@ -115,18 +115,27 @@ router.put("/suggested-location/:meetupId", isLoggedIn, (req, res, next) => {
     },
     created_by: req.user._id
   };
-  addSuggestedLocation(meetupId, newLocation)
-    .then(updatedMeetUp => {
-      res.json(updatedMeetUp);
+  removeDuplicateSuggestionLocation(newLocation, meetupId)
+    .then(createdLocationId => {
+      console.log("created a new location for a suggestion");
+      addSuggestedLocation(meetupId, createdLocationId)
+        .then(updatedMeetUp => {
+          console.log("succesful addition of suggestion");
+          res.json(updatedMeetUp);
+        })
+        .catch(err => {
+          console.log("error adding suggestion to meet up", err);
+        });
     })
     .catch(err => console.log(err));
 });
 
 // add a depature location -- check
 // make sure user only has one departure location
-router.put("/departure-location/:meetupId", isLoggedIn, (req, res, next) => {
+router.put("/departure-location", isLoggedIn, (req, res, next) => {
   const { lat, lng } = req.body;
-  const meetupId = req.params.meetupId;
+  const meetupId = req.body.meetupId;
+  console.log("body", req.body);
   const newLocation = {
     type_of_location: req.body.type_of,
     location: {
@@ -159,6 +168,7 @@ router.put(
     const currentUserId = req.user._id;
     const meetupId = req.params.meetupId;
     const suggestionId = req.params.suggestionId;
+
     removeSuggestedLocation(meetupId, suggestionId, currentUserId)
       .then(updatedMeetup => {
         res.json(updatedMeetup);
@@ -269,7 +279,6 @@ async function createMeetUp(
   name,
   departureId
 ) {
-  const options = { new: true };
   const newMeetUp = {
     _admin,
     _users,
@@ -288,25 +297,21 @@ async function createMeetUp(
         _meetups: createdMeetUpId
       }
     },
-    options
+    { new: true }
   );
   return createdMeetUp;
 }
 
-async function addSuggestedLocation(meetupId, newLocation) {
-  const createdLocation = await Location.create(newLocation);
-  const newLocationId = createdLocation._id;
-  console.log(meetupId);
+async function addSuggestedLocation(meetupId, createdLocationId) {
   const updatedMeetup = await MeetUp.findByIdAndUpdate(
     meetupId,
     {
       $addToSet: {
-        _suggested_locations: newLocationId
+        _suggested_locations: createdLocationId
       }
     },
     { new: true }
   );
-  console.log(updatedMeetup);
   return updatedMeetup;
 }
 
@@ -400,6 +405,36 @@ async function createDepartureLocation(newLocation) {
   const createdLocation = await Location.create(newLocation);
   console.log("new departure created", newLocation);
   return createdLocation;
+}
+
+async function removeDuplicateSuggestionLocation(newLocation, meetupId) {
+  const suggestionCreator = newLocation.created_by;
+  const Meetup = await MeetUp.findById(meetupId).populate(
+    "_suggested_locations"
+  );
+  const CurrentSuggestions = Meetup._suggested_locations;
+  let idOfSuggestionToRemove = null;
+  if (CurrentSuggestions.length > 0) {
+    CurrentSuggestions.forEach(suggestion => {
+      if (suggestion.created_by.equals(suggestionCreator)) {
+        idOfSuggestionToRemove = suggestion._id;
+        return;
+      }
+    });
+  }
+  if (idOfSuggestionToRemove) {
+    const updatedMeetUp = await MeetUp.findByIdAndUpdate(
+      meetupId,
+      {
+        $pull: {
+          _suggested_locations: idOfSuggestionToRemove
+        }
+      },
+      { new: true }
+    );
+  }
+  const createdLocation = await Location.create(newLocation);
+  return createdLocation._id;
 }
 
 module.exports = router;
