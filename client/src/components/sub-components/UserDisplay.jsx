@@ -74,7 +74,7 @@ export default function UserDisplay(props) {
       </div>
       <div className="buttons">
         <button className="buttons__meetup">
-          <Link to="/joinmeetup">
+          <Link to="/join">
             <b>Join Meetup</b>
           </Link>
         </button>

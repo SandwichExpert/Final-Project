@@ -21,9 +21,9 @@ export default function Home() {
     });
   }, []);
 
-    function filteredMeetups(meetups){
+  function filteredMeetups(meetups){
       return meetups.sort((a,b)=> new moment(a.meetup_date)- new moment(b.meetup_date))
-    }
+  }
 
   return (
     <div className="home">
