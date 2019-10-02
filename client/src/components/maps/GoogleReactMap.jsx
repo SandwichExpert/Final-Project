@@ -16,24 +16,24 @@ const {
 } = require("react-google-maps/lib/components/places/SearchBox");
 
 function Map(props) {
-  const [lookupLocation, setLookUpLocation] = useState("");
+  // the departure on which is clicked will display extra information
   const [selectedLocation, setSelectedLocation] = useState(null);
-  // const meetupId = props.match.params.meetupId
+  const googlemapOptions = {
+    mapTypeControl: false,
+    zoomControl: false,
+    fullscreenControl: false
+  };
 
   return (
     <GoogleMap
       // give a ref to the googleMap when it is mounted
       ref={props.onMapMounted}
-      defaultZoom={15}
+      defaultZoom={10}
       defaultCenter={props.zoomLocation}
       defaultOptions={{ styles: mapStyles }}
-      options={{
-        mapTypeControl: false,
-        zoomControl: false,
-        fullscreenControl: false
-      }}
-      // we want our searches to be relevant to the current bounds
+      options={googlemapOptions}
       onBoundsChanged={props.onBoundsChanged}
+      // we want our searches to be relevant to the current bounds
     >
       <div className="searchbox-wrapper">
         <SearchBox
@@ -41,8 +41,7 @@ function Map(props) {
           ref={props.onSearchBoxMountedTwo}
           controlPosition={window.google.maps.ControlPosition.RIGHT_TOP}
           bounds={props.bounds}
-          // listen for the event when the user selects
-          // a prediction
+          // listen for the event when the user selects a query
           onPlacesChanged={props.onPlacesChangedTwo}
         >
           <input
@@ -67,15 +66,16 @@ function Map(props) {
           />
         </SearchBox>
       </div>
-
-      {/* maybe these could be lifted up inside a markers array in our map wrapper */}
       {props.returnSuggestionMarkers(
         props.suggestedLocations,
-        props.handleSuggestionMarkerClick
+        props.handleSuggestionMarkerClick,
+        "red",
+        setSelectedLocation
       )}
       {props.returnDepartureMarkers(
         props.departureLocations,
-        setSelectedLocation
+        setSelectedLocation,
+        "green"
       )}
       {selectedLocation && (
         <div>
@@ -88,7 +88,7 @@ function Map(props) {
               setSelectedLocation(null);
             }}
           >
-            {props.departureInfoDisplay(selectedLocation)}
+            {departureInfoDisplay(selectedLocation)}
           </InfoWindow>
         </div>
       )}
@@ -174,6 +174,8 @@ export default function GoogleReactMap(props) {
   const refs = {};
 
   useEffect(() => {
+    // upon loading the current departures and suggestions
+    // are called upon and set in this state
     getCurrentLocation();
     api
       .getMeetUp(props.meetupId)
@@ -284,14 +286,18 @@ export default function GoogleReactMap(props) {
     console.log(places, state.markers);
   };
 
-  const returnSuggestionMarkers = (locationsArr, handleClick) => {
+  const returnSuggestionMarkers = (
+    locationsArr,
+    handleClick,
+    color,
+    setSelectedLocation
+  ) => {
     let markerArray = [];
     locationsArr.forEach((location, i) => {
       markerArray.push(
         <Marker
           icon={{
-            url:
-              "https://res.cloudinary.com/dri8yyakb/image/upload/v1569857974/optimap_icons/iconfinder_map-marker_299087_npkgnp.svg",
+            url: `http://maps.google.com/mapfiles/ms/icons/${color}-dot.png`,
             scaledSize: new window.google.maps.Size(30, 30)
           }}
           type_of={location.type_of_location}
@@ -301,7 +307,9 @@ export default function GoogleReactMap(props) {
             lng: location.location.coordinates[1]
           }}
           defaultLabel={location.created_by.first_name.substr(0, 1)}
-          onClick={handleClick}
+          onClick={() => {
+            setSelectedLocation(location);
+          }}
           id={location._id}
           creator={`${location.created_by.first_name} ${location.created_by.last_name}`}
         ></Marker>
@@ -310,18 +318,13 @@ export default function GoogleReactMap(props) {
     return markerArray;
   };
 
-  const returnDepartureMarkers = (
-    locationsArr,
-    setSelectedLocation,
-    handleMouseOver
-  ) => {
+  const returnDepartureMarkers = (locationsArr, setSelectedLocation, color) => {
     let markerArray = [];
     locationsArr.forEach((location, index) => {
       markerArray.push(
         <Marker
           icon={{
-            url:
-              "https://res.cloudinary.com/dri8yyakb/image/upload/v1569857974/optimap_icons/iconfinder_map-marker_299087_npkgnp.svg",
+            url: `http://maps.google.com/mapfiles/ms/icons/${color}-dot.png`,
             scaledSize: new window.google.maps.Size(30, 30)
           }}
           type_of={location.type_of_location}
@@ -342,7 +345,7 @@ export default function GoogleReactMap(props) {
           // }}
           label={location.created_by.first_name.substr(0, 1)}
           title={location.created_by.first_name}
-          onMouseOver={handleMouseOver}
+          // onMouseOver={handleMouseOver}
         ></Marker>
       );
     });
@@ -416,17 +419,6 @@ export default function GoogleReactMap(props) {
 
   function handleMouseOver(e) {}
 
-  const departureInfoDisplay = selectedLoc => {
-    return (
-      <div>
-        <h5>departure</h5>
-        <p>
-          {selectedLoc.created_by.first_name} {selectedLoc.created_by.last_name}
-        </p>
-      </div>
-    );
-  };
-
   if (loading) {
     return <h1>Loading ...</h1>;
   }
@@ -440,7 +432,6 @@ export default function GoogleReactMap(props) {
         setInputFormState={props.setInputFormState}
         suggestedLocations={suggestedLocations}
         departureLocations={departureLocations}
-        departureInfoDisplay={departureInfoDisplay}
         // the map will zoom in on the average departure location
         // or if not present the user location
         zoomLocation={averagePosition || userLocation}
@@ -463,6 +454,24 @@ export default function GoogleReactMap(props) {
         containerElement={<div style={{ height: window.innerHeight }} />}
         mapElement={<div style={{ height: window.innerHeight }} />}
       />
+    </div>
+  );
+}
+
+// elements that dont do anything about a state
+function departureInfoDisplay(selectedLoc) {
+  return (
+    <div>
+      <h5>info</h5>
+      <ul>
+        <li>
+          creator: {selectedLoc.created_by.first_name}{" "}
+          {selectedLoc.created_by.last_name}
+        </li>
+        <li>type: {selectedLoc.type_of_location}</li>
+      </ul>
+
+      <pre>{JSON.stringify(selectedLoc, null, 2)}</pre>
     </div>
   );
 }
