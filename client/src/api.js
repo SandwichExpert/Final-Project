@@ -118,15 +118,9 @@ export default {
       .catch(errHandler);
   },
 
-  editMeetup(editData, meetupId) {
-    const formData = new FormData();
-    const editDataKeys = Object.keys(editData);
-    console.log(editData, editDataKeys);
-    editDataKeys.forEach(key => {
-      formData.append(`${key}`, editData[`${key}`]);
-    });
+  editMeetup(meetupId, data) {
     return service
-      .put(`/meetups/edit`)
+      .patch(`/meetups/edit/${meetupId}`,data )
       .then(res => res.data)
       .catch(errHandler);
   },
@@ -219,38 +213,31 @@ export default {
 
   addDeparture(meetupmapdepartureinfo) {
     const meetupId = meetupmapdepartureinfo.meetupid;
-    console.log("pppppp", meetupId);
     const lat = meetupmapdepartureinfo.position.lat;
     const lng = meetupmapdepartureinfo.position.lng;
     const type_of = "departure";
-    return service
-      .put(`/meetups/departure-location`, {
-        type_of,
-        lat,
-        lng,
-        meetupId
-      })
-      .then(res => res.data)
-      .catch(errHandler);
+    return service.put(`/departure-location/${meetupId}`, {
+      type_of,
+      lat,
+      lng,
+      meetupId
+    })
   },
 
   addSuggestion(meetupmapsuggestioninfo) {
-    console.log("infoooo", meetupmapsuggestioninfo);
     const meetupId = meetupmapsuggestioninfo.meetupid;
     const lat = meetupmapsuggestioninfo.position.lat;
     const lng = meetupmapsuggestioninfo.position.lng;
     // this will give us the google maps name and the type
-    // of location (which comes from array because one location can have multiple types)
+    // of location
     const type_of =
-      meetupmapsuggestioninfo.name + "," + meetupmapsuggestioninfo.types[0];
-    return service
-      .put(`meetups/suggested-location/${meetupId}`, {
-        type_of,
-        lat,
-        lng
-      })
-      .then(res => res.data)
-      .catch(errHandler);
+      meetupmapsuggestioninfo.name + meetupmapsuggestioninfo.types[0];
+    return service.put(`/suggested-location/${meetupId}`, {
+      type_of,
+      lat,
+      lng,
+      meetupId
+    });
   }
 
   // getAdmin(meetupAdmin){

@@ -31,7 +31,7 @@ export default function App() {
         <Route path="/edit-user" component={EditUser} />
         <Route path="/join" component={JoinMeetup} />
         <Route path="/searchbox" component={LocationSearchBox} />
-        <Route path="/edit-meetup" component={EditMeetup}/>
+        <Route path="/edit-meetup/:meetupId" component={EditMeetup}/>
         {/* <Route render={() => <h2>404</h2>} /> */}
       </Switch>
     </div>

@@ -15,7 +15,7 @@ export default function MeetupTable(props) {
     deleteId:''
   });
   const [meetups, setMeetups] = useState(null);
-
+  const [selectedItem, setSelectedItem]=useState(null);
   // let EditableTd = contentEditable("td", editingValue);
 
   const [isAdmin, setIsAdmin] = useState(false);
@@ -41,10 +41,24 @@ export default function MeetupTable(props) {
     console.log(props.user._id,meetupId)
     api.
     removeUserFromMeetup(userId,meetupId)
-    .then(removedUser => console.log('user Removed'))
+    .then(removedUser => {
+      console.log('user Removed')
+      
+    })
     .catch(err=>console.log(err,"-----------------------------------------***************************************************************"))
 
   }
+
+  function toggleId(index){
+    
+    if(selectedItem === index){
+      setSelectedItem(null)
+    }
+    else setSelectedItem(index)
+
+  }
+
+ 
 
 
   let data = {
@@ -97,7 +111,7 @@ export default function MeetupTable(props) {
                   <button
                     _data={meetup._id}
                     style={{ border: "none", background: "none" }}
-                    onClick={copyToClipBoard}
+                    onClick={() => toggleId(index)}
                   ><i
                       className="fas fa-plus"
                       style={{
@@ -106,20 +120,20 @@ export default function MeetupTable(props) {
                         }`
                       }}
                     ></i>
-                    {copySuccess ? copySuccess : null}
                   </button>
                 )}
-                <textarea ref={textAreaRef} value={meetup._id} style={{display:'none'}}></textarea>
+                <textarea ref={textAreaRef} value={"ID to join meetup: " + meetup._id}  className={selectedItem === index ?  "active": "hidden"} >{meetup._id}</textarea>
                 {/* {"  "}<i className="fas fa-plus"></i> */}
               </td>
               {props.user._id === meetup._admin ? (
                 <td>
-                  <Link to="/edit-meetup" >
+                  <Link to={"/edit-meetup/"+ meetup._id} >
                     <i className="fas fa-edit"></i>
                   </Link>
                 </td>
               ) : (
                 <td>
+                  <Link to={"/home/"+props.user._id}>
                  < button
                  onClick={(e)=>{
                   const meetupId = meetup._id
@@ -135,12 +149,12 @@ export default function MeetupTable(props) {
                       onClick={(e)=>{
                         const meetupId = meetup._id
                         console.log(meetupId)
-      
                         removeUser(meetupId)
                       }}
                       style={{ fontSize: "1em", textAlign: "center" }}
                     ></i>
                  </button>  
+                 </Link>
                   
                 </td>
               )}

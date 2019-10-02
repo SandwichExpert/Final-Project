@@ -10,9 +10,11 @@ export default function EditMeetup(props) {
     meetup_date: "",
   });
   const [state, setState] = useState("");
+  
 
+  const meetupId = props.match.params.meetupId
   useEffect(() => {
-    api.getMeetUp().then(meetupInfo => {
+    api.getMeetUp(meetupId).then(meetupInfo => {
       setMeetup(meetupInfo);
       console.log(meetupInfo, "----------------------------");
     });
@@ -35,12 +37,12 @@ export default function EditMeetup(props) {
       meetup_date: meetup.meetup_date,
     };
     api
-      .editMeetup(data)
+      .editMeetup(meetupId,data)
       .then(updatedMeetup => {
         console.log("update successfful", meetup);
         props.history.push("/home");
       })
-      .catch(err => setMessage(err.toString()));
+      .catch(err => console.log(err));
   }
 
 

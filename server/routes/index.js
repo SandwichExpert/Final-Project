@@ -9,4 +9,9 @@ router.get('/secret', isLoggedIn, (req, res, next) => {
   })
 })
 
+router.get("/logout", (req, res) => {
+  req.session.destroy();
+  res.redirect("/");
+});
+
 module.exports = router

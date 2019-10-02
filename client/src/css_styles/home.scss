@@ -141,6 +141,14 @@
 
 }
 
+.hidden{
+  display:none;
+}
+
+#clipBoard.active{
+  display:block;
+}
+
 .meetup-table thead {
   font-size: 14px;
   font-weight: bolder;

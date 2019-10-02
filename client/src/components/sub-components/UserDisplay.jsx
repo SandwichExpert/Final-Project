@@ -6,6 +6,7 @@ import api from '../../api';
 import MeetupTable from './MeetupTable';
 
 
+
 export default function UserDisplay(props) {
   console.log(props.meetups);
   
@@ -24,26 +25,15 @@ export default function UserDisplay(props) {
     setEditMeetup(meetupId);
   }
 
-  // function handleInputChange(e){
-  //   const name=e.target.name;
-  //   const value = e.target.value;
-  //   setState({...state, [name]:value});
-  // }
+  function logout() {
+    console.log(props.history)
+   api
+   .logout()
+   .then(loggedOut => {
+     console.log(loggedOut,"logged out successfully")
+    })
 
-  // function editMeetupAndRemoveTheLine(e){
-  //   e.preventDefault()
-  //   const editData ={
-  //     name:state.name,
-  //     meetup_date:state.meetup_date,
-  //     meetup_time:state.meetup_time
-  //   }
-  //   api
-  //     .editMeetup(editData)
-  //     .then(editedMeetup => {
-  //       props.history.push('/home')
-  //     })
-      
-  // }
+}
 
   return (
     <div className="user-display">
@@ -69,7 +59,7 @@ export default function UserDisplay(props) {
         </div>
         </div>
         <div className="user-right">
-          <Link to="/logout">Logout</Link>
+          <Link to ="/"onClick={logout}>Logout</Link>
         </div>
       </div>
       <div className="buttons">

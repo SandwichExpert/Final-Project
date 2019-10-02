@@ -125,6 +125,17 @@ router.put("/delete-user", isLoggedIn, (req, res, next) => {
   //   .catch(err => next(err));
 });
 
+router.patch("/edit/:meetupId",isLoggedIn,(req,res,next)=>{
+  console.log(req.body, req.params)
+  const meetupId=req.params.meetupId
+  const changes=req.body
+  updateMeetup(meetupId, changes)
+  .then(meetup =>{
+    res.json(meetup)
+  })
+  .catch(err => console.log(err))
+})
+
 // add a suggested location to meetup -- check
 router.put("/suggested-location/:meetupId", isLoggedIn, (req, res, next) => {
   const { lat, lng } = req.body;
@@ -240,6 +251,8 @@ router.put(
       .catch(err => console.log(err));
   }
 );
+
+
 
 async function deleteIfAdminOrUserDeleted(
   meetupId,
@@ -457,6 +470,17 @@ async function removeDuplicateSuggestionLocation(newLocation, meetupId) {
   }
   const createdLocation = await Location.create(newLocation);
   return createdLocation._id;
+}
+
+async function updateMeetup(meetupId, changes) {
+  console.log(meetupId, changes,"------------------------------------------------------*************************--------------------------------------");
+  const options = { new: true };
+  try {
+    const updatedMeetup = await MeetUp.findByIdAndUpdate(meetupId, changes, options);
+    return updatedMeetup;
+  } catch (err) {
+    return alert(err);
+  }
 }
 
 module.exports = router;

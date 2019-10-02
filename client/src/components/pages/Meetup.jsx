@@ -137,7 +137,7 @@ export default function Meetup(props) {
               style={{ height: 50, width: 50 }}
             ></img>
           </div>
-          <Link to="/home">{user.first_name}</Link>
+          <Link to={"/home/"+user._id}>{user.first_name}</Link>
         </div>
       </div>
       {(state.suggestion || state.departure) && (
