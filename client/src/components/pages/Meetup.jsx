@@ -22,7 +22,6 @@ export default function Meetup(props) {
     suggestion: null,
     departure: null
   });
-
   // in the use effect we get all info on the meetup
   // out of that info we want to extract the Departure
   // and suggestion info of thi suser
@@ -131,7 +130,8 @@ export default function Meetup(props) {
       <GoogleReactMap
         userSuggestionsDepartures={state}
         setUserSuggestionsDepartures={setState}
-        // AllNonUsersuggestedLocations={}
+        AllNonUserDepartures={allNonUserDepartures}
+        AllNonUserSuggestions={allNonUserSuggestions}
         meetupId={meetupId}
         style={{
           zIndex: 0
@@ -188,9 +188,9 @@ export default function Meetup(props) {
           </div>
         </div>
       )}
-      <pre>{JSON.stringify(state, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(state, null, 2)}</pre>
       <pre>{JSON.stringify(allNonUserDepartures, null, 2)}</pre>
-      <pre>{JSON.stringify(allNonUserSuggestions, null, 2)}</pre>
+      <pre>{JSON.stringify(allNonUserSuggestions, null, 2)}</pre> */}
     </div>
   );
 }
