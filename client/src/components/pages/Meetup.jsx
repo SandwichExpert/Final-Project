@@ -11,9 +11,11 @@ export default function Meetup(props) {
   // this state is used to store a user
   // a users specific suggestion and dep
   // locations for the specific meetup
-  const [meetup, setMeetup] = useState(null);
   const meetupId = props.match.params.meetupId;
+  const [meetup, setMeetup] = useState(null);
   const [user, setUser] = useState("");
+  const [allNonUserDepartures, setAllNonUserDepartures] = useState(null);
+  const [allNonUserSuggestions, setAllNonUserSuggestions] = useState(null);
   const [state, setState] = useState({
     oldDeparture: null,
     oldSuggestion: null,
@@ -51,6 +53,16 @@ export default function Meetup(props) {
               oldSuggestion: userSuggestion,
               oldDeparture: userDeparture
             });
+            const {
+              nonUserSuggestions,
+              nonUserDepartures
+            } = getNonUserSuggestionAndDeparture(
+              userid,
+              suggestions,
+              departures
+            );
+            setAllNonUserDepartures(nonUserDepartures);
+            setAllNonUserSuggestions(nonUserSuggestions);
           })
           .catch(err => {
             console.log(err, "error getting meetup");
@@ -117,8 +129,9 @@ export default function Meetup(props) {
   return (
     <div className="map">
       <GoogleReactMap
-        inputFormState={state}
-        setInputFormState={setState}
+        userSuggestionsDepartures={state}
+        setUserSuggestionsDepartures={setState}
+        // AllNonUsersuggestedLocations={}
         meetupId={meetupId}
         style={{
           zIndex: 0
@@ -176,6 +189,8 @@ export default function Meetup(props) {
         </div>
       )}
       <pre>{JSON.stringify(state, null, 2)}</pre>
+      <pre>{JSON.stringify(allNonUserDepartures, null, 2)}</pre>
+      <pre>{JSON.stringify(allNonUserSuggestions, null, 2)}</pre>
     </div>
   );
 }
@@ -196,4 +211,14 @@ function getUserSuggestionAndDeparture(userId, suggestions, departures) {
     }
   });
   return { userSuggestion, userDeparture };
+}
+
+function getNonUserSuggestionAndDeparture(userId, suggestions, departures) {
+  const nonUserSuggestions = suggestions.filter(
+    suggestion => suggestion.created_by._id !== userId
+  );
+  const nonUserDepartures = departures.filter(
+    departure => departure.created_by._id !== userId
+  );
+  return { nonUserSuggestions, nonUserDepartures };
 }

@@ -24,6 +24,28 @@ function Map(props) {
     fullscreenControl: false
   };
 
+  const UserMarker = (userSuggestion, color) => {
+    return (
+      <Marker
+        icon={{
+          url: `http://maps.google.com/mapfiles/ms/icons/${color}-dot.png`,
+          scaledSize: new window.google.maps.Size(30, 30)
+        }}
+        type_of={userSuggestion.type_of_location}
+        position={{
+          lat: userSuggestion.location.coordinates[0],
+          lng: userSuggestion.location.coordinates[1]
+        }}
+        defaultLabel={userSuggestion.created_by.first_name.substr(0, 1)}
+        onClick={() => {
+          setSelectedLocation(userSuggestion);
+        }}
+        id={userSuggestion._id}
+        creator={`${userSuggestion.created_by.first_name} ${userSuggestion.created_by.last_name}`}
+      ></Marker>
+    );
+  };
+
   return (
     <GoogleMap
       // give a ref to the googleMap when it is mounted
@@ -152,6 +174,10 @@ function Map(props) {
           />
         );
       })}
+      {props.currentUserDeparture &&
+        UserMarker(props.currentUserDeparture, "yellow")}
+      {props.currentUserSuggestion &&
+        UserMarker(props.currentUserSuggestion, "blue")}
       {/* <pre>{JSON.stringify(center, 2, null)}</pre>
       <pre>{JSON.stringify(selectedLocation, 2, null)}</pre> */}
     </GoogleMap>
@@ -214,8 +240,8 @@ export default function GoogleReactMap(props) {
     if (places.length == 1) {
       const specificPlace = places[0];
       console.log(places, "place object....");
-      props.setInputFormState({
-        ...props.inputFormState,
+      props.setUserSuggestionsDepartures({
+        ...props.userSuggestionsDepartures,
         suggestion: {
           name: specificPlace.name,
           types: specificPlace.types,
@@ -229,6 +255,26 @@ export default function GoogleReactMap(props) {
         }
       });
     }
+
+    places.forEach(place => {
+      if (place.geometry.viewport) {
+        bounds.union(place.geometry.viewport);
+      } else {
+        bounds.extend(place.geometry.location);
+      }
+    });
+
+    const newMarkers = places.map(place => ({
+      position: {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng()
+      },
+      icon: place.icon,
+      name: place.name,
+      types: place.types,
+      rating: place.rating
+    }));
+    setState({ ...state, newSuggestions: newMarkers });
   };
 
   const onPlacesChangedTwo = () => {
@@ -244,8 +290,8 @@ export default function GoogleReactMap(props) {
     if (places.length == 1) {
       const specificPlace = places[0];
       console.log(places, "place object....");
-      props.setInputFormState({
-        ...props.inputFormState,
+      props.setUserSuggestionsDepartures({
+        ...props.userSuggestionsDepartures,
         departure: {
           name: specificPlace.name,
           types: specificPlace.types,
@@ -428,8 +474,10 @@ export default function GoogleReactMap(props) {
       <WrapperMap
         // these two come from meetup.jsx the higher state
         // lives there
-        inputFormState={props.inputFormState}
-        setInputFormState={props.setInputFormState}
+        userSuggestionsDepartures={props.userSuggestionsDepartures}
+        setUserSuggestionsDepartures={props.setUserSuggestionsDepartures}
+        currentUserSuggestion={props.userSuggestionsDepartures.oldSuggestion}
+        currentUserDeparture={props.userSuggestionsDepartures.oldDeparture}
         suggestedLocations={suggestedLocations}
         departureLocations={departureLocations}
         // the map will zoom in on the average departure location
