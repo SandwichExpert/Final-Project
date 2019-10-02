@@ -21,6 +21,7 @@ export default function Login(props) {
   const [message, setMessage] = useState(null);
 
   return (
+ 
     <div className="mobile-container">
       <img src={Logo} alt="Maptee" className="main_logo" />
       <div className="mobile-background">
@@ -58,5 +59,6 @@ export default function Login(props) {
         {message && <div className="info info-danger">{message}</div>}
       </div>
     </div>
+   
   );
 }
