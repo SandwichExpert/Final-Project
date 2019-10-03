@@ -36,8 +36,31 @@ function Map(props) {
     anchor: new window.google.maps.Point(32, 65),
     labelOrigin: new window.google.maps.Point(40, 33)
   };
-  let zoomLocLat = props.currentUserDeparture.location.coordinates[0];
-  let zoomLocLng = props.currentUserDeparture.location.coordinates[1];
+  let zoomLocLat;
+ let zoomLocLng;
+
+ if (props.currentUserDeparture) {
+
+   zoomLocLat = props.currentUserDeparture.location.coordinates[0];
+   zoomLocLng = props.currentUserDeparture.location.coordinates[1];
+ } else {
+   const { lat, lng } = calculateAveragePosition(
+     props.AllNonUserDepartures
+   );
+   zoomLocLat = Number(lat);
+   zoomLocLng = Number(lng);
+ }
+ function calculateAveragePosition(departures) {
+   let avgLat = 0;
+   let avgLng = 0;
+   departures.forEach(departure => {
+     avgLat += departure.location.coordinates[0];
+     avgLng += departure.location.coordinates[1];
+   });
+   avgLat /= departures.length;
+   avgLng /= departures.length;
+   return { lat: avgLat, lng: avgLng };
+ }
   const [selectedLocation, setSelectedLocation] = useState(null);
   const googlemapOptions = {
     mapTypeControl: false,
@@ -538,8 +561,8 @@ export default function GoogleReactMap(props) {
         setUserSuggestionsDepartures={props.setUserSuggestionsDepartures}
         currentUserSuggestion={props.userSuggestionsDepartures.oldSuggestion}
         currentUserDeparture={props.userSuggestionsDepartures.oldDeparture}
-        AllNonUserDepartures={props.allNonUserDepartures}
-        AllNonUserSuggestions={props.allNonUserSuggestions}
+        AllNonUserDepartures={props.AllNonUserDepartures}
+        AllNonUserSuggestions={props.AllNonUserSuggestions}
         // the map will zoom in on the average departure location
         // or if not present the user location
         zoomLocation={averagePosition || userLocation}
