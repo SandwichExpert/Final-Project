@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import api from "../../api";
-import Logo from "../../assets/maptee_logo.svg";
+import Logo from "../../assets/maptee-logo.svg";
 
 export default function Signup(props) {
   const [state, setState] = useState({

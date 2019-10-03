@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import api from "../../api";
 import { useForm } from "../../hooks";
 import { Link } from "react-router-dom";
-import Logo from "../../assets/maptee_logo.svg";
+import Logo from "../../assets/maptee-logo.svg";
 
 export default function Login(props) {
   const { formValues, getInputProps } = useForm({ lang: "en" });
