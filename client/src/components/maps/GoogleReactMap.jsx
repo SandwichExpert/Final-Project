@@ -334,7 +334,7 @@ function Map(props) {
           onPlacesChanged={props.onPlacesChangedTwo}
         >
           <input
-            placeholder="set a new departure"
+            placeholder="Departure"
             type="text"
             className="departure-input"
           />
@@ -350,7 +350,7 @@ function Map(props) {
           onPlacesChanged={props.onPlacesChanged}
         >
           <input
-            placeholder="make a new suggestion"
+            placeholder="Suggestion"
             type="text"
             className="suggestion-input"
           />
