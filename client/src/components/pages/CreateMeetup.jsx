@@ -47,6 +47,12 @@ export default function CreateMeetup(props) {
     return null;
   }
 
+  function randomName(){
+    const names =["Foo","Toto", "Secret Meeting","War Council","Beeeeeeeer","BEARS","Fight Club","Jedi Council","Incontro","PIZZA","Beets","Battlestar Galactica","Undefined","JarJar Binks","Nickleback", "Henri"];
+    const name = names[Math.floor(names.length * Math.random())]
+    return name;
+  }
+
   function addMeetupAndRedirectToMeetupPage(e) {
     e.preventDefault();
     const uploadData = {
@@ -98,7 +104,7 @@ export default function CreateMeetup(props) {
         <input
           required
           type="text"
-          placeholder="What do we call your meetup?"
+          placeholder={randomName()}
           className="inputs-login"
           value={state.name}
           onChange={handleInputChange}
