@@ -66,12 +66,12 @@ export default function UserDisplay(props) {
       <div className="buttons">
         <button className="buttons__meetup">
           <Link to="/join">
-            <b>Join Meetup</b>
+            <b>Join <i className="fas fa-sign-in-alt"></i></b>
           </Link>
         </button>
         <button className="buttons__meetup">
           <Link to="/createmeetup">
-            <b>Create Meetup</b>
+            <b>Create <i class="fas fa-plus"></i></b>
           </Link>
         </button>
       </div>

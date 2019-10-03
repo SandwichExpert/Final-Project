@@ -82,7 +82,7 @@ export default function MeetupTable(props) {
           <th>Name</th>
           <th>Time/Date</th>
           <th>Add User</th>
-          <th>Edit</th>
+          <th>Edit/Leave</th>
         </tr>
       </thead>
       <tbody>
@@ -134,7 +134,7 @@ export default function MeetupTable(props) {
                   onClick={e => copyToClipBoard(e)}
                 >
                   <i
-                    className="fas fa-plus"
+                    className="fas fa-user-plus"
                     style={{
                       color: `${
                         props.user._id === meetup._admin ? "red" : "black"

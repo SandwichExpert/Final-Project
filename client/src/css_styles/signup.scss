@@ -9,7 +9,7 @@ color : white;
 }
 
 .general-container{
-  height:100vh;
+  min-height:vh(100);
   background-color:$one;
   width:vw(100);
 }
