@@ -25,13 +25,13 @@ export default function Login(props) {
     <div className="mobile-container">
       <img src={Logo} alt="Maptee" className="main_logo" />
       <div className="mobile-background">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className ="login_form">
           <b>Email</b> <br />{" "}
           <input
             type="email"
             {...getInputProps("email")}
             placeholder="Your email"
-            className="inputs"
+            className="inputs-login"
           />{" "}
           <br />
           <b>Password</b> <br />{" "}
@@ -39,12 +39,12 @@ export default function Login(props) {
             type="password"
             {...getInputProps("password")}
             placeholder="Your password"
-            className="inputs"
+            className="inputs-login"
           />
           <br />
           {/* <Link to="" className="forgotten">Forgotten password?</Link> */}
           {/* <span className="forgotten">Forgotten Password?</span> */}
-          <button className="button">
+          <button className="button-login">
             <b>Login</b>
           </button>
           <br />
