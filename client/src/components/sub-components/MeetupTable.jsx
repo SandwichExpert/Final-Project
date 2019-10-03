@@ -49,12 +49,7 @@ export default function MeetupTable(props) {
       .then(removedUser => {
         console.log("user Removed");
       })
-      .catch(err =>
-        console.log(
-          err,
-          "-----------------------------------------***************************************************************"
-        )
-      );
+      .catch(err => console.log(err));
   }
 
   function toggleId(index) {
@@ -90,58 +85,61 @@ export default function MeetupTable(props) {
             setIsAdmin(true);
           }
           return (
-            <tr key={meetup._id}>
-              <td
-                className="meetup-name"
-                style={{
-                  color: `${props.user._id === meetup._admin ? "red" : "black"}`
-                }}
-              >
-                <Link
-                  to={`/my-meetup/${meetup._id}`}
+            <>
+              <tr key={meetup._id}>
+                <td
+                  className="meetup-name"
                   style={{
                     color: `${
                       props.user._id === meetup._admin ? "red" : "black"
                     }`
                   }}
                 >
-                  {meetup.name}
-                </Link>
-              </td>
-
-              <td>
-                {meetup.meetup_time} {dateDisplay(meetup.meetup_date)}
-              </td>
-
-              <td>
-                {/* <CopyExample value={meetup._id} /> */}
-                <textarea
-                  style={{
-                    position: "absolute",
-                    zIndex: -10,
-                    height: 0,
-                    width: 0,
-                    border: "none",
-                    resize: "none"
-                  }}
-                  value={meetup._id}
-                  readOnly
-                />
-                <button
-                  style={{ border: "none", background: "none" }}
-                  _data={meetup._id}
-                  onClick={e => copyToClipBoard(e)}
-                >
-                  <i
-                    className="fas fa-user-plus"
+                  <Link
+                    to={`/my-meetup/${meetup._id}`}
                     style={{
                       color: `${
                         props.user._id === meetup._admin ? "red" : "black"
                       }`
                     }}
-                  ></i>
-                </button>
-                {/* <CopyToClipboard>
+                  >
+                    {meetup.name}
+                  </Link>
+                </td>
+
+                <td>
+                  {meetup.meetup_time} {dateDisplay(meetup.meetup_date)}
+                </td>
+
+                <td>
+                  {/* <CopyExample value={meetup._id} /> */}
+                  <textarea
+                    style={{
+                      position: "absolute",
+                      zIndex: -10,
+                      height: 0,
+                      width: 0,
+                      border: "none",
+                      resize: "none"
+                    }}
+                    value={meetup._id}
+                    readOnly
+                  />
+                  <button
+                    style={{ border: "none", background: "none" }}
+                    _data={meetup._id}
+                    onClick={e => copyToClipBoard(e)}
+                  >
+                    <i
+                      className="fas fa-user-plus"
+                      style={{
+                        color: `${
+                          props.user._id === meetup._admin ? "red" : "black"
+                        }`
+                      }}
+                    ></i>
+                  </button>
+                  {/* <CopyToClipboard>
                   {({ copy }) => (
                     <button
                       style={{ border: "none", background: "none" }}
@@ -152,37 +150,47 @@ export default function MeetupTable(props) {
                     </button>
                   )}
                 </CopyToClipboard> */}
-              </td>
-              {props.user._id === meetup._admin ? (
-                <td>
-                  <Link to={"/edit-meetup/" + meetup._id}>
-                    <i className="fas fa-edit"></i>
-                  </Link>
                 </td>
-              ) : (
-                <td>
-                  <Link to={"/home/" + props.user._id}>
-                    <button
-                      onClick={e => {
-                        const parent = e.target.parentElement.parentElement.parentElement.parentElement
-                          const parentOfParent = e.target.parentElement.parentElement.parentElement.parentElement.parentElement
+                {props.user._id === meetup._admin ? (
+                  <td>
+                    <Link to={"/edit-meetup/" + meetup._id}>
+                      <i className="fas fa-edit"></i>
+                    </Link>
+                  </td>
+                ) : (
+                  <td>
+                    <Link to={"/home/" + props.user._id}>
+                      <button
+                        onClick={e => {
+                          const parent =
+                            e.target.parentElement.parentElement.parentElement
+                              .parentElement;
+                          const parentOfParent =
+                            e.target.parentElement.parentElement.parentElement
+                              .parentElement.parentElement;
                           const meetupId = meetup._id;
                           console.log(meetupId);
-                          console.log(e.target)
-                          parentOfParent.removeChild(parent)
+                          console.log(e.target);
+                          parentOfParent.removeChild(parent);
                           removeUser(meetupId);
-                      }}
-                      style={{ border: "none", background: "none" }}
-                    >
-                      <i
-                        className="fas fa-user-minus"
-                        style={{ fontSize: "1em", textAlign: "center" }}
-                      ></i>
-                    </button>
-                  </Link>
+                        }}
+                        style={{ border: "none", background: "none" }}
+                      >
+                        <i
+                          className="fas fa-user-minus"
+                          style={{ fontSize: "1em", textAlign: "center" }}
+                        ></i>
+                      </button>
+                    </Link>
+                  </td>
+                )}
+              </tr>
+              <tr className="isActive" style={{ width: "100%" }}>
+                <td colSpan="4" style={{ textAlign: "left" }}>
+                  Shareable Id: {meetup._id}
                 </td>
-              )}
-            </tr>
+              </tr>
+            </>
           );
         })}
       </tbody>

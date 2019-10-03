@@ -148,8 +148,8 @@
   display:none;
 }
 
-#clipBoard.active{
-  display:block;
+.isActive{
+  display:none;
 }
 
 .meetup-table thead {
@@ -381,7 +381,9 @@
 }
 
 @media only screen and (min-width : 375px ) and (max-width : 413px){
-  
+  .isActive{
+    display:block;
+  }
   
   .buttons{
     justify-content:center;
@@ -402,6 +404,10 @@
 }
 
 @media only screen and (min-width : 360px ) and (max-width : 374px){
+  .isActive{
+    display:block;
+  }
+
   .buttons{
     justify-content:center;
   }
@@ -422,6 +428,9 @@
 }
 
 @media only screen and (min-width : 320px ) and (max-width : 359px){
+  .isActive{
+    display:block;
+  }
   .buttons{
     justify-content:center;
   }
