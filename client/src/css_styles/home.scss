@@ -136,6 +136,8 @@
 }
 
 .meetup-table {
+  table-layout:fixed;
+  width:1050px; 
   margin: 0 auto;
   margin-top: 5%;
 
@@ -157,7 +159,7 @@
 }
 .meetup-table td,
 .meetup-table th {
-  padding: 5%;
+  padding: 3%;
 }
 
 .meetup-table tr {
@@ -171,4 +173,269 @@
 
 .meetup-name Link{
   color : black;
+}
+
+@media only screen and (min-width: 1444px) {
+  .info-container{
+    margin:0 40px;
+  }
+  .circular-image{
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+    height: 180px;
+    width:180px;
+  }
+  .profile-image{
+    height: 150px;
+    width:150px;
+  }
+  .buttons{
+    justify-content:center;
+  }
+
+  .buttons__meetup{
+    height : 70px;
+    width : 210px;
+    font-size : 1.8em;
+
+  }
+
+  .buttons__meetup:first-child{
+    margin-right : 30px;
+  }
+  
+}
+
+
+@media only screen and (min-width:1280px) and (max-width:1443px){
+  .info-container{
+    margin:0 30px;
+  }
+  .circular-image{
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+    height: 160px;
+    width:160px;
+  }
+  .profile-image{
+    height: 130px;
+    width:130px;
+  }
+  .buttons{
+    justify-content:center;
+  }
+
+  .buttons__meetup{
+    height : 60px;
+    width : 180px;
+    font-size : 1.5em;
+
+  }
+
+  .buttons__meetup:first-child{
+    margin-right : 30px;
+  }
+  .meetup-table{
+    width:1050px;
+  }
+}
+
+@media only screen and (min-width : 1024px) and (max-width : 1279px){
+  .info-container{
+    margin:0 20px;
+  }
+  .circular-image{
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+    height: 130px;
+    width:130px;
+  }
+  .profile-image{
+    height: 100px;
+    width:100px;
+  }
+  .buttons{
+    justify-content:center;
+  }
+
+  .buttons__meetup{
+    height : 50px;
+    width : 150px;
+    font-size : 1.2em;
+
+  }
+
+  .buttons__meetup:first-child{
+    margin-right : 30px;
+  }
+  .meetup-table{
+    width:950px;
+  }
+}
+
+@media only screen and (min-width : 768px) and (max-width : 1023px){
+  .info-container{
+    margin:0 10px;
+  }
+  .circular-image{
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+    height: 130px;
+    width:130px;
+  }
+  .profile-image{
+    height: 100px;
+    width:100px;
+  }
+  .buttons{
+    justify-content:center;
+  }
+
+  .buttons__meetup{
+    height : 50px;
+    width : 150px;
+    font-size : 1.2em;
+  }
+
+  .buttons__meetup:first-child{
+    margin-right : 30px;
+  }
+  .meetup-table{
+    width:750px;
+  }
+}
+
+@media only screen and (min-width : 550px) and (max-width: 767px){
+  .info-container{
+    margin:0 10px;
+  }
+  .circular-image{
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+    height: 130px;
+    width:130px;
+  }
+  .profile-image{
+    height: 100px;
+    width:100px;
+  }
+  .buttons{
+    justify-content:center;
+  }
+
+  .buttons__meetup{
+    height : 50px;
+    width : 150px;
+    font-size : 1.2em;
+  }
+
+  .buttons__meetup:first-child{
+    margin-right : 30px;
+  }
+  .meetup-table{
+    width:520px;
+  }
+}
+
+@media only screen and (min-width : 414px) and (max-width: 549px){
+  
+  .circular-image{
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+    height: 130px;
+    width:130px;
+  }
+  .profile-image{
+    height: 100px;
+    width:100px;
+  }
+  .buttons{
+    justify-content:center;
+  }
+
+  .buttons__meetup{
+    height : 40px;
+    width : 130px;
+    font-size : 1em;
+  }
+
+  .buttons__meetup:first-child{
+    margin-right : 20px;
+  }
+  .meetup-table{
+    width:400px;
+  }
+}
+
+@media only screen and (min-width : 375px ) and (max-width : 413px){
+  
+  
+  .buttons{
+    justify-content:center;
+  }
+
+  .buttons__meetup{
+    height : 40px;
+    width : 130px;
+    font-size : 1em;
+  }
+
+  .buttons__meetup:first-child{
+    margin-right : 20px;
+  }
+  .meetup-table{
+    width:360px;
+  }
+}
+
+@media only screen and (min-width : 360px ) and (max-width : 374px){
+  .buttons{
+    justify-content:center;
+  }
+
+  .buttons__meetup{
+    height : 40px;
+    width : 120px;
+    font-size : 0.9em;
+  }
+
+  .buttons__meetup:first-child{
+    margin-right : 10px;
+  }
+  .meetup-table{
+    width:350px;
+  }
+
+}
+
+@media only screen and (min-width : 320px ) and (max-width : 359px){
+  .buttons{
+    justify-content:center;
+  }
+
+  .buttons__meetup{
+    height : 40px;
+    width : 120px;
+    font-size : 0.9em;
+  }
+
+  .buttons__meetup:first-child{
+    margin-right : 10px;
+  }
+  .meetup-table{
+    width:300px;
+  }
+
 }

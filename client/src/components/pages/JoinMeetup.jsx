@@ -58,8 +58,9 @@ export default function JoinMeetup(props) {
         </Link>
       </div>
       <div className="add_user">
+        <h2 className="title_join">Enter the ID to join a meetup</h2>
         <b>Input meetup ID:</b><br/>
-        <input type="text" value={meetup._id} name="_id" placeHolder="meetup ID" className="inputs"
+        <input type="text" value={meetup._id} name="_id" placeHolder="meetup ID" className="inputs-login"
         onChange={handleInputChange}/>
         <button className="button" onClick={handleSubmit}>
           Submit

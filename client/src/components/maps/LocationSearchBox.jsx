@@ -109,7 +109,7 @@ export default function LocationSearchBox(props) {
   }
 
   return (
-    <div style={{ width: "100vw", height: "5%" }}>
+    <div style={{ width: "100%", height: "5%" }}>
       <WrapperSearchBox
         // if to the searchbox this prop was given
         // as true a list with locations will appear

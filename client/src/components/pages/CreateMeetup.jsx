@@ -3,6 +3,7 @@ import api from "../../api";
 import DatePicker from "react-datepicker";
 import LocationSearchBox from "../maps/LocationSearchBox";
 import { Link } from "react-router-dom";
+import moment from 'moment';
 
 export default function CreateMeetup(props) {
   const [state, setState] = useState({
@@ -100,7 +101,7 @@ export default function CreateMeetup(props) {
         </Link>
       </div>
       {/* <div className="mobile-background"> */}
-      <form>
+      <form className="creation_form">
         <label name="name" className="creation-label">
           Event Name
         </label>
@@ -109,7 +110,7 @@ export default function CreateMeetup(props) {
           required
           type="text"
           placeholder="What do we call your meetup?"
-          className="inputs"
+          className="inputs-login"
           value={state.name}
           onChange={handleInputChange}
           name="name"
@@ -122,9 +123,10 @@ export default function CreateMeetup(props) {
         <input
           required
           type="date"
-          className="inputs"
+          className="inputs-login"
           value={state.meetup_date}
           onChange={handleInputChange}
+          placeholder={moment}
           name="meetup_date"
         />
         {/* <DateInput /> */}
@@ -136,7 +138,7 @@ export default function CreateMeetup(props) {
         <input
           required
           type="time"
-          className="inputs"
+          className="inputs-login"
           value={state.meetup_time}
           onChange={handleInputChange}
           name="meetup_time"
@@ -146,6 +148,7 @@ export default function CreateMeetup(props) {
         {/* <label className="creation-label" name="departure_location">
           Leaving from?
         </label> */}
+        <br/>
         <LocationSearchBox
           suggestion={false}
           setInputFormState={setState}
@@ -168,9 +171,9 @@ export default function CreateMeetup(props) {
         {/* <pre>{JSON.stringify(state,null,2)}</pre> */}
       </form>
       <br />
-      <pre>{JSON.stringify(state, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(state, null, 2)}</pre>
       <pre>{JSON.stringify(useCurrentLocation, null, 2)}</pre>
-      <pre>{JSON.stringify(currentLocation, null, 2)}</pre>
+      <pre>{JSON.stringify(currentLocation, null, 2)}</pre> */}
     </div>
   );
 }

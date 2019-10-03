@@ -187,7 +187,7 @@ export default function Meetup(props) {
           {dateDisplay(meetup.meetup_date)} - {meetup.meetup_time}
         </div>
         <div className="right_side">
-          <div className="circular-image" style={{ marginTop: 5 }}>
+          <div className="circular-image-meetup" style={{ marginTop: 15 }}>
             <img
               className="profile-image"
               src={user.avatar}
