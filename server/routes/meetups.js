@@ -236,17 +236,13 @@ router.put(
 );
 
 // add vote to suggestion -- check
-router.put(
-  "/add-vote/:meetupId/:suggestionId",
-  isLoggedIn,
-  (req, res, next) => {
-    const locationId = req.params.suggestionId;
-    const userId = req.user._id;
-    addVote(locationId, userId)
-      .then(updatedLocation => res.json({ msg: "vote was added!" }))
-      .catch(err => console.log(err));
-  }
-);
+router.put("/add-vote/:suggestionId", isLoggedIn, (req, res, next) => {
+  const locationId = req.params.suggestionId;
+  const userId = req.user._id;
+  addVote(locationId, userId)
+    .then(updatedLocation => res.json({ msg: "vote was added!" }))
+    .catch(err => console.log(err));
+});
 
 // remove vote from suggestion -- check
 router.put(

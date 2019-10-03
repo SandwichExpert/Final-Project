@@ -237,6 +237,13 @@ export default {
       })
       .then(res => res.data)
       .catch(errHandler);
+  },
+
+  addVote(locationId) {
+    return service
+      .put(`/meetups/add-vote/${locationId}`)
+      .then(res => res.data)
+      .catch(errHandler);
   }
 
   // getAdmin(meetupAdmin){

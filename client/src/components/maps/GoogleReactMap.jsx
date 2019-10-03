@@ -12,10 +12,8 @@ import {
   Marker,
   InfoWindow
 } from "react-google-maps";
+import api from "../../api";
 
-const {
-  MarkerWithLabel
-} = require("react-google-maps/lib/components/addons/MarkerWithLabel");
 const {
   SearchBox
 } = require("react-google-maps/lib/components/places/SearchBox");
@@ -67,31 +65,74 @@ function Map(props) {
     styles: mapStyles
   };
 
-  const UserMarker = (userSuggestion, suggestordepart) => {
+  function onSelectionInfoDisplay(selectedLoc, location_id, isAdmin) {
+    return (
+      <div>
+        {selectedLoc.type_of_location == "departure" && (
+          <span>
+            departure of {selectedLoc.created_by.first_name}{" "}
+            {selectedLoc.created_by.last_name}{" "}
+            <img
+              src={selectedLoc.created_by.avatar}
+              alt="user-avatar"
+              className="profile-image"
+            />
+          </span>
+        )}
+        {selectedLoc.type_of_location != "departure" && (
+          <div>
+            <span>
+              suggestion from {selectedLoc.created_by.first_name}{" "}
+              {selectedLoc.created_by.last_name}{" "}
+              <img
+                src={selectedLoc.created_by.avatar}
+                alt="user-avatar"
+                className="profile-image"
+              />
+            </span>
+            <div className="extra-suggestion-info">
+              <div>{reformatTypeOf(selectedLoc.type_of_location)}</div>
+            </div>
+            {isAdmin && (
+              <button id={location_id} onClick={handleVote}>
+                let's go!<span id={location_id}> </span>
+                <i class="fas fa-vote-yea" id={location_id}></i>
+              </button>
+            )}
+          </div>
+        )}
+        {/* <pre>{JSON.stringify(selectedLoc, null, 2)}</pre> */}
+      </div>
+    );
+  }
+
+  const UserMarker = (userSugOrDep, suggestordepart) => {
     return (
       <Marker
+        votes={
+          suggestordepart != "departure" && (userSugOrDep.votes.length || 0)
+        }
         icon={
           (suggestordepart == "departure" && departure_user_marker) ||
           suggestion_user_marker
         }
-        type_of={userSuggestion.type_of_location}
+        type_of={userSugOrDep.type_of_location}
         position={{
-          lat: Number(userSuggestion.location.coordinates[0]),
-          lng: Number(userSuggestion.location.coordinates[1])
+          lat: Number(userSugOrDep.location.coordinates[0]),
+          lng: Number(userSugOrDep.location.coordinates[1])
         }}
         // defaultLabel={userSuggestion.created_by.first_name.substr(0, 1)}
         onClick={() => {
-          setSelectedLocation(userSuggestion);
+          setSelectedLocation(userSugOrDep);
         }}
         // id={userSuggestion._id}
-        creator={`${userSuggestion.created_by.first_name} ${userSuggestion.created_by.last_name}`}
+        creator={`${userSugOrDep.created_by.first_name} ${userSugOrDep.created_by.last_name}`}
       ></Marker>
     );
   };
 
   const nonUserSuggestionMarkers = (
     AllNonUserSuggestions,
-    color,
     setSelectedLocation
   ) => {
     let markerArray = [];
@@ -99,6 +140,7 @@ function Map(props) {
       var labeltext = suggestion.created_by.first_name.substr(0, 1);
       markerArray.push(
         <Marker
+          votes={suggestion.votes.length || 0}
           icon={{
             url: nonuser_suggestion_marker,
             scaledSize: new window.google.maps.Size(60, 60)
@@ -128,7 +170,6 @@ function Map(props) {
 
   const nonUserDepartureMarkers = (
     AllNonUserDepartures,
-    color,
     setSelectedLocation
   ) => {
     let markerArray = [];
@@ -157,6 +198,18 @@ function Map(props) {
     return markerArray;
   };
 
+  function handleVote(e) {
+    console.log(e, "h");
+    console.log(e.target, "d");
+    console.log(e.target.id, "d");
+    api
+      .addVote(e.target.id)
+      .then(res => {
+        console.log(res.msg);
+      })
+      .catch(err => console.log("error adding vote"));
+  }
+
   return (
     <GoogleMap
       // give a ref to the googleMap when it is mounted
@@ -166,19 +219,20 @@ function Map(props) {
       defaultOptions={{ styles: mapStyles }}
       options={googlemapOptions}
       onBoundsChanged={props.onBoundsChanged}
+      onDragStart={() => {
+        setSelectedLocation(null);
+      }}
       // we want our searches to be relevant to the current bounds
     >
       <pre className="markers">
         {props.AllNonUserSuggestions &&
           nonUserSuggestionMarkers(
             props.AllNonUserSuggestions,
-            "red",
             setSelectedLocation
           )}
         {props.AllNonUserDepartures &&
           nonUserDepartureMarkers(
             props.AllNonUserDepartures,
-            "blue",
             setSelectedLocation
           )}
         {props.currentUserDeparture &&
@@ -196,7 +250,11 @@ function Map(props) {
                 setSelectedLocation(null);
               }}
             >
-              {onSelectionInfoDisplay(selectedLocation)}
+              {onSelectionInfoDisplay(
+                selectedLocation,
+                selectedLocation._id,
+                props.isAdmin
+              )}
             </InfoWindow>
           </div>
         )}
@@ -567,6 +625,7 @@ export default function GoogleReactMap(props) {
         newSuggestions={state.newSuggestions}
         newDepartures={state.newDepartures}
         bounds={state.bounds}
+        isAdmin={props.isAdmin}
         googleMapURL={`https://maps.googleapis.com/maps/api/js?key=AIzaSyC4R6AN7SmujjPUIGKdyao2Kqitzr1kiRg&v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GKEY}`}
         loadingElement={<div style={{ height: window.innerHeight }} />}
         containerElement={<div style={{ height: window.innerHeight }} />}
@@ -577,40 +636,6 @@ export default function GoogleReactMap(props) {
 }
 
 // elements that dont do anything about a state
-function onSelectionInfoDisplay(selectedLoc) {
-  return (
-    <div>
-      {selectedLoc.type_of_location == "departure" && (
-        <span>
-          departure of {selectedLoc.created_by.first_name}{" "}
-          {selectedLoc.created_by.last_name}{" "}
-          <img
-            src={selectedLoc.created_by.avatar}
-            alt="user-avatar"
-            className="profile-image"
-          />
-        </span>
-      )}
-      {selectedLoc.type_of_location != "departure" && (
-        <div>
-          <span>
-            suggestion from {selectedLoc.created_by.first_name}{" "}
-            {selectedLoc.created_by.last_name}{" "}
-            <img
-              src={selectedLoc.created_by.avatar}
-              alt="user-avatar"
-              className="profile-image"
-            />
-          </span>
-          <div className="extra-suggestion-info">
-            <div>{reformatTypeOf(selectedLoc.type_of_location)}</div>
-          </div>
-        </div>
-      )}
-      {/* <pre>{JSON.stringify(selectedLoc, null, 2)}</pre> */}
-    </div>
-  );
-}
 
 function reformatTypeOf(typeofsug) {
   const sugtype = typeofsug.replace(",", " ");

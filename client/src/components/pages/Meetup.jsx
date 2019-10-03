@@ -176,6 +176,7 @@ export default function Meetup(props) {
         AllNonUserDepartures={allNonUserDepartures}
         AllNonUserSuggestions={allNonUserSuggestions}
         meetupId={meetupId}
+        isAdmin={meetup._admin === user._id}
         markerRefresh={markerRefresh}
         style={{
           zIndex: 0
@@ -187,7 +188,10 @@ export default function Meetup(props) {
           {dateDisplay(meetup.meetup_date)} - {meetup.meetup_time}
         </div>
         <div className="right_side">
-          <div className="circular-image_meetup" style={{ marginTop: 15, paddingTop:5 }}>
+          <div
+            className="circular-image_meetup"
+            style={{ marginTop: 15, paddingTop: 5 }}
+          >
             <img
               className="profile-image_meetup"
               src={user.avatar}
@@ -197,7 +201,6 @@ export default function Meetup(props) {
           <Link to={"/home/" + user._id}>{user.first_name}</Link>
         </div>
       </div>
-      <div className></div>
       {(state.suggestion || state.departure) && (
         <div className="suggestion-departure-wrapper">
           <div className="button-suggestion-departure-display">
