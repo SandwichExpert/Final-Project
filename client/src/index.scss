@@ -35,7 +35,9 @@ $five: #99ffff;
 @import "../src/css_styles/map.scss";
 @import "../src/css_styles/meetup.scss";
 @import "../src/css_styles/edit.scss";
-@import "../src/css_styles/createmeetup.scss"; // --------------------
+@import "../src/css_styles/createmeetup.scss";
+@import "../src/css_styles/login.scss";
+ // --------------------
 // Style reusable for all components
 * {
   box-sizing: border-box;
@@ -85,8 +87,8 @@ body {
   text-align: right;
 }
 .main_logo {
-  height: 165px;
-  width: auto;
+  width: 35%;
+  height: auto;
   margin-top: 15px;
 }
 

@@ -1,0 +1,231 @@
+.inputs-login {
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  padding: 0px 12px;
+  border-radius: 3px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 6px;
+  font-size: 14px;
+  outline: none;
+  margin-bottom:5px;
+}
+
+.button-login {
+  margin-top: 5%;
+  width: 191px;
+  height: 47px;
+  background: $two;
+  color: white;
+  border: none;
+  box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 3px;
+  font-size: 1.3rem;
+}
+
+@media only screen and (min-width: 1444px) {
+  .main_logo{
+    width : 35%
+  }
+  .mobile-background{
+    justify-content : space-between;
+  }
+
+  .inputs-login {
+    width : 100%;
+    margin-bottom:15px;
+    font-size : 20px;
+  }
+
+  .login_form{
+    width : 550px;
+  }
+
+}
+
+@media only screen and (min-width:1280px) and (max-width:1443px){
+  .main_logo{
+    width : 35%
+  }
+  .mobile-background{
+    justify-content : space-between;
+  }
+
+  .inputs-login {
+    width : 100%;
+    margin-bottom:15px;
+    font-size : 20px;
+  }
+
+  .login_form{
+    width : 520px;
+  }
+
+  .button-login{
+    margin-bottom:15px;
+  }
+
+}
+
+@media only screen and (min-width : 1024px) and (max-width : 1279px){
+  .main_logo{
+    width : 35%
+  }
+  .mobile-background{
+    justify-content : space-between;
+  }
+
+  .inputs-login {
+    width : 100%;
+    margin-bottom:15px;
+    font-size : 20px;
+  }
+
+  .login_form{
+    width : 480px;
+  }
+
+  .button-login{
+    margin-bottom:15px;
+  }
+
+}
+
+@media only screen and (min-width : 768px) and (max-width : 1023px){
+  .main_logo{
+    width : 35%
+  }
+  .mobile-background{
+    justify-content : space-between;
+  }
+
+  .inputs-login {
+    width : 100%;
+    margin-bottom:15px;
+    font-size : 20px;
+  }
+
+  .login_form{
+    width : 450px;
+  }
+
+  .button-login{
+    margin-bottom:15px;
+  }
+  
+}
+
+@media only screen and (min-width : 550px) and (max-width: 767px){
+  .main_logo{
+    width : 40%
+  }
+  .mobile-background{
+    justify-content : space-between;
+  }
+
+  .inputs-login {
+    width : 100%;
+    margin-bottom:15px;
+    font-size : 20px;
+  }
+
+  .login_form{
+    width : 380px;
+  }
+
+  .button-login{
+    margin-bottom:15px;
+  }
+  
+}
+
+@media only screen and (min-width : 414px) and (max-width: 549px){
+  .main_logo{
+    width : 60%
+  }
+  .mobile-background{
+    justify-content : space-between;
+  }
+
+  .inputs-login {
+    width : 100%;
+    margin-bottom:15px;
+    font-size : 20px;
+  }
+
+  .login_form{
+    width : 320px;
+  }
+
+  .button-login{
+    margin-bottom:15px;
+  }
+}
+
+@media only screen and (min-width : 375px ) and (max-width : 413px){
+  .main_logo{
+    width : 60%
+  }
+  .mobile-background{
+    justify-content : space-between;
+  }
+
+  .inputs-login {
+    width : 100%;
+    margin-bottom:15px;
+    font-size : 20px;
+  }
+
+  .login_form{
+    width : 290px;
+  }
+
+  .button-login{
+    margin-bottom:15px;
+  }
+}
+
+@media only screen and (min-width : 360px ) and (max-width : 374px){
+  .main_logo{
+    width : 60%
+  }
+  .mobile-background{
+    justify-content : space-between;
+  }
+
+  .inputs-login {
+    width : 100%;
+    margin-bottom:15px;
+    font-size : 20px;
+  }
+
+  .login_form{
+    width : 230px;
+  }
+
+  .button-login{
+    margin-bottom:15px;
+  }
+}
+
+@media only screen and (min-width : 320px ) and (max-width : 359px){
+  .main_logo{
+    width : 60%
+  }
+  .mobile-background{
+    justify-content : space-between;
+  }
+
+  .inputs-login {
+    width : 100%;
+    margin-bottom:15px;
+    font-size : 20px;
+  }
+
+  .login_form{
+    width : 200px;
+  }
+
+  .button-login{
+    margin-bottom:15px;
+  }
+  
+}

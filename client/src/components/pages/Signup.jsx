@@ -45,16 +45,16 @@ export default function Signup(props) {
   return (
     <div className="general-container">
     <div className="mobile-container">
-      <img src={Logo} alt="Maptee" className="main_logo" />
+      <img src={Logo} alt="Maptee" className="main_logo_signup" />
       <div className="mobile-background_signup">
-        <form>
+        <form className="signup_form">
           email <br />
           <input
             type="email"
             value={state.email}
             name="email"
             onChange={handleInputChange}
-            className="inputs"
+            className="inputs-login"
             placeholder="Your email address"
           />{" "}
           <br />
@@ -64,7 +64,7 @@ export default function Signup(props) {
             value={state.first_name}
             name="first_name"
             onChange={handleInputChange}
-            className="inputs"
+            className="inputs-login"
             placeholder="Your first name"
           />{" "}
           <br />
@@ -74,7 +74,7 @@ export default function Signup(props) {
             value={state.last_name}
             name="last_name"
             onChange={handleInputChange}
-            className="inputs"
+            className="inputs-login"
             placeholder="Your last name"
           />{" "}
           <br />
@@ -84,7 +84,7 @@ export default function Signup(props) {
             value={state.password}
             name="password"
             onChange={handleInputChange}
-            className="inputs"
+            className="inputs-login"
             placeholder="Your password"
           />{" "}
           <br />
@@ -94,7 +94,7 @@ export default function Signup(props) {
             value={state.city}
             name="city"
             onChange={handleInputChange}
-            className="inputs"
+            className="inputs-login"
             placeholder="Your city"
           />{" "}
           <br />
