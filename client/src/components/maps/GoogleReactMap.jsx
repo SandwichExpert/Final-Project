@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import api from "../../api";
 import mapStyles from "./mapStyles";
+import user_departure_marker from "../../assets/user_departure_marker.svg";
+import user_suggestion_marker from "../../assets/user_suggestion_marker.svg";
+import nonuser_departure_marker from "../../assets/nonuser_departure_marker.svg";
+import nonuser_suggestion_marker from "../../assets/nonuser_departure_marker.svg";
 import {
   GoogleMap,
   withScriptjs,
@@ -18,6 +22,20 @@ const {
 
 function Map(props) {
   // the departure on which is clicked will display extra information
+  const departure_user_marker = {
+    url: user_departure_marker,
+    scaledSize: new window.google.maps.Size(70, 70),
+    origin: new window.google.maps.Point(0, 0),
+    anchor: new window.google.maps.Point(32, 65),
+    labelOrigin: new window.google.maps.Point(40, 33)
+  };
+  const suggestion_user_marker = {
+    url: user_suggestion_marker,
+    scaledSize: new window.google.maps.Size(70, 70),
+    origin: new window.google.maps.Point(0, 0),
+    anchor: new window.google.maps.Point(32, 65),
+    labelOrigin: new window.google.maps.Point(40, 33)
+  };
   let zoomLocLat = props.currentUserDeparture.location.coordinates[0];
   let zoomLocLng = props.currentUserDeparture.location.coordinates[1];
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -27,19 +45,19 @@ function Map(props) {
     fullscreenControl: false,
     styles: mapStyles
   };
-  const UserMarker = (userSuggestion, color) => {
+  const UserMarker = (userSuggestion, suggestordepart) => {
     return (
       <Marker
-        icon={{
-          url: `http://maps.google.com/mapfiles/ms/icons/${color}-dot.png`,
-          scaledSize: new window.google.maps.Size(30, 30)
-        }}
+        icon={
+          (suggestordepart == "departure" && departure_user_marker) ||
+          suggestion_user_marker
+        }
         type_of={userSuggestion.type_of_location}
         position={{
           lat: Number(userSuggestion.location.coordinates[0]),
           lng: Number(userSuggestion.location.coordinates[1])
         }}
-        defaultLabel={userSuggestion.created_by.first_name.substr(0, 1)}
+        // defaultLabel={userSuggestion.created_by.first_name.substr(0, 1)}
         onClick={() => {
           setSelectedLocation(userSuggestion);
         }}
@@ -56,11 +74,12 @@ function Map(props) {
   ) => {
     let markerArray = [];
     AllNonUserSuggestions.forEach((suggestion, i) => {
+      var labeltext = suggestion.created_by.first_name.substr(0, 1);
       markerArray.push(
         <Marker
           icon={{
-            url: `http://maps.google.com/mapfiles/ms/icons/${color}-dot.png`,
-            scaledSize: new window.google.maps.Size(30, 30)
+            url: nonuser_suggestion_marker,
+            scaledSize: new window.google.maps.Size(60, 60)
           }}
           type_of={suggestion.type_of_location}
           key={i}
@@ -68,7 +87,12 @@ function Map(props) {
             lat: Number(suggestion.location.coordinates[0]),
             lng: Number(suggestion.location.coordinates[1])
           }}
-          defaultLabel={suggestion.created_by.first_name.substr(0, 1)}
+          label={{
+            text: labeltext,
+            color: "#eb3a44",
+            fontSize: "16px",
+            fontWeight: "bold"
+          }}
           onClick={() => {
             setSelectedLocation(suggestion);
           }}
@@ -90,8 +114,8 @@ function Map(props) {
       markerArray.push(
         <Marker
           icon={{
-            url: `http://maps.google.com/mapfiles/ms/icons/${color}-dot.png`,
-            scaledSize: new window.google.maps.Size(30, 30)
+            url: nonuser_departure_marker,
+            scaledSize: new window.google.maps.Size(60, 60)
           }}
           type_of={departure.type_of_location}
           key={i}
@@ -132,13 +156,13 @@ function Map(props) {
         {props.AllNonUserDepartures &&
           nonUserDepartureMarkers(
             props.AllNonUserDepartures,
-            "green",
+            "blue",
             setSelectedLocation
           )}
         {props.currentUserDeparture &&
-          UserMarker(props.currentUserDeparture, "yellow")}
+          UserMarker(props.currentUserDeparture, "departure")}
         {props.currentUserSuggestion &&
-          UserMarker(props.currentUserSuggestion, "blue")}
+          UserMarker(props.currentUserSuggestion, "suggestion")}
         {selectedLocation && (
           <div>
             <InfoWindow
@@ -247,7 +271,7 @@ function Map(props) {
         </div>
       </pre>
       {/* <pre>{JSON.stringify(center, 2, null)}</pre> */}
-      <pre>{JSON.stringify(selectedLocation, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(selectedLocation, null, 2)}</pre> */}
     </GoogleMap>
   );
 }

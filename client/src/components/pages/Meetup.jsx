@@ -82,12 +82,24 @@ export default function Meetup(props) {
     let suggestionNew = {
       location: { coordinates: [null, null] },
       type_of_location: null,
-      created_by: { first_name: null, last_name: null, avatar: null, _id: null }
+      created_by: {
+        first_name: null,
+        last_name: null,
+        avatar: null,
+        _id: null
+      },
+      meetupid: meetupId
     };
     let departureNew = {
       location: { coordinates: [null, null] },
       type_of_location: null,
-      created_by: { first_name: null, last_name: null, avatar: null, _id: null }
+      created_by: {
+        first_name: null,
+        last_name: null,
+        avatar: null,
+        _id: null
+      },
+      meetupid: meetupId
     };
     if (state.suggestion) {
       suggestionNew.location.coordinates[0] = state.suggestion.position.lat;
@@ -109,7 +121,10 @@ export default function Meetup(props) {
       departureNew.created_by.avatar = user.avatar;
       departureNew.created_by._id = user._id;
     }
-
+    submitNewDepartureAndSuggestion({
+      suggestion: suggestionNew,
+      departure: departureNew
+    });
     if (state.suggestion && state.departure) {
       setState({
         ...state,
@@ -118,10 +133,6 @@ export default function Meetup(props) {
         oldDeparture: departureNew,
         departure: null
       });
-      // submitNewDepartureAndSuggestion(suggestion, departure)
-      //   .then()
-      //   .catch();
-      // props.history.push(`/home`);
     } else if (state.suggestion) {
       setState({ ...state, oldSuggestion: suggestionNew, suggestion: null });
     } else if (state.departure) {
@@ -135,33 +146,18 @@ export default function Meetup(props) {
     markerRefresh ? setMarkerRefresh(false) : setMarkerRefresh(true);
   }
 
-  async function submitNewDepartureAndSuggestion(suggestion, departure) {
-    let createdSuggestion;
-    let createdDeparture;
-    if (suggestion) {
-      const infoforSuggestion = { ...state.suggestion, meetupid: meetupId };
-      createdSuggestion = await api.addSuggestion(infoforSuggestion);
+  function submitNewDepartureAndSuggestion({ suggestion, departure }) {
+    if (suggestion.type_of_location) {
+      api
+        .addSuggestion(suggestion)
+        .then(createdSuggestion => console.log("suggestion added success"))
+        .catch(err => console.log("error making suggestion"));
     }
-    if (departure) {
-      const infoforDeparture = { ...state.departure, meetupid: meetupId };
-      createdDeparture = await api.addDeparture(infoforDeparture);
-    }
-    console.log("hhhhh", createdDeparture, createdSuggestion, state);
-    if (departure && suggestion) {
-      setState({
-        oldDeparture: createdDeparture,
-        oldSuggestion: createdSuggestion,
-        suggestion: null,
-        departure: null
-      });
-    } else if (departure) {
-      setState({ ...state, oldDeparture: createdDeparture, departure: null });
-    } else if (suggestion) {
-      setState({
-        ...state,
-        oldSuggestion: createdSuggestion,
-        suggestion: null
-      });
+    if (departure.type_of_location) {
+      api
+        .addDeparture(departure)
+        .then(createdDeparture => console.log("departure added success"))
+        .catch(err => console.log("error making departure"));
     }
   }
 

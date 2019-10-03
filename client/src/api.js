@@ -209,12 +209,12 @@ export default {
       .catch(errHandler);
   },
 
-  addDeparture(meetupmapdepartureinfo) {
-    const meetupId = meetupmapdepartureinfo.meetupid;
-    const lat = meetupmapdepartureinfo.position.lat;
-    const lng = meetupmapdepartureinfo.position.lng;
-    const type_of = "departure";
-    return service.put(`/departure-location/${meetupId}`, {
+  addDeparture(departureInfo) {
+    const meetupId = departureInfo.meetupid;
+    const lat = Number(departureInfo.location.coordinates[0]);
+    const lng = Number(departureInfo.location.coordinates[1]);
+    const type_of = departureInfo.type_of_location;
+    return service.put(`/meetups/departure-location/${meetupId}`, {
       type_of,
       lat,
       lng,
@@ -222,14 +222,13 @@ export default {
     });
   },
 
-  addSuggestion(meetupmapsuggestioninfo) {
-    const meetupId = meetupmapsuggestioninfo.meetupid;
-    const lat = meetupmapsuggestioninfo.position.lat;
-    const lng = meetupmapsuggestioninfo.position.lng;
+  addSuggestion(suggestionInfo) {
+    const meetupId = suggestionInfo.meetupid;
+    const lat = Number(suggestionInfo.location.coordinates[0]);
+    const lng = Number(suggestionInfo.location.coordinates[1]);
     // this will give us the google maps name and the type
     // of location
-    const type_of =
-      meetupmapsuggestioninfo.name + "," + meetupmapsuggestioninfo.types[0];
+    const type_of = suggestionInfo.type_of_location;
     return service
       .put(`/meetups/suggested-location/${meetupId}`, {
         type_of,
