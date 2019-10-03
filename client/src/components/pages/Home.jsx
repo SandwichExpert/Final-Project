@@ -3,11 +3,12 @@ import api from "../../api";
 import UserDisplay from "../sub-components/UserDisplay";
 import moment from "moment";
 
-export default function Home() {
+export default function Home(props) {
   const [user, setUser] = useState("");
   const [friends, setFriends] = useState("");
   const [count, setCount] = useState("");
   const [meetups, setMeetups] = useState("");
+
   useEffect(() => {
     api.getUserInfo().then(userInfo => {
       console.log(userInfo);
@@ -18,11 +19,18 @@ export default function Home() {
       setMeetups(filterMeetups);
       userInfo._meetups = undefined;
       setUser(userInfo);
+      console.log("here", meetups);
     });
   }, []);
 
-  function filteredMeetups(meetups){
-      return meetups.sort((a,b)=> new moment(a.meetup_date)- new moment(b.meetup_date))
+  function filteredMeetups(meetups) {
+    return meetups.sort(
+      (a, b) => new moment(a.meetup_date) - new moment(b.meetup_date)
+    );
+  }
+
+  if (!user) {
+    return <div>does nothing</div>;
   }
 
   return (

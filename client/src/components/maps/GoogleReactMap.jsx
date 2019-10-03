@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import api from "../../api";
+import { Link } from "react-router-dom";
 import mapStyles from "./mapStyles";
 import user_departure_marker from "../../assets/user_departure_marker.svg";
 import user_suggestion_marker from "../../assets/user_suggestion_marker.svg";
@@ -37,30 +37,28 @@ function Map(props) {
     labelOrigin: new window.google.maps.Point(40, 33)
   };
   let zoomLocLat;
- let zoomLocLng;
+  let zoomLocLng;
+  if (props.currentUserDeparture) {
+    zoomLocLat = props.currentUserDeparture.location.coordinates[0];
+    zoomLocLng = props.currentUserDeparture.location.coordinates[1];
+  } else {
+    const { lat, lng } = calculateAveragePosition(props.AllNonUserDepartures);
+    zoomLocLat = Number(lat);
+    zoomLocLng = Number(lng);
+  }
 
- if (props.currentUserDeparture) {
+  function calculateAveragePosition(departures) {
+    let avgLat = 0;
+    let avgLng = 0;
+    departures.forEach(departure => {
+      avgLat += departure.location.coordinates[0];
+      avgLng += departure.location.coordinates[1];
+    });
+    avgLat /= departures.length;
+    avgLng /= departures.length;
+    return { lat: avgLat, lng: avgLng };
+  }
 
-   zoomLocLat = props.currentUserDeparture.location.coordinates[0];
-   zoomLocLng = props.currentUserDeparture.location.coordinates[1];
- } else {
-   const { lat, lng } = calculateAveragePosition(
-     props.AllNonUserDepartures
-   );
-   zoomLocLat = Number(lat);
-   zoomLocLng = Number(lng);
- }
- function calculateAveragePosition(departures) {
-   let avgLat = 0;
-   let avgLng = 0;
-   departures.forEach(departure => {
-     avgLat += departure.location.coordinates[0];
-     avgLng += departure.location.coordinates[1];
-   });
-   avgLat /= departures.length;
-   avgLng /= departures.length;
-   return { lat: avgLat, lng: avgLng };
- }
   const [selectedLocation, setSelectedLocation] = useState(null);
   const googlemapOptions = {
     mapTypeControl: false,
@@ -68,6 +66,7 @@ function Map(props) {
     fullscreenControl: false,
     styles: mapStyles
   };
+
   const UserMarker = (userSuggestion, suggestordepart) => {
     return (
       <Marker
@@ -261,37 +260,37 @@ function Map(props) {
             />
           );
         })}
-        <div className="searchbox-wrapper">
-          <SearchBox
-            className="departure-searchbox"
-            ref={props.onSearchBoxMountedTwo}
-            controlPosition={window.google.maps.ControlPosition.TOP_CENTER}
-            bounds={props.bounds}
-            // listen for the event when the user selects a query
-            onPlacesChanged={props.onPlacesChangedTwo}
-          >
-            <input
-              placeholder="set a new departure"
-              type="text"
-              className="departure-input"
-            />
-          </SearchBox>
-          <SearchBox
-            className="suggestion-searchbox"
-            ref={props.onSearchBoxMounted}
-            controlPosition={window.google.maps.ControlPosition.TOP_CENTER}
-            bounds={props.bounds}
-            // listen for the event when the user selects
-            // a prediction
-            onPlacesChanged={props.onPlacesChanged}
-          >
-            <input
-              placeholder="make a new suggestion"
-              type="text"
-              className="suggestion-input"
-            />
-          </SearchBox>
-        </div>
+
+        <SearchBox
+          className="departure-searchbox"
+          ref={props.onSearchBoxMountedTwo}
+          controlPosition={window.google.maps.ControlPosition.TOP_LEFT}
+          bounds={props.bounds}
+          // listen for the event when the user selects a query
+          onPlacesChanged={props.onPlacesChangedTwo}
+        >
+          <input
+            placeholder="set a new departure"
+            type="text"
+            className="departure-input"
+          />
+        </SearchBox>
+
+        <SearchBox
+          className="suggestion-searchbox"
+          ref={props.onSearchBoxMounted}
+          controlPosition={window.google.maps.ControlPosition.TOP_LEFT}
+          bounds={props.bounds}
+          // listen for the event when the user selects
+          // a prediction
+          onPlacesChanged={props.onPlacesChanged}
+        >
+          <input
+            placeholder="make a new suggestion"
+            type="text"
+            className="suggestion-input"
+          />
+        </SearchBox>
       </pre>
       {/* <pre>{JSON.stringify(center, 2, null)}</pre> */}
       {/* <pre>{JSON.stringify(selectedLocation, null, 2)}</pre> */}
@@ -311,13 +310,17 @@ export default function GoogleReactMap(props) {
     newDepartures: []
   });
   const refs = {};
-
   useEffect(() => {
     // upon loading the current departures and suggestions
     // are called upon and set in this state
     getCurrentLocation();
     console.log(props.userSuggestionsDepartures, "hehehehehehebcoeucbeocjbs");
     setLoading(false);
+    return () => {
+      console.log(refs);
+      // refs.searchBox.removeListener("places_changed", onPlacesChanged);
+      // refs.searchBoxTwo.removeListener("places_changed", onPlacesChangedTwo);
+    };
   }, [props.markerRefresh]);
 
   useEffect(() => {
@@ -328,6 +331,7 @@ export default function GoogleReactMap(props) {
 
   const onSearchBoxMounted = ref => (refs.searchBox = ref);
   const onSearchBoxMountedTwo = ref => (refs.searchBoxTwo = ref);
+
   const onMapMounted = ref => (refs.map = ref);
   // we are going to update the bounds of the
   // bounds of everytime they change in the map
@@ -338,7 +342,7 @@ export default function GoogleReactMap(props) {
     // get bounds returns lat lng bounds LatLngBounds([sw, ne])
   };
 
-  const onPlacesChanged = () => {
+  function onPlacesChanged() {
     const places = refs.searchBox.getPlaces();
     const bounds = new window.google.maps.LatLngBounds();
     // if no places found for the query stop
@@ -386,7 +390,7 @@ export default function GoogleReactMap(props) {
       rating: place.rating
     }));
     setState({ ...state, newSuggestions: newMarkers });
-  };
+  }
 
   const onPlacesChangedTwo = () => {
     const places = refs.searchBoxTwo.getPlaces();
@@ -490,21 +494,6 @@ export default function GoogleReactMap(props) {
       });
     }
     return null;
-  }
-
-  function calculateAveragePosition(departures) {
-    if (departures.length == 0) {
-      return null;
-    }
-    let avgLat = 0;
-    let avgLng = 0;
-    departures.forEach(departure => {
-      avgLat += departure.location.coordinates[0];
-      avgLng += departure.location.coordinates[1];
-    });
-    avgLat /= departures.length;
-    avgLng /= departures.length;
-    return { lat: avgLat, lng: avgLng };
   }
 
   function handleSuggestionMarkerClick(e, name) {

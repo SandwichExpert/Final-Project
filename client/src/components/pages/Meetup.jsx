@@ -197,6 +197,7 @@ export default function Meetup(props) {
           <Link to={"/home/" + user._id}>{user.first_name}</Link>
         </div>
       </div>
+      <div className></div>
       {(state.suggestion || state.departure) && (
         <div className="suggestion-departure-wrapper">
           <div className="button-suggestion-departure-display">

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import api from "../../api";
 import DatePicker from "react-datepicker";
 import LocationSearchBox from "../maps/LocationSearchBox";
 import { Link } from "react-router-dom";
-import moment from 'moment';
+import moment from "moment";
 
 export default function CreateMeetup(props) {
   const [state, setState] = useState({
@@ -14,23 +14,12 @@ export default function CreateMeetup(props) {
   });
   const [currentLocation, setCurrentLocation] = useState(null);
   const [useCurrentLocation, setChecked] = useState(false);
-  // const DateInput = () => {
-  //   const [startDate, setStartDate] = useState(new Date());
-  //   return (
-  //     <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
-  //   );
-  // };
+  const inputRef = useRef(null);
+
   useEffect(() => {
     const returnedLocation = getCurrentLocation();
     console.log(returnedLocation);
-
-    // setState({
-    //   ...state,
-    //   departure_location: {
-    //     lat: returnedLocation.lat,
-    //     lng: returnedLocation.lng
-    //   }
-    // });
+    inputRef.current.focus();
   }, []);
 
   function handleCheck(e) {
@@ -101,7 +90,7 @@ export default function CreateMeetup(props) {
         </Link>
       </div>
       {/* <div className="mobile-background"> */}
-      <form className="creation_form">
+      <div>
         <label name="name" className="creation-label">
           Event Name
         </label>
@@ -114,6 +103,7 @@ export default function CreateMeetup(props) {
           value={state.name}
           onChange={handleInputChange}
           name="name"
+          ref={inputRef}
         />
         <br />
         <label className="creation-label" name="meetup_date">
@@ -148,7 +138,7 @@ export default function CreateMeetup(props) {
         {/* <label className="creation-label" name="departure_location">
           Leaving from?
         </label> */}
-        <br/>
+        <br />
         <LocationSearchBox
           suggestion={false}
           setInputFormState={setState}
@@ -169,7 +159,7 @@ export default function CreateMeetup(props) {
           <b>Create</b>
         </button>
         {/* <pre>{JSON.stringify(state,null,2)}</pre> */}
-      </form>
+      </div>
       <br />
       {/* <pre>{JSON.stringify(state, null, 2)}</pre>
       <pre>{JSON.stringify(useCurrentLocation, null, 2)}</pre>
