@@ -4,7 +4,8 @@ import mapStyles from "./mapStyles";
 import user_departure_marker from "../../assets/user_departure_marker.svg";
 import user_suggestion_marker from "../../assets/user_suggestion_marker.svg";
 import nonuser_departure_marker from "../../assets/nonuser_departure_marker.svg";
-import nonuser_suggestion_marker from "../../assets/nonuser_departure_marker.svg";
+import nonuser_suggestion_marker from "../../assets/nonuser_suggestion_marker.svg";
+import picked_suggestion_marker from "../../assets/picked_suggestion_marker.svg";
 import {
   GoogleMap,
   withScriptjs,
@@ -109,10 +110,9 @@ function Map(props) {
   const UserMarker = (userSugOrDep, suggestordepart) => {
     return (
       <Marker
-        votes={
-          suggestordepart != "departure" && (userSugOrDep.votes.length || 0)
-        }
+        votes={suggestordepart != "departure" && userSugOrDep.votes.length}
         icon={
+          (userSugOrDep.votes.length && picked_suggestion_marker) ||
           (suggestordepart == "departure" && departure_user_marker) ||
           suggestion_user_marker
         }
@@ -138,11 +138,17 @@ function Map(props) {
     let markerArray = [];
     AllNonUserSuggestions.forEach((suggestion, i) => {
       var labeltext = suggestion.created_by.first_name.substr(0, 1);
+      var icontoDisplay;
+      if (suggestion.votes.length) {
+        icontoDisplay = picked_suggestion_marker;
+      } else {
+        icontoDisplay = nonuser_suggestion_marker;
+      }
       markerArray.push(
         <Marker
           votes={suggestion.votes.length || 0}
           icon={{
-            url: nonuser_suggestion_marker,
+            url: icontoDisplay,
             scaledSize: new window.google.maps.Size(60, 60)
           }}
           type_of={suggestion.type_of_location}
@@ -151,12 +157,12 @@ function Map(props) {
             lat: Number(suggestion.location.coordinates[0]),
             lng: Number(suggestion.location.coordinates[1])
           }}
-          label={{
-            text: labeltext,
-            color: "#eb3a44",
-            fontSize: "16px",
-            fontWeight: "bold"
-          }}
+          // label={{
+          //   text: labeltext,
+          //   color: "#eb3a44",
+          //   fontSize: "16px",
+          //   fontWeight: "bold"
+          // }}
           onClick={() => {
             setSelectedLocation(suggestion);
           }}
