@@ -8,7 +8,7 @@ import {
   Marker,
   InfoWindow
 } from "react-google-maps";
-import { prototype } from "stream";
+
 const {
   MarkerWithLabel
 } = require("react-google-maps/lib/components/addons/MarkerWithLabel");
@@ -36,14 +36,14 @@ function Map(props) {
         }}
         type_of={userSuggestion.type_of_location}
         position={{
-          lat: userSuggestion.location.coordinates[0],
-          lng: userSuggestion.location.coordinates[1]
+          lat: Number(userSuggestion.location.coordinates[0]),
+          lng: Number(userSuggestion.location.coordinates[1])
         }}
         defaultLabel={userSuggestion.created_by.first_name.substr(0, 1)}
         onClick={() => {
           setSelectedLocation(userSuggestion);
         }}
-        id={userSuggestion._id}
+        // id={userSuggestion._id}
         creator={`${userSuggestion.created_by.first_name} ${userSuggestion.created_by.last_name}`}
       ></Marker>
     );
@@ -65,8 +65,8 @@ function Map(props) {
           type_of={suggestion.type_of_location}
           key={i}
           position={{
-            lat: suggestion.location.coordinates[0],
-            lng: suggestion.location.coordinates[1]
+            lat: Number(suggestion.location.coordinates[0]),
+            lng: Number(suggestion.location.coordinates[1])
           }}
           defaultLabel={suggestion.created_by.first_name.substr(0, 1)}
           onClick={() => {
@@ -122,129 +122,130 @@ function Map(props) {
       onBoundsChanged={props.onBoundsChanged}
       // we want our searches to be relevant to the current bounds
     >
-      <div className="searchbox-wrapper">
-        <SearchBox
-          className="departure-searchbox"
-          ref={props.onSearchBoxMountedTwo}
-          controlPosition={window.google.maps.ControlPosition.RIGHT_TOP}
-          bounds={props.bounds}
-          // listen for the event when the user selects a query
-          onPlacesChanged={props.onPlacesChangedTwo}
-        >
-          <input
-            placeholder="set a new departure"
-            type="text"
-            className="departure-input"
-          />
-        </SearchBox>
-        <SearchBox
-          className="suggestion-searchbox"
-          ref={props.onSearchBoxMounted}
-          controlPosition={window.google.maps.ControlPosition.RIGHT_TOP}
-          bounds={props.bounds}
-          // listen for the event when the user selects
-          // a prediction
-          onPlacesChanged={props.onPlacesChanged}
-        >
-          <input
-            placeholder="make a new suggestion"
-            type="text"
-            className="suggestion-input"
-          />
-        </SearchBox>
-      </div>
-      {props.AllNonUserSuggestions &&
-        nonUserSuggestionMarkers(
-          props.AllNonUserSuggestions,
-          "red",
-          setSelectedLocation
+      <pre className="markers">
+        {props.AllNonUserSuggestions &&
+          nonUserSuggestionMarkers(
+            props.AllNonUserSuggestions,
+            "red",
+            setSelectedLocation
+          )}
+        {props.AllNonUserDepartures &&
+          nonUserDepartureMarkers(
+            props.AllNonUserDepartures,
+            "green",
+            setSelectedLocation
+          )}
+        {props.currentUserDeparture &&
+          UserMarker(props.currentUserDeparture, "yellow")}
+        {props.currentUserSuggestion &&
+          UserMarker(props.currentUserSuggestion, "blue")}
+        {selectedLocation && (
+          <div>
+            <InfoWindow
+              position={{
+                lat: selectedLocation.location.coordinates[0],
+                lng: selectedLocation.location.coordinates[1]
+              }}
+              onCloseClick={() => {
+                setSelectedLocation(null);
+              }}
+            >
+              {onSelectionInfoDisplay(selectedLocation)}
+            </InfoWindow>
+          </div>
         )}
-      {props.AllNonUserDepartures &&
-        nonUserDepartureMarkers(
-          props.AllNonUserDepartures,
-          "green",
-          setSelectedLocation
-        )}
-      {props.currentUserDeparture &&
-        UserMarker(props.currentUserDeparture, "yellow")}
-      {props.currentUserSuggestion &&
-        UserMarker(props.currentUserSuggestion, "blue")}
-      {selectedLocation && (
-        <div>
-          <InfoWindow
-            position={{
-              lat: selectedLocation.location.coordinates[0],
-              lng: selectedLocation.location.coordinates[1]
-            }}
-            onCloseClick={() => {
-              setSelectedLocation(null);
-            }}
+        {props.newSuggestions.map((marker, i) => {
+          return (
+            <Marker
+              // this changes the state defined in Meetup.jsx
+              onClick={e => {
+                props.setUserSuggestionsDepartures({
+                  ...props.userSuggestionsDepartures,
+                  suggestion: {
+                    name: marker.name,
+                    types: marker.types,
+                    position: marker.position,
+                    rating: marker.rating
+                  }
+                });
+                props.handleNewSuggestionClick(e, marker.name);
+              }}
+              defaultTitle={marker.name}
+              icon={{
+                url: `${marker.icon}`,
+                scaledSize: new window.google.maps.Size(16, 16),
+                size: new window.google.maps.Size(71, 71),
+                origin: new window.google.maps.Point(0, 0),
+                anchor: new window.google.maps.Point(17, 34)
+              }}
+              key={i}
+              position={marker.position}
+              animation={window.google.maps.Animation.DROP}
+            />
+          );
+        })}
+        {props.newDepartures.map((marker, i) => {
+          return (
+            <Marker
+              // this changes the state defined in Meetup.jsx
+              onClick={e => {
+                props.setUserSuggestionsDepartures({
+                  ...props.userSuggestionsDepartures,
+                  departure: {
+                    name: marker.name,
+                    types: marker.types,
+                    position: marker.position,
+                    rating: marker.rating
+                  }
+                });
+                props.handleNewSuggestionClick(e, marker.name);
+              }}
+              defaultTitle={marker.name}
+              icon={{
+                url: `${marker.icon}`,
+                scaledSize: new window.google.maps.Size(16, 16),
+                size: new window.google.maps.Size(71, 71),
+                origin: new window.google.maps.Point(0, 0),
+                anchor: new window.google.maps.Point(17, 34)
+              }}
+              key={i}
+              position={marker.position}
+              animation={window.google.maps.Animation.DROP}
+            />
+          );
+        })}
+        <div className="searchbox-wrapper">
+          <SearchBox
+            className="departure-searchbox"
+            ref={props.onSearchBoxMountedTwo}
+            controlPosition={window.google.maps.ControlPosition.TOP_CENTER}
+            bounds={props.bounds}
+            // listen for the event when the user selects a query
+            onPlacesChanged={props.onPlacesChangedTwo}
           >
-            {onSelectionInfoDisplay(selectedLocation)}
-          </InfoWindow>
+            <input
+              placeholder="set a new departure"
+              type="text"
+              className="departure-input"
+            />
+          </SearchBox>
+          <SearchBox
+            className="suggestion-searchbox"
+            ref={props.onSearchBoxMounted}
+            controlPosition={window.google.maps.ControlPosition.TOP_CENTER}
+            bounds={props.bounds}
+            // listen for the event when the user selects
+            // a prediction
+            onPlacesChanged={props.onPlacesChanged}
+          >
+            <input
+              placeholder="make a new suggestion"
+              type="text"
+              className="suggestion-input"
+            />
+          </SearchBox>
         </div>
-      )}
-      {props.newSuggestions.map((marker, i) => {
-        return (
-          <Marker
-            // this changes the state defined in Meetup.jsx
-            onClick={e => {
-              props.setUserSuggestionsDepartures({
-                ...props.userSuggestionsDepartures,
-                suggestion: {
-                  name: marker.name,
-                  types: marker.types,
-                  position: marker.position,
-                  rating: marker.rating
-                }
-              });
-              props.handleNewSuggestionClick(e, marker.name);
-            }}
-            defaultTitle={marker.name}
-            icon={{
-              url: `${marker.icon}`,
-              scaledSize: new window.google.maps.Size(16, 16),
-              size: new window.google.maps.Size(71, 71),
-              origin: new window.google.maps.Point(0, 0),
-              anchor: new window.google.maps.Point(17, 34)
-            }}
-            key={i}
-            position={marker.position}
-            animation={window.google.maps.Animation.DROP}
-          />
-        );
-      })}
-      {props.newDepartures.map((marker, i) => {
-        return (
-          <Marker
-            // this changes the state defined in Meetup.jsx
-            onClick={e => {
-              props.setUserSuggestionsDepartures({
-                ...props.userSuggestionsDepartures,
-                departure: {
-                  name: marker.name,
-                  types: marker.types,
-                  position: marker.position,
-                  rating: marker.rating
-                }
-              });
-              props.handleNewSuggestionClick(e, marker.name);
-            }}
-            defaultTitle={marker.name}
-            icon={{
-              url: `${marker.icon}`,
-              scaledSize: new window.google.maps.Size(16, 16),
-              size: new window.google.maps.Size(71, 71),
-              origin: new window.google.maps.Point(0, 0),
-              anchor: new window.google.maps.Point(17, 34)
-            }}
-            key={i}
-            position={marker.position}
-            animation={window.google.maps.Animation.DROP}
-          />
-        );
-      })}
-
+      </pre>
       {/* <pre>{JSON.stringify(center, 2, null)}</pre> */}
       <pre>{JSON.stringify(selectedLocation, null, 2)}</pre>
     </GoogleMap>
@@ -269,13 +270,14 @@ export default function GoogleReactMap(props) {
     // are called upon and set in this state
     getCurrentLocation();
     console.log(props.userSuggestionsDepartures, "hehehehehehebcoeucbeocjbs");
-    // const lat =
-    //   props.userSuggestionsDepartures.oldDeparture.location.coordinates[0];
-    // const lng =
-    //   props.userSuggestionsDepartures.oldDeparture.location.coordinates[1];
-    // setAverage({ lat, lng });
     setLoading(false);
-  }, []);
+  }, [props.markerRefresh]);
+
+  useEffect(() => {
+    // upon loading the current departures and suggestions
+    // are called upon and set in this state
+    clearOldMarkers();
+  }, [props.markerRefresh]);
 
   const onSearchBoxMounted = ref => (refs.searchBox = ref);
   const onSearchBoxMountedTwo = ref => (refs.searchBoxTwo = ref);
@@ -494,6 +496,10 @@ export default function GoogleReactMap(props) {
   }
 
   function handleMouseOver(e) {}
+
+  function clearOldMarkers() {
+    setState({ ...state, newSuggestions: [], newDepartures: [] });
+  }
 
   if (loading) {
     return <h1>Loading ...</h1>;

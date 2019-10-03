@@ -103,9 +103,8 @@
   background-color: #ff3252d1;
   color: white;
   border: 1px solid transparent;
-  width: 240px;
+  width: 30%;
   height: 32px;
-
   padding: 0px 12px;
   border-radius: 3px;
   box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 6px;
@@ -115,19 +114,16 @@
   overflow: hidden;
   margin-bottom: 2%;
   z-index: 0;
-  position: absolute;
-  top: 0px;
-  left: 0px;
   margin-left: 2%;
+  margin-top: 25%;
 }
 
 .departure-input {
-  margin-top: 20%;
   box-sizing: border-box;
   background-color: #95ff70d1;
   color: white;
   border: 1px solid transparent;
-  width: 240px;
+  width: 30%;
   height: 32px;
   padding: 0px 12px;
   border-radius: 3px;
@@ -138,10 +134,8 @@
   overflow: hidden;
   margin-bottom: 2%;
   z-index: 0;
-  position: absolute;
-  top: 0px;
-  left: 0px;
   margin-left: 2%;
+  margin-top: 25%;
 }
 
 .suggestion-departure-wrapper {
@@ -149,8 +143,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  top: 80%;
-  position: absolute;
+  flex-direction: columns;
+  // top: 80%;
+  // position: absolute;
+}
+
+.searchbox-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  // top: 80%;
+  // position: absolute;
 }
 
 .button-suggestion-departure-display {

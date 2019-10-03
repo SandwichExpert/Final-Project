@@ -14,6 +14,7 @@ export default function Meetup(props) {
   const meetupId = props.match.params.meetupId;
   const [meetup, setMeetup] = useState(null);
   const [user, setUser] = useState("");
+  const [markerRefresh, setMarkerRefresh] = useState(false);
   const [allNonUserDepartures, setAllNonUserDepartures] = useState(null);
   const [allNonUserSuggestions, setAllNonUserSuggestions] = useState(null);
   const [state, setState] = useState({
@@ -78,34 +79,60 @@ export default function Meetup(props) {
   }
 
   function handleSubmitClick(e) {
-    let suggestion = null;
-    let departure = null;
     let suggestionNew = {
-      location: { coordinates: null },
+      location: { coordinates: [null, null] },
       type_of_location: null,
-      created_by: { first_name: null, last_name: null }
+      created_by: { first_name: null, last_name: null, avatar: null, _id: null }
     };
-    suggestionNew.location.coordinates = {
-      lat: Number(state.suggestion.position.lat),
-      lng: Number(state.suggestion.position.lng)
+    let departureNew = {
+      location: { coordinates: [null, null] },
+      type_of_location: null,
+      created_by: { first_name: null, last_name: null, avatar: null, _id: null }
     };
-    suggestionNew.type_of_location = `${state.suggestion.name} ${
-      state.suggestion.types[0]
-    }`;
-    suggestionNew.created_by.first_name = user.first_name;
-    suggestionNew.created_by.last_name = user.last_name;
     if (state.suggestion) {
-      setState({ ...state, oldSuggestion: suggestionNew });
+      suggestionNew.location.coordinates[0] = state.suggestion.position.lat;
+      suggestionNew.location.coordinates[1] = state.suggestion.position.lng;
+      suggestionNew.type_of_location = `${state.suggestion.name} ${
+        state.suggestion.types[0]
+      }`;
+      suggestionNew.created_by.first_name = user.first_name;
+      suggestionNew.created_by.last_name = user.last_name;
+      suggestionNew.created_by.avatar = user.avatar;
+      suggestionNew.created_by._id = user._id;
     }
-    if (state.departure) departure = state.departure;
-    // submitNewDepartureAndSuggestion(suggestion, departure)
-    //   .then()
-    //   .catch();
-    // props.history.push(`/home`);
+    if (state.departure) {
+      departureNew.location.coordinates[0] = state.departure.position.lat;
+      departureNew.location.coordinates[1] = state.departure.position.lng;
+      departureNew.type_of_location = "departure";
+      departureNew.created_by.first_name = user.first_name;
+      departureNew.created_by.last_name = user.last_name;
+      departureNew.created_by.avatar = user.avatar;
+      departureNew.created_by._id = user._id;
+    }
+
+    if (state.suggestion && state.departure) {
+      setState({
+        ...state,
+        oldSuggestion: suggestionNew,
+        suggestion: null,
+        oldDeparture: departureNew,
+        departure: null
+      });
+      // submitNewDepartureAndSuggestion(suggestion, departure)
+      //   .then()
+      //   .catch();
+      // props.history.push(`/home`);
+    } else if (state.suggestion) {
+      setState({ ...state, oldSuggestion: suggestionNew, suggestion: null });
+    } else if (state.departure) {
+      setState({ ...state, oldDeparture: departureNew, departure: null });
+    }
+    markerRefresh ? setMarkerRefresh(false) : setMarkerRefresh(true);
   }
 
   function handleRemoveClick(e) {
     setState({ ...state, suggestion: null, departure: null });
+    markerRefresh ? setMarkerRefresh(false) : setMarkerRefresh(true);
   }
 
   async function submitNewDepartureAndSuggestion(suggestion, departure) {
@@ -153,6 +180,7 @@ export default function Meetup(props) {
         AllNonUserDepartures={allNonUserDepartures}
         AllNonUserSuggestions={allNonUserSuggestions}
         meetupId={meetupId}
+        markerRefresh={markerRefresh}
         style={{
           zIndex: 0
         }}
