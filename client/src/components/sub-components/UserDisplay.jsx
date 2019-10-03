@@ -71,7 +71,7 @@ export default function UserDisplay(props) {
         </button>
         <button className="buttons__meetup">
           <Link to="/createmeetup">
-            <b>Create <i class="fas fa-plus"></i></b>
+            <b>Create <i className="fas fa-plus"></i></b>
           </Link>
         </button>
       </div>

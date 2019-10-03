@@ -43,7 +43,6 @@ export default function MeetupTable(props) {
 
   function removeUser(meetupId) {
     const userId = props.user._id;
-
     console.log(props.user._id, meetupId);
     api
       .removeUserFromMeetup(userId, meetupId)
@@ -165,20 +164,18 @@ export default function MeetupTable(props) {
                   <Link to={"/home/" + props.user._id}>
                     <button
                       onClick={e => {
-                        const meetupId = meetup._id;
-                        console.log(meetupId);
-
-                        removeUser(meetupId);
+                        const parent = e.target.parentElement.parentElement.parentElement.parentElement
+                          const parentOfParent = e.target.parentElement.parentElement.parentElement.parentElement.parentElement
+                          const meetupId = meetup._id;
+                          console.log(meetupId);
+                          console.log(e.target)
+                          parentOfParent.removeChild(parent)
+                          removeUser(meetupId);
                       }}
                       style={{ border: "none", background: "none" }}
                     >
                       <i
                         className="fas fa-user-minus"
-                        onClick={e => {
-                          const meetupId = meetup._id;
-                          console.log(meetupId);
-                          removeUser(meetupId);
-                        }}
                         style={{ fontSize: "1em", textAlign: "center" }}
                       ></i>
                     </button>
