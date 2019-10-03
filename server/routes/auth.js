@@ -11,7 +11,7 @@ const bcryptSalt = 10
 router.post('/signup', uploader.single('avatar'), (req, res, next) => {
   let avatar_url = ''
   req.file ? (avatar_url = req.file.url) : null
-  const { email, password, first_name, last_name } = req.body
+  const { email, password, first_name, last_name, city } = req.body
   if (!email || !password || !first_name || !last_name) {
     res.status(400).json({ message: 'fill in all required fields' })
     return
@@ -36,6 +36,7 @@ router.post('/signup', uploader.single('avatar'), (req, res, next) => {
         first_name,
         last_name,
         avatar: avatar_url,
+        city
       })
       return newUser.save()
     })
