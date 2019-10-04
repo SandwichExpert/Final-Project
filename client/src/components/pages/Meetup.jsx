@@ -16,6 +16,7 @@ export default function Meetup(props) {
   const [allNonUserSuggestions, setAllNonUserSuggestions] = useState(null);
   const [voteRanking, setVoteRanking] = useState([]);
   const [displayVote, setDisplayVote] = useState(false);
+  const [highVoteId, setHighVoteId] = useState("");
   const [state, setState] = useState({
     oldDeparture: null,
     oldSuggestion: null,
@@ -72,24 +73,30 @@ export default function Meetup(props) {
 
   function createVotingRankingState(AllSuggestions) {
     let SuggestionArray = [];
-
+    let highestVotesId = null;
+    let highestVotes = 0;
     AllSuggestions.forEach(suggestion => {
       console.log("a suggestion", suggestion);
+      if (suggestion.votes.length > highestVotes) {
+        highestVotes = suggestion.votes.length;
+        highestVotesId = suggestion._id;
+      }
       let suggestionAdd = {};
       suggestionAdd.name = suggestion.type_of_location;
       suggestionAdd.amount_of_votes = suggestion.votes.length;
-      console.log(suggestionAdd, "suggest add");
+      // console.log(suggestionAdd, "suggest add");
       SuggestionArray.push(suggestionAdd);
     });
-    console.log(SuggestionArray, "suggest arr");
+    // console.log(SuggestionArray, "suggest arr");
     let SuggestionArraySorted = SuggestionArray.sort((a, b) => {
       var votesA = a.amount_of_votes;
       var votesB = b.amount_of_votes;
-      if (votesA < votesB) return -1;
-      if (votesB > votesA) return 1;
+      if (votesA < votesB) return 1;
+      if (votesB > votesA) return -1;
     });
-    console.log(SuggestionArraySorted);
+    // console.log(SuggestionArraySorted);
     setVoteRanking(SuggestionArraySorted);
+    setHighVoteId(highestVotesId);
   }
 
   function dateDisplay(dateString) {
@@ -227,6 +234,7 @@ export default function Meetup(props) {
         AllNonUserSuggestions={allNonUserSuggestions}
         meetupId={meetupId}
         markerRefresh={markerRefresh}
+        highVoteId={highVoteId}
         // voteRanking={voteRanking}
         style={{
           zIndex: 0

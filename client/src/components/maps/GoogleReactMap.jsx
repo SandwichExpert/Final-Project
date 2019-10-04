@@ -65,7 +65,7 @@ function Map(props) {
     return (
       <div>
         {selectedLoc.type_of_location == "departure" && (
-          <span>
+          <span className="information-disp">
             departure of {selectedLoc.created_by.first_name}{" "}
             {selectedLoc.created_by.last_name}{" "}
             <img
@@ -77,7 +77,7 @@ function Map(props) {
         )}
         {selectedLoc.type_of_location != "departure" && (
           <div>
-            <span>
+            <span className="information-disp">
               suggestion from {selectedLoc.created_by.first_name}{" "}
               {selectedLoc.created_by.last_name}{" "}
               <img
@@ -90,9 +90,13 @@ function Map(props) {
               <div>{reformatTypeOf(selectedLoc.type_of_location)}</div>
             </div>
 
-            <button id={location_id} onClick={handleVote}>
+            <button
+              className="letsgo-btn"
+              id={location_id}
+              onClick={handleVote}
+            >
               let's go!<span id={location_id}> </span>
-              <i class="fas fa-vote-yea" id={location_id}></i>
+              <i className="fas fa-vote-yea" id={location_id}></i>
             </button>
           </div>
         )}
@@ -105,7 +109,7 @@ function Map(props) {
     let iconToUse;
     let amountOfVotes = userSugOrDep.votes.length;
     console.log(userSugOrDep);
-    if (userSugOrDep.votes.length > 0) {
+    if (props.highVoteId == userSugOrDep._id) {
       iconToUse = picked_suggestion_marker;
     } else if (suggestordepart == "departure") {
       console.log("here");
@@ -116,6 +120,7 @@ function Map(props) {
     }
     return (
       <Marker
+        id={userSugOrDep._id}
         votes={amountOfVotes}
         icon={{
           url: iconToUse,
@@ -144,7 +149,7 @@ function Map(props) {
     AllNonUserSuggestions.forEach((suggestion, i) => {
       var amountOfVotes = suggestion.votes.length;
       var icontoDisplay;
-      if (suggestion.votes) {
+      if (props.highVoteId == suggestion._id) {
         icontoDisplay = picked_suggestion_marker;
       } else {
         icontoDisplay = nonuser_suggestion_marker;
@@ -589,6 +594,7 @@ export default function GoogleReactMap(props) {
         newDepartures={state.newDepartures}
         bounds={state.bounds}
         isAdmin={props.isAdmin}
+        highVoteId={props.highVoteId}
         googleMapURL={`https://maps.googleapis.com/maps/api/js?key=AIzaSyC4R6AN7SmujjPUIGKdyao2Kqitzr1kiRg&v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GKEY}`}
         loadingElement={<div style={{ height: window.innerHeight }} />}
         containerElement={<div style={{ height: window.innerHeight }} />}
