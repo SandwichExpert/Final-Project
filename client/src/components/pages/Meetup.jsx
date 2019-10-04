@@ -122,6 +122,7 @@ export default function Meetup(props) {
     };
     if (state.suggestion) {
       suggestionNew.location.coordinates[0] = state.suggestion.position.lat;
+
       suggestionNew.location.coordinates[1] = state.suggestion.position.lng;
       suggestionNew.type_of_location = `${state.suggestion.name} ${
         state.suggestion.types[0]
@@ -132,8 +133,12 @@ export default function Meetup(props) {
       suggestionNew.created_by._id = user._id;
     }
     if (state.departure) {
-      departureNew.location.coordinates[0] = state.departure.position.lat;
-      departureNew.location.coordinates[1] = state.departure.position.lng;
+      departureNew.location.coordinates[0] = Number(
+        state.departure.position.lat
+      );
+      departureNew.location.coordinates[1] = Number(
+        state.departure.position.lng
+      );
       departureNew.type_of_location = "departure";
       departureNew.created_by.first_name = user.first_name;
       departureNew.created_by.last_name = user.last_name;
@@ -145,7 +150,10 @@ export default function Meetup(props) {
       departure: departureNew
     })
       .then(newIds => {
+        console.log(newIds, "prororororor");
+        console.log("we have a return");
         if (newIds.newSuggestionId && newIds.newDepartureId) {
+          console.log("first if ");
           suggestionNew._id = newIds.newSuggestionId;
           departureNew._id = newIds.newDepartureId;
           setState({
@@ -156,6 +164,7 @@ export default function Meetup(props) {
             departure: null
           });
         } else if (newIds.newSuggestionId) {
+          console.log("second  if ");
           suggestionNew._id = newIds.newSuggestionId;
           setState({
             ...state,
@@ -163,6 +172,7 @@ export default function Meetup(props) {
             suggestion: null
           });
         } else if (newIds.newDepartureId) {
+          console.log("third  if ");
           departureNew._id = newIds.newDepartureId;
           setState({ ...state, oldDeparture: departureNew, departure: null });
         }
@@ -183,14 +193,16 @@ export default function Meetup(props) {
     let createdSuggestionId = null;
     let createdDeparture = null;
     let createdDepartureId = null;
+    console.log(suggestion, departure, "-------");
     if (suggestion.type_of_location) {
       createdSuggestion = await api.addSuggestion(suggestion);
       createdSuggestionId = createdSuggestion._id;
     }
     if (departure.type_of_location) {
-      createdDeparture = await api.addSuggestion(suggestion);
+      createdDeparture = await api.addDeparture(departure);
       createdDepartureId = createdDeparture._id;
     }
+
     return {
       newSuggestionId: createdSuggestionId,
       newDepartureId: createdDepartureId

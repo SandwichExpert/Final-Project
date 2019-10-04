@@ -146,7 +146,7 @@ export default {
   addFriend(body) {
     const email = { email: body.email };
     return service
-      .put("users/addFriend",email)
+      .put("users/addFriend", email)
       .then(res => res.data)
       .catch(errHandler);
   },
@@ -214,12 +214,15 @@ export default {
     const lat = Number(departureInfo.location.coordinates[0]);
     const lng = Number(departureInfo.location.coordinates[1]);
     const type_of = departureInfo.type_of_location;
-    return service.put(`/meetups/departure-location/${meetupId}`, {
-      type_of,
-      lat,
-      lng,
-      meetupId
-    });
+    return service
+      .put(`/meetups/departure-location/${meetupId}`, {
+        type_of,
+        lat,
+        lng,
+        meetupId
+      })
+      .then(res => res.data)
+      .catch(errHandler);
   },
 
   addSuggestion(suggestionInfo) {
