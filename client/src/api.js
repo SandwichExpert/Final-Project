@@ -146,7 +146,7 @@ export default {
   addFriend(body) {
     const email = { email: body.email };
     return service
-      .post("users/addFriend")
+      .put("users/addFriend",email)
       .then(res => res.data)
       .catch(errHandler);
   },

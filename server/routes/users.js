@@ -144,14 +144,14 @@ async function addFriendToUser(userId, email) {
   await User.findByIdAndUpdate(
     friendId,
     {
-      $push: { _friends: userId }
+      $addToSet: { _friends: userId }
     },
     { new: true }
   );
   const updatedUser = await User.findByIdAndUpdate(
     userId,
     {
-      $push: { _friends: friendId }
+      $addToSet: { _friends: friendId }
     },
     { new: true }
   );

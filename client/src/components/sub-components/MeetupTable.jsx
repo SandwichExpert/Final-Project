@@ -56,6 +56,7 @@ export default function MeetupTable(props) {
     if (selectedItem === index) {
       setSelectedItem(null);
     } else setSelectedItem(index);
+    console.log(selectedItem)
   }
 
   let data = {
@@ -112,7 +113,6 @@ export default function MeetupTable(props) {
                 </td>
 
                 <td>
-                  {/* <CopyExample value={meetup._id} /> */}
                   <textarea
                     style={{
                       position: "absolute",
@@ -128,7 +128,10 @@ export default function MeetupTable(props) {
                   <button
                     style={{ border: "none", background: "none" }}
                     _data={meetup._id}
-                    onClick={e => copyToClipBoard(e)}
+                    key={index}
+                    onClick={e => {copyToClipBoard(e);
+                      toggleId(index) }                   
+                    }
                   >
                     <i
                       className="fas fa-user-plus"
@@ -139,17 +142,6 @@ export default function MeetupTable(props) {
                       }}
                     ></i>
                   </button>
-                  {/* <CopyToClipboard>
-                  {({ copy }) => (
-                    <button
-                      style={{ border: "none", background: "none" }}
-                      _data={meetup._id}
-                      onClick={() => copy(meetup._id)}
-                    >
-                      
-                    </button>
-                  )}
-                </CopyToClipboard> */}
                 </td>
                 {props.user._id === meetup._admin ? (
                   <td>
@@ -185,7 +177,7 @@ export default function MeetupTable(props) {
                   </td>
                 )}
               </tr>
-              <tr className="isActive" style={{ width: "100%" }}>
+             <tr className={selectedItem === index ? "isActive" : "hidden"} style={{ width: "100%" }}>
                 <td colSpan="4" style={{ textAlign: "left" }}>
                   Shareable Id: {meetup._id}
                 </td>
