@@ -32,8 +32,8 @@ function Map(props) {
   let zoomLocLat;
   let zoomLocLng;
   if (props.currentUserDeparture) {
-    zoomLocLat = props.currentUserDeparture.location.coordinates[0];
-    zoomLocLng = props.currentUserDeparture.location.coordinates[1];
+    zoomLocLat = Number(props.currentUserDeparture.location.coordinates[0]);
+    zoomLocLng = Number(props.currentUserDeparture.location.coordinates[1]);
   } else {
     const { lat, lng } = calculateAveragePosition(props.AllNonUserDepartures);
     zoomLocLat = Number(lat);
@@ -49,7 +49,7 @@ function Map(props) {
     });
     avgLat /= departures.length;
     avgLng /= departures.length;
-    return { lat: avgLat, lng: avgLng };
+    return { lat: Number(avgLat), lng: Number(avgLng) };
   }
 
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -65,7 +65,7 @@ function Map(props) {
     return (
       <div>
         {selectedLoc.type_of_location == "departure" && (
-          <span>
+          <span className="information-disp">
             departure of {selectedLoc.created_by.first_name}{" "}
             {selectedLoc.created_by.last_name}{" "}
             <img
@@ -77,7 +77,7 @@ function Map(props) {
         )}
         {selectedLoc.type_of_location != "departure" && (
           <div>
-            <span>
+            <span className="information-disp">
               suggestion from {selectedLoc.created_by.first_name}{" "}
               {selectedLoc.created_by.last_name}{" "}
               <img
@@ -90,9 +90,13 @@ function Map(props) {
               <div>{reformatTypeOf(selectedLoc.type_of_location)}</div>
             </div>
 
-            <button id={location_id} onClick={handleVote}>
+            <button
+              className="letsgo-btn"
+              id={location_id}
+              onClick={handleVote}
+            >
               let's go!<span id={location_id}> </span>
-              <i class="fas fa-vote-yea" id={location_id}></i>
+              <i className="fas fa-vote-yea" id={location_id}></i>
             </button>
           </div>
         )}
@@ -105,7 +109,7 @@ function Map(props) {
     let iconToUse;
     let amountOfVotes = userSugOrDep.votes.length;
     console.log(userSugOrDep);
-    if (userSugOrDep.votes.length > 0) {
+    if (props.highVoteId == userSugOrDep._id) {
       iconToUse = picked_suggestion_marker;
     } else if (suggestordepart == "departure") {
       console.log("here");
@@ -116,6 +120,7 @@ function Map(props) {
     }
     return (
       <Marker
+        id={userSugOrDep._id}
         votes={amountOfVotes}
         icon={{
           url: iconToUse,
@@ -144,7 +149,7 @@ function Map(props) {
     AllNonUserSuggestions.forEach((suggestion, i) => {
       var amountOfVotes = suggestion.votes.length;
       var icontoDisplay;
-      if (suggestion.votes) {
+      if (props.highVoteId == suggestion._id) {
         icontoDisplay = picked_suggestion_marker;
       } else {
         icontoDisplay = nonuser_suggestion_marker;
@@ -181,12 +186,15 @@ function Map(props) {
     AllNonUserDepartures.forEach((departure, i) => {
       markerArray.push(
         <Marker
-          icon={nonuser_departure_marker}
+          icon={{
+            url: nonuser_departure_marker,
+            scaledSize: new window.google.maps.Size(50, 50)
+          }}
           type_of={departure.type_of_location}
           key={i}
           position={{
-            lat: departure.location.coordinates[0],
-            lng: departure.location.coordinates[1]
+            lat: Number(departure.location.coordinates[0]),
+            lng: Number(departure.location.coordinates[1])
           }}
           defaultLabel={departure.created_by.first_name.substr(0, 1)}
           onClick={() => {
@@ -243,8 +251,8 @@ function Map(props) {
           <div>
             <InfoWindow
               position={{
-                lat: selectedLocation.location.coordinates[0],
-                lng: selectedLocation.location.coordinates[1]
+                lat: Number(selectedLocation.location.coordinates[0]),
+                lng: Number(selectedLocation.location.coordinates[1])
               }}
               onCloseClick={() => {
                 setSelectedLocation(null);
@@ -277,10 +285,7 @@ function Map(props) {
               defaultTitle={marker.name}
               icon={{
                 url: `${marker.icon}`,
-                scaledSize: new window.google.maps.Size(16, 16),
-                size: new window.google.maps.Size(71, 71),
-                origin: new window.google.maps.Point(0, 0),
-                anchor: new window.google.maps.Point(17, 34)
+                scaledSize: new window.google.maps.Size(50, 50)
               }}
               key={i}
               position={marker.position}
@@ -416,8 +421,8 @@ export default function GoogleReactMap(props) {
           name: specificPlace.name,
           types: specificPlace.types,
           position: {
-            lat: specificPlace.geometry.location.lat(),
-            lng: specificPlace.geometry.location.lng()
+            lat: Number(specificPlace.geometry.location.lat()),
+            lng: Number(specificPlace.geometry.location.lng())
           },
           rating: specificPlace.rating,
           website: specificPlace.website,
@@ -502,46 +507,12 @@ export default function GoogleReactMap(props) {
     console.log(places, state.markers);
   };
 
-  const returnDepartureMarkers = (locationsArr, setSelectedLocation, color) => {
-    let markerArray = [];
-    locationsArr.forEach((location, index) => {
-      markerArray.push(
-        <Marker
-          icon={{
-            url: `http://maps.google.com/mapfiles/ms/icons/${color}-dot.png`,
-            scaledSize: new window.google.maps.Size(30, 30)
-          }}
-          type_of={location.type_of_location}
-          key={index}
-          position={{
-            lat: location.location.coordinates[0],
-            lng: location.location.coordinates[1]
-          }}
-          onClick={() => {
-            setSelectedLocation(location);
-          }}
-          id={location._id}
-          creator={`${location.created_by.first_name} ${location.created_by.last_name}`}
-          // icon={{
-          //   url:
-          //     "https://res.cloudinary.com/dri8yyakb/image/upload/v1569755342/optimap_icons/pin_fv3znu.png",
-          //   scaledSize: new window.google.maps.Size(25, 25)
-          // }}
-          label={location.created_by.first_name.substr(0, 1)}
-          title={location.created_by.first_name}
-          // onMouseOver={handleMouseOver}
-        ></Marker>
-      );
-    });
-    return markerArray;
-  };
-
   function getCurrentLocation() {
     // console.log("here", window.navigator.geolocation);
     if (window.navigator.geolocation) {
       window.navigator.geolocation.getCurrentPosition(function(position) {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
+        const lat = Number(position.coords.latitude);
+        const lng = Number(position.coords.longitude);
         const pos = { lat, lng };
         // console.log(pos, "-----------");
         setUserLocation(pos);
@@ -623,6 +594,7 @@ export default function GoogleReactMap(props) {
         newDepartures={state.newDepartures}
         bounds={state.bounds}
         isAdmin={props.isAdmin}
+        highVoteId={props.highVoteId}
         googleMapURL={`https://maps.googleapis.com/maps/api/js?key=AIzaSyC4R6AN7SmujjPUIGKdyao2Kqitzr1kiRg&v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GKEY}`}
         loadingElement={<div style={{ height: window.innerHeight }} />}
         containerElement={<div style={{ height: window.innerHeight }} />}
