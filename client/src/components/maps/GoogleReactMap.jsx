@@ -61,6 +61,7 @@ function Map(props) {
   };
 
   function onSelectionInfoDisplay(selectedLoc, location_id, isAdmin) {
+    console.log("selected loc", selectedLoc);
     return (
       <div>
         {selectedLoc.type_of_location == "departure" && (
@@ -213,7 +214,6 @@ function Map(props) {
 
   return (
     <GoogleMap
-      // give a ref to the googleMap when it is mounted
       ref={props.onMapMounted}
       defaultZoom={15}
       defaultCenter={{ lat: zoomLocLat, lng: zoomLocLng }}
@@ -223,7 +223,6 @@ function Map(props) {
       onDragStart={() => {
         setSelectedLocation(null);
       }}
-      // we want our searches to be relevant to the current bounds
     >
       <pre className="markers">
         {props.AllNonUserSuggestions &&

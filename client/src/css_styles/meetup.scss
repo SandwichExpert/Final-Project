@@ -122,9 +122,9 @@
 
 .suggestion-input {
   box-sizing: border-box;
-  background-color: white;
-  color: black;
-  border: 2px solid $two;
+  background-color: #ff3252d1;
+  color: white;
+  border: 1px solid transparent;
   width: 30%;
   height: 32px;
   padding: 0px 12px;
@@ -142,9 +142,9 @@
 
 .departure-input {
   box-sizing: border-box;
-  background-color: white;
-  color: black;
-  border: 2px solid $one;
+  background-color: #95ff70d1;
+  color: white;
+  border: 1px solid transparent;
   width: 30%;
   height: 32px;
   padding: 0px 8px;
@@ -215,6 +215,18 @@
 
 .newDeparture {
   color: white;
+}
+
+.side {
+  float: left;
+  width: 15%;
+  margin-top: 10px;
+}
+
+.middle {
+  margin-top: 10px;
+  float: left;
+  width: 70%;
 }
 
 @media only screen and (min-width: 1444px) {

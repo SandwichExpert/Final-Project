@@ -8,24 +8,20 @@ import LocationSearchBox from "../maps/LocationSearchBox";
 // import Logo from '../../assets/maptee_logo.svg'
 
 export default function Meetup(props) {
-  // this state is used to store a user
-  // a users specific suggestion and dep
-  // locations for the specific meetup
   const meetupId = props.match.params.meetupId;
   const [meetup, setMeetup] = useState(null);
   const [user, setUser] = useState("");
   const [markerRefresh, setMarkerRefresh] = useState(false);
   const [allNonUserDepartures, setAllNonUserDepartures] = useState(null);
   const [allNonUserSuggestions, setAllNonUserSuggestions] = useState(null);
+  const [voteRanking, setVoteRanking] = useState([]);
+  const [displayVote, setDisplayVote] = useState(false);
   const [state, setState] = useState({
     oldDeparture: null,
     oldSuggestion: null,
     suggestion: null,
     departure: null
   });
-  // in the use effect we get all info on the meetup
-  // out of that info we want to extract the Departure
-  // and suggestion info of thi suser
   useEffect(() => {
     api
       .getUserInfo()
@@ -39,6 +35,7 @@ export default function Meetup(props) {
             console.log("DEBUG", meetup);
             const suggestions = meetup._suggested_locations;
             const departures = meetup._departure_locations;
+            createVotingRankingState(suggestions);
             const {
               userSuggestion,
               userDeparture
@@ -72,6 +69,26 @@ export default function Meetup(props) {
         console.log(err, "error getting user info");
       });
   }, []);
+
+  function createVotingRankingState(AllSuggestions) {
+    let SuggestionArray = [];
+    let suggestionAdd = {
+      name: null,
+      amount_of_votes: 0
+    };
+    AllSuggestions.forEach(suggestion => {
+      suggestionAdd.name = suggestion.type_of_location;
+      suggestionAdd.amount_of_votes = suggestion.votes.length;
+      SuggestionArray.push(suggestionAdd);
+    });
+    let SuggestionArraySorted = SuggestionArray.sort((a, b) => {
+      var votesA = a.amount_of_votes;
+      var votesB = b.amount_of_votes;
+      if (votesA < votesB) return -1;
+      if (votesB > votesA) return 1;
+    });
+    setVoteRanking(SuggestionArraySorted);
+  }
 
   function dateDisplay(dateString) {
     const date = moment(dateString).format("MMM DD");
@@ -126,21 +143,34 @@ export default function Meetup(props) {
     submitNewDepartureAndSuggestion({
       suggestion: suggestionNew,
       departure: departureNew
-    });
-    if (state.suggestion && state.departure) {
-      setState({
-        ...state,
-        oldSuggestion: suggestionNew,
-        suggestion: null,
-        oldDeparture: departureNew,
-        departure: null
+    })
+      .then(newIds => {
+        if (newIds.newSuggestionId && newIds.newDepartureId) {
+          suggestionNew._id = newIds.newSuggestionId;
+          departureNew._id = newIds.newDepartureId;
+          setState({
+            ...state,
+            oldSuggestion: suggestionNew,
+            suggestion: null,
+            oldDeparture: departureNew,
+            departure: null
+          });
+        } else if (newIds.newSuggestionId) {
+          suggestionNew._id = newIds.newSuggestionId;
+          setState({
+            ...state,
+            oldSuggestion: suggestionNew,
+            suggestion: null
+          });
+        } else if (newIds.newDepartureId) {
+          departureNew._id = newIds.newDepartureId;
+          setState({ ...state, oldDeparture: departureNew, departure: null });
+        }
+        markerRefresh ? setMarkerRefresh(false) : setMarkerRefresh(true);
+      })
+      .catch(err => {
+        console.log("error setting new departure or suggestion");
       });
-    } else if (state.suggestion) {
-      setState({ ...state, oldSuggestion: suggestionNew, suggestion: null });
-    } else if (state.departure) {
-      setState({ ...state, oldDeparture: departureNew, departure: null });
-    }
-    markerRefresh ? setMarkerRefresh(false) : setMarkerRefresh(true);
   }
 
   function handleRemoveClick(e) {
@@ -148,19 +178,23 @@ export default function Meetup(props) {
     markerRefresh ? setMarkerRefresh(false) : setMarkerRefresh(true);
   }
 
-  function submitNewDepartureAndSuggestion({ suggestion, departure }) {
+  async function submitNewDepartureAndSuggestion({ suggestion, departure }) {
+    let createdSuggestion = null;
+    let createdSuggestionId = null;
+    let createdDeparture = null;
+    let createdDepartureId = null;
     if (suggestion.type_of_location) {
-      api
-        .addSuggestion(suggestion)
-        .then(createdSuggestion => console.log("suggestion added success"))
-        .catch(err => console.log("error making suggestion"));
+      createdSuggestion = await api.addSuggestion(suggestion);
+      createdSuggestionId = createdSuggestion._id;
     }
     if (departure.type_of_location) {
-      api
-        .addDeparture(departure)
-        .then(createdDeparture => console.log("departure added success"))
-        .catch(err => console.log("error making departure"));
+      createdDeparture = await api.addSuggestion(suggestion);
+      createdDepartureId = createdDeparture._id;
     }
+    return {
+      newSuggestionId: createdSuggestionId,
+      newDepartureId: createdDepartureId
+    };
   }
 
   if (!meetup) {
@@ -179,6 +213,7 @@ export default function Meetup(props) {
         AllNonUserSuggestions={allNonUserSuggestions}
         meetupId={meetupId}
         markerRefresh={markerRefresh}
+        // voteRanking={voteRanking}
         style={{
           zIndex: 0
         }}
@@ -187,6 +222,18 @@ export default function Meetup(props) {
         <div className="left_side">
           <h2>{meetup.name}</h2>
           {dateDisplay(meetup.meetup_date)} - {meetup.meetup_time}
+        </div>
+        <div>
+          <button
+            onClick={e => {
+              console.log(e);
+              displayVote ? setDisplayVote(false) : setDisplayVote(true);
+            }}
+            style={{ backgroundColor: "transparent", border: "none" }}
+          >
+            see ranking <span> </span>
+            <i class="fas fa-poll"></i>
+          </button>
         </div>
         <div className="right_side">
           <div
@@ -202,7 +249,20 @@ export default function Meetup(props) {
           <Link to={"/home/" + user._id}>{user.first_name}</Link>
         </div>
       </div>
-      <div className></div>
+      {displayVote && (
+        <ul
+          className="voting-table"
+          style={{ position: "absolute", top: "20%" }}
+        >
+          {voteRanking.map(location => {
+            return (
+              <li>
+                {location.name} {location.amount_of_votes} votes
+              </li>
+            );
+          })}
+        </ul>
+      )}
       {(state.suggestion || state.departure) && (
         <div className="suggestion-departure-wrapper">
           <div className="button-suggestion-departure-display">
@@ -210,6 +270,7 @@ export default function Meetup(props) {
               <div className="newSuggestion">
                 <span>
                   <i className="fas fa-bullseye"></i>
+                  <span> </span>
                   suggestion: {state.suggestion.name}
                 </span>
               </div>
@@ -217,6 +278,7 @@ export default function Meetup(props) {
             {state.departure && (
               <span className="newDeparture">
                 <i className="fas fa-bullseye"></i>
+                <span> </span>
                 departure: {state.departure.name}
               </span>
             )}
