@@ -249,20 +249,6 @@ export default function Meetup(props) {
           <Link to={"/home/" + user._id}>{user.first_name}</Link>
         </div>
       </div>
-      {displayVote && (
-        <ul
-          className="voting-table"
-          style={{ position: "absolute", top: "20%" }}
-        >
-          {voteRanking.map(location => {
-            return (
-              <li>
-                {location.name} {location.amount_of_votes} votes
-              </li>
-            );
-          })}
-        </ul>
-      )}
       {(state.suggestion || state.departure) && (
         <div className="suggestion-departure-wrapper">
           <div className="button-suggestion-departure-display">
@@ -282,7 +268,6 @@ export default function Meetup(props) {
                 departure: {state.departure.name}
               </span>
             )}
-            <br />
             {/* <Link to="" className="forgotten">Forgotten password?</Link> */}
             {/* <span className="forgotten">Forgotten Password?</span> */}
             <div className="btn-wrapper">
@@ -304,9 +289,40 @@ export default function Meetup(props) {
           </div>
         </div>
       )}
+      {displayVote && (
+        <ul className="voting-table">
+          {voteRanking.slice(0, 3).map((location, i) => {
+            return (
+              <b>
+                <li key={i} className="voting-item">
+                  {i == 0 && (
+                    <img
+                      src="https://image.flaticon.com/icons/svg/625/625394.svg"
+                      className="vote-image"
+                    ></img>
+                  )}
+                  {i == 1 && (
+                    <img
+                      src="https://image.flaticon.com/icons/svg/731/731871.svg"
+                      className="vote-image"
+                    ></img>
+                  )}
+                  {i == 2 && (
+                    <img
+                      src="https://image.flaticon.com/icons/svg/731/731832.svg"
+                      className="vote-image"
+                    ></img>
+                  )}
+                  {location.name} likes {location.amount_of_votes}
+                </li>
+              </b>
+            );
+          })}
+        </ul>
+      )}
       {/* <pre>{JSON.stringify(state, null, 2)}</pre>
       <pre>{JSON.stringify(allNonUserDepartures, null, 2)}</pre>
-      <pre>{JSON.stringify(allNonUserSuggestions, null, 2)}</pre> */}
+    <pre>{JSON.stringify(allNonUserSuggestions, null, 2)}</pre> */}
     </div>
   );
 }

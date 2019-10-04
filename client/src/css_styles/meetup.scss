@@ -217,6 +217,23 @@
   color: white;
 }
 
+.voting-table {
+  list-style-type: none;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  position: absolute;
+  top: 75%;
+  padding: 1%;
+}
+
+.vote-image {
+  width: 30px;
+  height: 30px;
+}
+
 @media only screen and (min-width: 1444px) {
   .left_side h2 {
     font-size: 2em;
