@@ -307,10 +307,7 @@ function Map(props) {
               defaultTitle={marker.name}
               icon={{
                 url: `${marker.icon}`,
-                scaledSize: new window.google.maps.Size(16, 16),
-                size: new window.google.maps.Size(71, 71),
-                origin: new window.google.maps.Point(0, 0),
-                anchor: new window.google.maps.Point(17, 34)
+                scaledSize: new window.google.maps.Size(16 , 30),
               }}
               key={i}
               position={marker.position}
