@@ -225,6 +225,7 @@ export default function Meetup(props) {
         </div>
         <div>
           <button
+            className="heading_middle"
             onClick={e => {
               console.log(e);
               displayVote ? setDisplayVote(false) : setDisplayVote(true);
