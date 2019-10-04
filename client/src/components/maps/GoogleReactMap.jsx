@@ -337,7 +337,7 @@ function Map(props) {
         <SearchBox
           className="suggestion-searchbox"
           ref={props.onSearchBoxMounted}
-          controlPosition={window.google.maps.ControlPosition.TOP_LEFT}
+          controlPosition={window.google.maps.ControlPosition.TOP_RIGHT}
           bounds={props.bounds}
           // listen for the event when the user selects
           // a prediction
