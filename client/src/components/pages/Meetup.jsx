@@ -88,7 +88,7 @@ export default function Meetup(props) {
       SuggestionArray.push(suggestionAdd);
     });
     // console.log(SuggestionArray, "suggest arr");
-    let SuggestionArraySorted = SuggestionArray.sort((a, b) => {
+    let SuggestionArraySorted = [...SuggestionArray].sort((a, b) => {
       var votesA = a.amount_of_votes;
       var votesB = b.amount_of_votes;
       if (votesA < votesB) return 1;
