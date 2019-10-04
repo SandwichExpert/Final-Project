@@ -188,6 +188,14 @@
   color : black;
 }
 
+.addFriend{
+  margin-top:10; 
+  display:flex;
+  flex-flow:row wrap;
+  align-items:center;
+  justify-content:center;
+}
+
 @media only screen and (min-width: 1444px) {
   .info-container{
     margin:0 40px;
@@ -217,6 +225,9 @@
 
   .buttons__meetup:first-child{
     margin-right : 30px;
+  }
+  .inputs-submit{
+    width:40%;
   }
   
 }
@@ -255,6 +266,9 @@
   .meetup-table{
     width:1050px;
   }
+  .inputs-submit{
+    width:40%;
+  }
 }
 
 @media only screen and (min-width : 1024px) and (max-width : 1279px){
@@ -290,6 +304,9 @@
   .meetup-table{
     width:950px;
   }
+  .inputs-submit{
+    width:40%;
+  }
 }
 
 @media only screen and (min-width : 768px) and (max-width : 1023px){
@@ -323,6 +340,9 @@
   }
   .meetup-table{
     width:750px;
+  }
+  .inputs-submit{
+    width:40%;
   }
 }
 
@@ -358,6 +378,9 @@
   .meetup-table{
     width:520px;
   }
+  .inputs-submit{
+    width:40%;
+  }
 }
 
 @media only screen and (min-width : 414px) and (max-width: 549px){
@@ -389,6 +412,9 @@
   }
   .meetup-table{
     width:400px;
+  }
+  .inputs-submit{
+    width:40%;
   }
 }
 

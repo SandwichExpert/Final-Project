@@ -62,7 +62,7 @@ export default function FriendsDisplay({ friends, count }) {
           }
         })}
       </div>
-      <div className="addFriend" style={{marginTop:10, display:"flex", flexFlow:"row wrap",alignItems:"center"}}>
+      <div className="addFriend">
         <input className="inputs-submit" type="text" value={friend.email} name="email" placeholder="Friend email" 
         onChange={handleInputChange}/>
         <i  className="fas fa-plus" style={{border:"none", marginLeft : 5}} onClick={addNewFriend}/>
