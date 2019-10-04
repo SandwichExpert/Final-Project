@@ -72,21 +72,23 @@ export default function Meetup(props) {
 
   function createVotingRankingState(AllSuggestions) {
     let SuggestionArray = [];
-    let suggestionAdd = {
-      name: null,
-      amount_of_votes: 0
-    };
+
     AllSuggestions.forEach(suggestion => {
+      console.log("a suggestion", suggestion);
+      let suggestionAdd = {};
       suggestionAdd.name = suggestion.type_of_location;
       suggestionAdd.amount_of_votes = suggestion.votes.length;
+      console.log(suggestionAdd, "suggest add");
       SuggestionArray.push(suggestionAdd);
     });
+    console.log(SuggestionArray, "suggest arr");
     let SuggestionArraySorted = SuggestionArray.sort((a, b) => {
       var votesA = a.amount_of_votes;
       var votesB = b.amount_of_votes;
       if (votesA < votesB) return -1;
       if (votesB > votesA) return 1;
     });
+    console.log(SuggestionArraySorted);
     setVoteRanking(SuggestionArraySorted);
   }
 
