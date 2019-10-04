@@ -88,7 +88,8 @@ export default function Meetup(props) {
         avatar: null,
         _id: null
       },
-      meetupid: meetupId
+      meetupid: meetupId,
+      votes: []
     };
     let departureNew = {
       location: { coordinates: [null, null] },
@@ -99,7 +100,8 @@ export default function Meetup(props) {
         avatar: null,
         _id: null
       },
-      meetupid: meetupId
+      meetupid: meetupId,
+      votes: []
     };
     if (state.suggestion) {
       suggestionNew.location.coordinates[0] = state.suggestion.position.lat;
@@ -176,7 +178,6 @@ export default function Meetup(props) {
         AllNonUserDepartures={allNonUserDepartures}
         AllNonUserSuggestions={allNonUserSuggestions}
         meetupId={meetupId}
-        isAdmin={meetup._admin === user._id}
         markerRefresh={markerRefresh}
         style={{
           zIndex: 0
@@ -201,6 +202,7 @@ export default function Meetup(props) {
           <Link to={"/home/" + user._id}>{user.first_name}</Link>
         </div>
       </div>
+      <div className></div>
       {(state.suggestion || state.departure) && (
         <div className="suggestion-departure-wrapper">
           <div className="button-suggestion-departure-display">

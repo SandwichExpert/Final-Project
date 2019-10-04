@@ -1,11 +1,10 @@
+// import user_departure_marker from "../../assets/user_departure_marker.svg";
+// import user_suggestion_marker from "../../assets/user_suggestion_marker.svg";
+// import nonuser_departure_marker from "../../assets/nonuser_departure_marker.svg";
+// import nonuser_suggestion_marker from "../../assets/nonuser_suggestion_marker.svg";
+// import picked_suggestion_marker from "../../assets/picked_suggestion_marker.svg";
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
 import mapStyles from "./mapStyles";
-import user_departure_marker from "../../assets/user_departure_marker.svg";
-import user_suggestion_marker from "../../assets/user_suggestion_marker.svg";
-import nonuser_departure_marker from "../../assets/nonuser_departure_marker.svg";
-import nonuser_suggestion_marker from "../../assets/nonuser_suggestion_marker.svg";
-import picked_suggestion_marker from "../../assets/picked_suggestion_marker.svg";
 import {
   GoogleMap,
   withScriptjs,
@@ -14,27 +13,22 @@ import {
   InfoWindow
 } from "react-google-maps";
 import api from "../../api";
-
+const nonuser_departure_marker =
+  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171958/optimap_icons/nonuser_departure_marker_ea6fxu.svg";
+const nonuser_suggestion_marker =
+  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171958/optimap_icons/nonuser_suggestion_marker_mu2axj.svg";
+const picked_suggestion_marker =
+  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171958/optimap_icons/picked_suggestion_marker_cdxmkq.svg";
+const user_suggestion_marker =
+  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171749/optimap_icons/user_suggestion_marker_kg9ttt.svg";
+const user_departure_marker =
+  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171750/optimap_icons/user_departure_marker_mi73ho.svg";
 const {
   SearchBox
 } = require("react-google-maps/lib/components/places/SearchBox");
 
 function Map(props) {
   // the departure on which is clicked will display extra information
-  const departure_user_marker = {
-    url: user_departure_marker,
-    scaledSize: new window.google.maps.Size(70, 70),
-    origin: new window.google.maps.Point(0, 0),
-    anchor: new window.google.maps.Point(32, 65),
-    labelOrigin: new window.google.maps.Point(40, 33)
-  };
-  const suggestion_user_marker = {
-    url: user_suggestion_marker,
-    scaledSize: new window.google.maps.Size(70, 70),
-    origin: new window.google.maps.Point(0, 0),
-    anchor: new window.google.maps.Point(32, 65),
-    labelOrigin: new window.google.maps.Point(40, 33)
-  };
   let zoomLocLat;
   let zoomLocLng;
   if (props.currentUserDeparture) {
@@ -94,12 +88,11 @@ function Map(props) {
             <div className="extra-suggestion-info">
               <div>{reformatTypeOf(selectedLoc.type_of_location)}</div>
             </div>
-            {isAdmin && (
-              <button id={location_id} onClick={handleVote}>
-                let's go!<span id={location_id}> </span>
-                <i class="fas fa-vote-yea" id={location_id}></i>
-              </button>
-            )}
+
+            <button id={location_id} onClick={handleVote}>
+              let's go!<span id={location_id}> </span>
+              <i class="fas fa-vote-yea" id={location_id}></i>
+            </button>
           </div>
         )}
         {/* <pre>{JSON.stringify(selectedLoc, null, 2)}</pre> */}
@@ -108,14 +101,25 @@ function Map(props) {
   }
 
   const UserMarker = (userSugOrDep, suggestordepart) => {
+    let iconToUse;
+    let amountOfVotes = userSugOrDep.votes.length;
+    console.log(userSugOrDep);
+    if (userSugOrDep.votes.length > 0) {
+      iconToUse = picked_suggestion_marker;
+    } else if (suggestordepart == "departure") {
+      console.log("here");
+      iconToUse = user_departure_marker;
+    } else {
+      console.log("here 2");
+      iconToUse = user_suggestion_marker;
+    }
     return (
       <Marker
-        votes={suggestordepart != "departure" && userSugOrDep.votes.length}
-        icon={
-          (userSugOrDep.votes.length && picked_suggestion_marker) ||
-          (suggestordepart == "departure" && departure_user_marker) ||
-          suggestion_user_marker
-        }
+        votes={amountOfVotes}
+        icon={{
+          url: iconToUse,
+          scaledSize: new window.google.maps.Size(50, 50)
+        }}
         type_of={userSugOrDep.type_of_location}
         position={{
           lat: Number(userSugOrDep.location.coordinates[0]),
@@ -137,19 +141,19 @@ function Map(props) {
   ) => {
     let markerArray = [];
     AllNonUserSuggestions.forEach((suggestion, i) => {
-      var labeltext = suggestion.created_by.first_name.substr(0, 1);
+      var amountOfVotes = suggestion.votes.length;
       var icontoDisplay;
-      if (suggestion.votes.length) {
+      if (suggestion.votes) {
         icontoDisplay = picked_suggestion_marker;
       } else {
         icontoDisplay = nonuser_suggestion_marker;
       }
       markerArray.push(
         <Marker
-          votes={suggestion.votes.length || 0}
+          votes={amountOfVotes}
           icon={{
             url: icontoDisplay,
-            scaledSize: new window.google.maps.Size(60, 60)
+            scaledSize: new window.google.maps.Size(50, 50)
           }}
           type_of={suggestion.type_of_location}
           key={i}
@@ -157,12 +161,6 @@ function Map(props) {
             lat: Number(suggestion.location.coordinates[0]),
             lng: Number(suggestion.location.coordinates[1])
           }}
-          // label={{
-          //   text: labeltext,
-          //   color: "#eb3a44",
-          //   fontSize: "16px",
-          //   fontWeight: "bold"
-          // }}
           onClick={() => {
             setSelectedLocation(suggestion);
           }}
@@ -182,10 +180,7 @@ function Map(props) {
     AllNonUserDepartures.forEach((departure, i) => {
       markerArray.push(
         <Marker
-          icon={{
-            url: nonuser_departure_marker,
-            scaledSize: new window.google.maps.Size(60, 60)
-          }}
+          icon={nonuser_departure_marker}
           type_of={departure.type_of_location}
           key={i}
           position={{
