@@ -32,6 +32,18 @@
   
 }
 
+.delete-button{
+  margin-top: 5%;
+  width: 191px;
+  height: 47px;
+  background: #ff0000;
+  color: white;
+  border: none;
+  box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 3px;
+  font-size: 1.3rem;
+}
+
 .inputs-edit-file::-webkit-file-upload-button {
   visibility: hidden;
 }

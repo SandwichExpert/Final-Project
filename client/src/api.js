@@ -101,6 +101,8 @@ export default {
       .catch(errHandler);
   },
 
+
+
   editUser(userInfo) {
     const formData = new FormData();
     const userInfoKeys = Object.keys(userInfo);
@@ -163,6 +165,13 @@ export default {
       .put("meetups/delete-user", { userid: userId, meetupid: meetupId })
       .then(res => res.data)
       .catch(errHandler);
+  },
+
+  deleteMeetup(meetupId){
+    return service
+    .delete(`/meetups/${meetupId}`)
+    .then(res => res.data)
+    .catch(errHandler)
   },
 
   removeFriend(friendId) {

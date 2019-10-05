@@ -42,14 +42,18 @@ export default function MeetupTable(props) {
   }
 
   function removeUser(meetupId) {
+    const result = window.confirm("Are you sure you want to leave this meetup?")
     const userId = props.user._id;
     console.log(props.user._id, meetupId);
+    if (result){
     api
       .removeUserFromMeetup(userId, meetupId)
-      .then(removedUser => {
+      .then(e => {
         console.log("user Removed");
       })
       .catch(err => console.log(err));
+    }
+    
   }
 
   function toggleId(index) {
@@ -163,6 +167,7 @@ export default function MeetupTable(props) {
                           const meetupId = meetup._id;
                           console.log(meetupId);
                           console.log(e.target);
+
                           parentOfParent.removeChild(parent);
                           removeUser(meetupId);
                         }}
