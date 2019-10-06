@@ -315,3 +315,46 @@
 .settings-popup ul li a:hover {
   background: rgba(0, 0, 0, 0.05);
 }
+
+.main-chat-control {
+  position: absolute;
+  top: 90%;
+  padding-left: 2%;
+}
+
+.chatBox {
+  text-align: left;
+  margin-left: 2%;
+}
+
+.message-list {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0;
+}
+
+.send-button {
+  background: $two;
+  color: #fff;
+  border-radius: 20px;
+  border: 0px solid transparent;
+  box-shadow: 3px 3px 3px $one;
+  margin-right: 6%;
+  text-shadow: none;
+}
+
+.outgoing-message {
+  align-self: flex-start;
+  background-color: lightcoral;
+}
+.incoming-message {
+  align-self: flex-end;
+  background-color: lightblue;
+}
+
+.message-input {
+  width: 70%;
+}

@@ -22,7 +22,7 @@ export default function Meetup(props) {
   const [voteRanking, setVoteRanking] = useState([]);
   const [displayVote, setDisplayVote] = useState(false);
   const [showlegend, setShowlegend] = useState(false);
-  const [showChat, setShowChat] = useState(false);
+  const [showChat, setShowChat] = useState(true);
   const [state, setState] = useState({
     oldDeparture: null,
     oldSuggestion: null,
@@ -483,6 +483,7 @@ export default function Meetup(props) {
           meetupName={meetup.name}
         ></TestComponent>
       )}
+
       {/* <pre>{JSON.stringify(state, null, 2)}</pre>
       <pre>{JSON.stringify(allNonUserDepartures, null, 2)}</pre>
     <pre>{JSON.stringify(allNonUserSuggestions, null, 2)}</pre> */}

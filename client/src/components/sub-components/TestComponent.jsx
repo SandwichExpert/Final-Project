@@ -75,20 +75,27 @@ export default function TestComponent(props) {
   }
 
   return (
-    <div>
-      <h1>{meetupName}</h1>
+    <div className="main-chat-control">
+      {/* <h1>{meetupName}</h1> */}
       <div className="chatBox">
-        {messages.map(message => {
-          let color;
-          message.incoming ? (color = "red") : (color = "blue");
-          return (
-            <div className="single-message" style={{ color: color }}>
-              {message.msg}
-            </div>
-          );
-        })}
+        <ul className="message-list">
+          {messages.map(message => {
+            if (messages.incoming) {
+              return (
+                <li className="single-message incoming-message">
+                  {message.msg}
+                </li>
+              );
+            }
+            return (
+              <li className="single-message outgoing-message">
+                {`you: ${message.msg}`}
+              </li>
+            );
+          })}
+        </ul>
       </div>
-      <button
+      {/* <button
         className="enterLeaveButton"
         onClick={() => {
           handleInRoom();
@@ -96,19 +103,21 @@ export default function TestComponent(props) {
       >
         {inRoom && "leave chat"}
         {!inRoom && "enter room"}
-      </button>
+      </button> */}
       {inRoom && (
         <div className="chat-container">
           <button
+            className="send-button"
             onClick={() => {
               handleNewMessage();
             }}
           >
-            send new message
+            send
           </button>
           <input
+            className="message-input"
             type="text"
-            placeholder="type your message here"
+            placeholder=" ..."
             onChange={handleMessageInput}
           ></input>
         </div>
