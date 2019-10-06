@@ -48,6 +48,7 @@ io.on("connection", socket => {
   socket.on("new message", data => {
     console.log("new message received");
     console.log(data, "got data");
+    console.log(data.msg, "the new message");
     socket.broadcast.to(data.room).emit("receive message", data);
     console.log("message has been emitted");
   });
