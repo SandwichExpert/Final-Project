@@ -2,74 +2,98 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../../api";
 import GoogleReactMap from "../maps/GoogleReactMap";
-import UserDisplay from "../sub-components/UserDisplay";
 import moment from "moment";
-import LocationSearchBox from "../maps/LocationSearchBox";
 // import Logo from '../../assets/maptee_logo.svg'
+
+let socket = new WebSocket("wss://localhost:3000/my-meetup/:meetupId");
+socket.onopen = e => {
+  console.log("[open] connection established");
+};
 
 export default function Meetup(props) {
   const meetupId = props.match.params.meetupId;
   const [meetup, setMeetup] = useState(null);
   const [user, setUser] = useState("");
   const [markerRefresh, setMarkerRefresh] = useState(false);
-  const [allNonUserDepartures, setAllNonUserDepartures] = useState(null);
-  const [allNonUserSuggestions, setAllNonUserSuggestions] = useState(null);
+  const [allNonUserDepartures, setAllNonUserDepartures] = useState([]);
+  const [allNonUserSuggestions, setAllNonUserSuggestions] = useState([]);
+  const [highVoteId, setHighVoteId] = useState("");
   const [voteRanking, setVoteRanking] = useState([]);
   const [displayVote, setDisplayVote] = useState(false);
-  const [highVoteId, setHighVoteId] = useState("");
+  const [showlegend, setShowlegend] = useState(false);
   const [state, setState] = useState({
     oldDeparture: null,
     oldSuggestion: null,
     suggestion: null,
     departure: null
   });
+  const [zoomLocation, setZoomLocation] = useState(null);
+  const [currentUserPostion, setCurrentUserPosition] = useState(null);
+
   useEffect(() => {
-    api
-      .getUserInfo()
-      .then(userInfo => {
-        setUser(userInfo);
-        const userid = userInfo._id;
-        api
-          .getMeetUp(meetupId)
-          .then(meetup => {
-            setMeetup(meetup);
-            console.log("DEBUG", meetup);
-            const suggestions = meetup._suggested_locations;
-            const departures = meetup._departure_locations;
-            createVotingRankingState(suggestions);
-            const {
-              userSuggestion,
-              userDeparture
-            } = getUserSuggestionAndDeparture(userid, suggestions, departures);
-            console.log(
-              userSuggestion,
-              userDeparture,
-              "DEBUG user suggestion and departure"
-            );
-            setState({
-              ...state,
-              oldSuggestion: userSuggestion,
-              oldDeparture: userDeparture
-            });
-            const {
-              nonUserSuggestions,
-              nonUserDepartures
-            } = getNonUserSuggestionAndDeparture(
-              userid,
-              suggestions,
-              departures
-            );
-            setAllNonUserDepartures(nonUserDepartures);
-            setAllNonUserSuggestions(nonUserSuggestions);
-          })
-          .catch(err => {
-            console.log(err, "error getting meetup");
-          });
+    getMeetUpAndUserInfo(meetupId)
+      .then(suggestionsAndDeparture => {
+        createVotingRankingState(suggestionsAndDeparture.suggestions);
+        calculateAveragePosition(suggestionsAndDeparture.departures);
+        getCurrentLocation();
       })
       .catch(err => {
-        console.log(err, "error getting user info");
+        console.log(err, "error setting up initial state");
       });
   }, []);
+
+  async function getMeetUpAndUserInfo(meetupId) {
+    const userInfo = await api.getUserInfo();
+    setUser(userInfo);
+    const userId = userInfo._id;
+    const foundMeetup = await api.getMeetUp(meetupId);
+    const suggestions = foundMeetup._suggested_locations;
+    const departures = foundMeetup._departure_locations;
+    setMeetup(foundMeetup);
+    console.log("DEBUG", foundMeetup);
+    createVotingRankingState(suggestions);
+    const { userSuggestion, userDeparture } = getUserSuggestionAndDeparture(
+      userId,
+      suggestions,
+      departures
+    );
+    const {
+      nonUserSuggestions,
+      nonUserDepartures
+    } = getNonUserSuggestionAndDeparture(userId, suggestions, departures);
+    setState({
+      ...state,
+      oldSuggestion: userSuggestion,
+      oldDeparture: userDeparture
+    });
+    setAllNonUserDepartures(nonUserDepartures);
+    setAllNonUserSuggestions(nonUserSuggestions);
+    return { suggestions, departures };
+  }
+
+  function calculateAveragePosition(departures) {
+    let avgLat = 0;
+    let avgLng = 0;
+    departures.forEach(departure => {
+      avgLat += departure.location.coordinates[0];
+      avgLng += departure.location.coordinates[1];
+    });
+    avgLat /= departures.length;
+    avgLng /= departures.length;
+    setZoomLocation({ lat: Number(avgLat), lng: Number(avgLng) });
+  }
+
+  function getCurrentLocation() {
+    if (window.navigator.geolocation) {
+      window.navigator.geolocation.getCurrentPosition(function(position) {
+        const lat = Number(position.coords.latitude);
+        const lng = Number(position.coords.longitude);
+        const pos = { lat, lng };
+        setCurrentUserPosition(pos);
+      });
+    }
+    return null;
+  }
 
   function createVotingRankingState(AllSuggestions) {
     let SuggestionArray = [];
@@ -109,10 +133,10 @@ export default function Meetup(props) {
       location: { coordinates: [null, null] },
       type_of_location: null,
       created_by: {
-        first_name: user.first_name,
-        last_name: user.last_name,
-        avatar: user.avatar,
-        _id: user._id
+        first_name: null,
+        last_name: null,
+        avatar: null,
+        _id: null
       },
       meetupid: meetupId,
       votes: []
@@ -121,10 +145,10 @@ export default function Meetup(props) {
       location: { coordinates: [null, null] },
       type_of_location: null,
       created_by: {
-        first_name: user.first_name,
-        last_name: user.last_name,
-        avatar: user.avatar,
-        _id: user._id
+        first_name: null,
+        last_name: null,
+        avatar: null,
+        _id: null
       },
       meetupid: meetupId,
       votes: []
@@ -133,7 +157,13 @@ export default function Meetup(props) {
       suggestionNew.location.coordinates[0] = state.suggestion.position.lat;
 
       suggestionNew.location.coordinates[1] = state.suggestion.position.lng;
-      suggestionNew.type_of_location = `${state.suggestion.name}`;
+      suggestionNew.type_of_location = `${state.suggestion.name} ${
+        state.suggestion.types[0]
+      }`;
+      suggestionNew.created_by.first_name = user.first_name;
+      suggestionNew.created_by.last_name = user.last_name;
+      suggestionNew.created_by.avatar = user.avatar;
+      suggestionNew.created_by._id = user._id;
     }
     if (state.departure) {
       departureNew.location.coordinates[0] = Number(
@@ -143,6 +173,10 @@ export default function Meetup(props) {
         state.departure.position.lng
       );
       departureNew.type_of_location = "departure";
+      departureNew.created_by.first_name = user.first_name;
+      departureNew.created_by.last_name = user.last_name;
+      departureNew.created_by.avatar = user.avatar;
+      departureNew.created_by._id = user._id;
     }
     submitNewDepartureAndSuggestion({
       suggestion: suggestionNew,
@@ -216,8 +250,9 @@ export default function Meetup(props) {
     );
   }
   return (
-    <div className="map">
+    <div className="map" style={{ width: window.innerWidth }}>
       <GoogleReactMap
+        zoomLocation={zoomLocation}
         userSuggestionsDepartures={state}
         setUserSuggestionsDepartures={setState}
         AllNonUserDepartures={allNonUserDepartures}
@@ -225,7 +260,6 @@ export default function Meetup(props) {
         meetupId={meetupId}
         markerRefresh={markerRefresh}
         highVoteId={highVoteId}
-        // voteRanking={voteRanking}
         style={{
           zIndex: 0
         }}
@@ -235,7 +269,22 @@ export default function Meetup(props) {
           <h2>{meetup.name}</h2>
           {dateDisplay(meetup.meetup_date)} - {meetup.meetup_time}
         </div>
-        <div>
+        <div className="header-buttons-wrapper">
+          <button
+            className="heading_middle"
+            onClick={e => {
+              console.log(e);
+              showlegend ? setShowlegend(false) : setShowlegend(true);
+            }}
+            style={{
+              backgroundColor: "transparent",
+              border: "none",
+              padding: 0
+            }}
+          >
+            show legend <span> </span>
+            <i class="fas fa-map-signs"></i>
+          </button>
           <button
             className="heading_middle"
             onClick={e => {
@@ -333,6 +382,51 @@ export default function Meetup(props) {
           })}
         </ul>
       )}
+      {showlegend && (
+        <ul className="map-legend">
+          <li>
+            <img
+              src="https://res.cloudinary.com/dri8yyakb/image/upload/v1570171958/optimap_icons/nonuser_departure_marker_ea6fxu.svg"
+              alt=""
+              className="legend-image"
+            />
+            friend departure
+          </li>
+          <li>
+            <img
+              src="https://res.cloudinary.com/dri8yyakb/image/upload/v1570171958/optimap_icons/nonuser_suggestion_marker_mu2axj.svg"
+              alt=""
+              className="legend-image"
+            />
+            friend suggestions
+          </li>
+          <li>
+            <img
+              src="https://res.cloudinary.com/dri8yyakb/image/upload/v1570171958/optimap_icons/picked_suggestion_marker_cdxmkq.svg"
+              alt=""
+              className="legend-image"
+            />
+            picked suggestion
+          </li>
+          <li>
+            <img
+              src="https://res.cloudinary.com/dri8yyakb/image/upload/v1570171749/optimap_icons/user_suggestion_marker_kg9ttt.svg"
+              alt=""
+              className="legend-image"
+            />
+            your suggestion
+          </li>
+          <li>
+            <img
+              src="https://res.cloudinary.com/dri8yyakb/image/upload/v1570171750/optimap_icons/user_departure_marker_mi73ho.svg"
+              alt=""
+              className="legend-image"
+            />
+            your departure
+          </li>
+        </ul>
+      )}
+
       {/* <pre>{JSON.stringify(state, null, 2)}</pre>
       <pre>{JSON.stringify(allNonUserDepartures, null, 2)}</pre>
     <pre>{JSON.stringify(allNonUserSuggestions, null, 2)}</pre> */}
