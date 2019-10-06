@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
-import mapStyles from "./mapStyles";
+import React, { useState, useEffect } from "react";
 import Map from "./Map.jsx";
 import { withScriptjs, withGoogleMap } from "react-google-maps";
 import api from "../../api";
@@ -8,8 +7,6 @@ const WrapperMap = withScriptjs(withGoogleMap(Map));
 
 export default function GoogleReactMap(props) {
   const [loading, setLoading] = useState(true);
-  const [userLocation, setUserLocation] = useState({ lat: 48, lng: 3 });
-  const [averagePosition, setAverage] = useState(null);
   const [state, setState] = useState({
     bounds: null,
     newSuggestions: [],
@@ -17,11 +14,8 @@ export default function GoogleReactMap(props) {
   });
   const refs = {};
   useEffect(() => {
-    // upon loading the current departures and suggestions
-    // are called upon and set in this state
-    getCurrentLocation();
-    console.log(props.userSuggestionsDepartures, "hehehehehehebcoeucbeocjbs");
     setLoading(false);
+    console.log("hhhhhh", props.userSuggestionsDepartures);
     return () => {
       console.log(refs);
       // refs.searchBox.removeListener("places_changed", onPlacesChanged);
@@ -153,21 +147,6 @@ export default function GoogleReactMap(props) {
     console.log(places, state.markers);
   };
 
-  function getCurrentLocation() {
-    // console.log("here", window.navigator.geolocation);
-    if (window.navigator.geolocation) {
-      window.navigator.geolocation.getCurrentPosition(function(position) {
-        const lat = Number(position.coords.latitude);
-        const lng = Number(position.coords.longitude);
-        const pos = { lat, lng };
-        // console.log(pos, "-----------");
-        setUserLocation(pos);
-        return pos;
-      });
-    }
-    return null;
-  }
-
   function handleSuggestionMarkerClick(e, name) {
     // console.log("----", name);
     // const lat = e.latLng.lat();
@@ -210,23 +189,23 @@ export default function GoogleReactMap(props) {
   }
 
   if (loading) {
-    return <h1>Loading ...</h1>;
+    return (
+      <div className="mobile_loading">
+        <div className="loading-spinner"></div>
+      </div>
+    );
   }
 
   return (
     <div style={{ width: window.innerWidth, height: window.innerHeight }}>
       <WrapperMap
-        // these two come from meetup.jsx the higher state
-        // lives there
         userSuggestionsDepartures={props.userSuggestionsDepartures}
         setUserSuggestionsDepartures={props.setUserSuggestionsDepartures}
         currentUserSuggestion={props.userSuggestionsDepartures.oldSuggestion}
         currentUserDeparture={props.userSuggestionsDepartures.oldDeparture}
         AllNonUserDepartures={props.AllNonUserDepartures}
         AllNonUserSuggestions={props.AllNonUserSuggestions}
-        // the map will zoom in on the average departure location
-        // or if not present the user location
-        zoomLocation={averagePosition || userLocation}
+        zoomLocation={props.zoomLocation}
         handleSuggestionMarkerClick={handleSuggestionMarkerClick}
         handleDepartureMarkerClick={handleDepartureMarkerClick}
         handleNewSuggestionClick={handleNewSuggestionClick}
@@ -249,14 +228,3 @@ export default function GoogleReactMap(props) {
     </div>
   );
 }
-
-const nonuser_departure_marker =
-  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171958/optimap_icons/nonuser_departure_marker_ea6fxu.svg";
-const nonuser_suggestion_marker =
-  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171958/optimap_icons/nonuser_suggestion_marker_mu2axj.svg";
-const picked_suggestion_marker =
-  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171958/optimap_icons/picked_suggestion_marker_cdxmkq.svg";
-const user_suggestion_marker =
-  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171749/optimap_icons/user_suggestion_marker_kg9ttt.svg";
-const user_departure_marker =
-  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171750/optimap_icons/user_departure_marker_mi73ho.svg";

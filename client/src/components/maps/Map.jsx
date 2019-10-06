@@ -8,31 +8,8 @@ const {
 } = require("react-google-maps/lib/components/places/SearchBox");
 
 export default function Map(props) {
-  // the departure on which is clicked will display extra information
-  let zoomLocLat;
-  let zoomLocLng;
-  if (props.currentUserDeparture) {
-    zoomLocLat = Number(props.currentUserDeparture.location.coordinates[0]);
-    zoomLocLng = Number(props.currentUserDeparture.location.coordinates[1]);
-  } else {
-    const { lat, lng } = calculateAveragePosition(props.AllNonUserDepartures);
-    zoomLocLat = Number(lat);
-    zoomLocLng = Number(lng);
-  }
-
-  function calculateAveragePosition(departures) {
-    let avgLat = 0;
-    let avgLng = 0;
-    departures.forEach(departure => {
-      avgLat += departure.location.coordinates[0];
-      avgLng += departure.location.coordinates[1];
-    });
-    avgLat /= departures.length;
-    avgLng /= departures.length;
-    return { lat: Number(avgLat), lng: Number(avgLng) };
-  }
-
   const [selectedLocation, setSelectedLocation] = useState(null);
+
   const googlemapOptions = {
     mapTypeControl: false,
     zoomControl: false,
@@ -40,7 +17,7 @@ export default function Map(props) {
     styles: mapStyles
   };
 
-  function onSelectionInfoDisplay(selectedLoc, location_id, isAdmin) {
+  function onSelectionInfoDisplay(selectedLoc, location_id) {
     console.log("selected loc", selectedLoc);
     return (
       <div>
@@ -204,7 +181,10 @@ export default function Map(props) {
     <GoogleMap
       ref={props.onMapMounted}
       defaultZoom={15}
-      defaultCenter={{ lat: zoomLocLat, lng: zoomLocLng }}
+      defaultCenter={{
+        lat: props.zoomLocation.lat,
+        lng: props.zoomLocation.lng
+      }}
       defaultOptions={{ styles: mapStyles }}
       options={googlemapOptions}
       onBoundsChanged={props.onBoundsChanged}
@@ -344,3 +324,14 @@ function reformatTypeOf(typeofsug) {
   const sugtype = typeofsug.replace(",", " ");
   return sugtype;
 }
+
+const nonuser_departure_marker =
+  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171958/optimap_icons/nonuser_departure_marker_ea6fxu.svg";
+const nonuser_suggestion_marker =
+  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171958/optimap_icons/nonuser_suggestion_marker_mu2axj.svg";
+const picked_suggestion_marker =
+  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171958/optimap_icons/picked_suggestion_marker_cdxmkq.svg";
+const user_suggestion_marker =
+  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171749/optimap_icons/user_suggestion_marker_kg9ttt.svg";
+const user_departure_marker =
+  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171750/optimap_icons/user_departure_marker_mi73ho.svg";
