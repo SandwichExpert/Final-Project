@@ -13,21 +13,12 @@ import {
   InfoWindow
 } from "react-google-maps";
 import api from "../../api";
-const nonuser_departure_marker =
-  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171958/optimap_icons/nonuser_departure_marker_ea6fxu.svg";
-const nonuser_suggestion_marker =
-  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171958/optimap_icons/nonuser_suggestion_marker_mu2axj.svg";
-const picked_suggestion_marker =
-  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171958/optimap_icons/picked_suggestion_marker_cdxmkq.svg";
-const user_suggestion_marker =
-  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171749/optimap_icons/user_suggestion_marker_kg9ttt.svg";
-const user_departure_marker =
-  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171750/optimap_icons/user_departure_marker_mi73ho.svg";
+
 const {
   SearchBox
 } = require("react-google-maps/lib/components/places/SearchBox");
 
-function Map(props) {
+export default function Map(props) {
   // the departure on which is clicked will display extra information
   let zoomLocLat;
   let zoomLocLng;
@@ -610,3 +601,15 @@ function reformatTypeOf(typeofsug) {
   const sugtype = typeofsug.replace(",", " ");
   return sugtype;
 }
+
+
+const nonuser_departure_marker =
+  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171958/optimap_icons/nonuser_departure_marker_ea6fxu.svg";
+const nonuser_suggestion_marker =
+  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171958/optimap_icons/nonuser_suggestion_marker_mu2axj.svg";
+const picked_suggestion_marker =
+  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171958/optimap_icons/picked_suggestion_marker_cdxmkq.svg";
+const user_suggestion_marker =
+  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171749/optimap_icons/user_suggestion_marker_kg9ttt.svg";
+const user_departure_marker =
+  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570171750/optimap_icons/user_departure_marker_mi73ho.svg";
