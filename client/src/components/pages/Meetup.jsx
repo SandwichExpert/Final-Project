@@ -311,6 +311,7 @@ export default function Meetup(props) {
           zIndex: 0
         }}
       />
+      <ChatBox user={user} meetup={meetup} />
       <div className="heading_meetup">
         <div className="left_side">
           <h2>{meetup.name}</h2>
