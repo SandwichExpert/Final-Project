@@ -42,9 +42,9 @@ export default function MeetupTable(props) {
   }
 
   function removeUser(meetupId) {
-    const result = window.confirm(
-      "Are you sure you want to leave this meetup?"
-    );
+    // const result = window.confirm(
+    //   "Are you sure you want to leave this meetup?"
+    // );
     const userId = props.user._id;
     console.log(props.user._id, meetupId);
     // if (result){

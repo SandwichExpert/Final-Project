@@ -4,12 +4,26 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import api from "../../api";
-
+import ChatBox from "../sub-components/ChatBox";
+import Store from "../sub-components/Store";
+import Button from "@material-ui/core/Button";
 // setup socket.io on the client side
 // const io = require("socket.io-client");
 
 // this setup has to match your backend
 // const socket = io("http://localhost:2000/");
+const style = {
+  margin: 0,
+  top: "auto",
+  right: 20,
+  bottom: 20,
+  left: "auto",
+  position: "fixed",
+  backgroundColor: "#6b7db3",
+  color: "#FFFFFF",
+  height: 30,
+  width: 30
+};
 
 export default function Meetup(props) {
   const meetupId = props.match.params.meetupId;
@@ -29,6 +43,7 @@ export default function Meetup(props) {
     suggestion: null,
     departure: null
   });
+  const [isChatActive, setIsChatActive] = useState(false);
   // location states used to determine map zoom
   const [zoomLocation, setZoomLocation] = useState(null);
   const [currentUserPostion, setCurrentUserPosition] = useState(null);
@@ -50,6 +65,11 @@ export default function Meetup(props) {
         console.log(err, "error setting up initial state");
       });
   }, []);
+
+  function toggleDiv() {
+    const { show } = isChatActive;
+    setIsChatActive({ show: !show });
+  }
 
   // use effect tot enter and leave a room
   // useEffect(() => {
@@ -86,6 +106,7 @@ export default function Meetup(props) {
     const foundMeetup = await api.getMeetUp(meetupId);
     const suggestions = foundMeetup._suggested_locations;
     const departures = foundMeetup._departure_locations;
+
     setMeetup(foundMeetup);
     console.log("DEBUG", foundMeetup);
     createVotingRankingState(suggestions);
@@ -313,7 +334,20 @@ export default function Meetup(props) {
           zIndex: 0
         }}
       />
-      <ChatBox user={user} meetup={meetup} />
+
+      {/* The Whole chatbox interaction */}
+
+      {isChatActive.show && (
+        <Store user={user} meetup={meetup}>
+          <ChatBox user={user} meetup={meetup} />
+        </Store>
+      )}
+      <Button variant="fab" aria-label="add" style={style} onClick={toggleDiv}>
+        <i class="fas fa-comment"></i>
+      </Button>
+
+      {/* end of the chat     */}
+
       <div className="heading_meetup">
         <div className="left_side">
           <h2>{meetup.name}</h2>
