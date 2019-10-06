@@ -36,7 +36,10 @@ export default function Map(props) {
             <span className="information-disp">
               {selectedLoc.created_by.first_name} suggests
               <img
-                src={selectedLoc.created_by.avatar}
+                src={
+                  selectedLoc.created_by.avatar ||
+                  "https://res.cloudinary.com/dri8yyakb/image/upload/v1570092985/optimap_avatars/default_avatar.png.png"
+                }
                 alt="user-avatar"
                 className="profile-image"
                 style={{ width: 60, height: 60 }}

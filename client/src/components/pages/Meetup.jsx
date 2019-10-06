@@ -8,7 +8,7 @@ import api from "../../api";
 const io = require("socket.io-client");
 
 // this setup has to match your backend
-const socket = io("http://localhost:5000");
+const socket = io("http://localhost:2000/");
 
 export default function Meetup(props) {
   const meetupId = props.match.params.meetupId;
@@ -473,7 +473,26 @@ export default function Meetup(props) {
           </li>
         </ul>
       )}
-      {inRoom && <div className="chat-container"></div>}
+      <button
+        className="enterLeaveButton"
+        onClick={() => {
+          handleInRoom();
+        }}
+      >
+        {inRoom && "leave chat"}
+        {!inRoom && "enter room"}
+      </button>
+      {inRoom && (
+        <div className="chat-container">
+          <button
+            onClick={() => {
+              handleNewMessage();
+            }}
+          >
+            send new message
+          </button>
+        </div>
+      )}
       {/* <pre>{JSON.stringify(state, null, 2)}</pre>
       <pre>{JSON.stringify(allNonUserDepartures, null, 2)}</pre>
     <pre>{JSON.stringify(allNonUserSuggestions, null, 2)}</pre> */}

@@ -6,13 +6,12 @@ let app = require("../app");
 
 let server = http.createServer(app);
 // socket io please listen to this server
-const io = SocketIO(server);
+const io = socketIO(server);
 
 server.on("error", error => {
   if (error.syscall !== "listen") {
     throw error;
   }
-
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case "EACCES":
@@ -48,6 +47,7 @@ io.on("connection", socket => {
   });
   socket.on("new message", data => {
     console.log("new message received");
+    console.log(data, "got data");
     socket.broadcast.to(data.room).emit("receive message", data);
     console.log("message has been emitted");
   });
