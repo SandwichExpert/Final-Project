@@ -22,6 +22,7 @@ export default function Meetup(props) {
   const [voteRanking, setVoteRanking] = useState([]);
   const [displayVote, setDisplayVote] = useState(false);
   const [showlegend, setShowlegend] = useState(false);
+  const [showChat, setShowChat] = useState(false);
   const [state, setState] = useState({
     oldDeparture: null,
     oldSuggestion: null,
@@ -475,26 +476,13 @@ export default function Meetup(props) {
           </li>
         </ul>
       )}
-      {/* <button
-        className="enterLeaveButton"
-        onClick={() => {
-          handleInRoom();
-        }}
-      >
-        {inRoom && "leave chat"}
-        {!inRoom && "enter room"}
-      </button>
-      {inRoom && (
-        <div className="chat-container">
-          <button
-            onClick={() => {
-              handleNewMessage();
-            }}
-          >
-            send new message
-          </button>
-        </div>
-      )} */}
+      {showChat && (
+        <TestComponent
+          meetupId={meetupId}
+          username={user.first_name}
+          meetupName={meetup.name}
+        ></TestComponent>
+      )}
       {/* <pre>{JSON.stringify(state, null, 2)}</pre>
       <pre>{JSON.stringify(allNonUserDepartures, null, 2)}</pre>
     <pre>{JSON.stringify(allNonUserSuggestions, null, 2)}</pre> */}

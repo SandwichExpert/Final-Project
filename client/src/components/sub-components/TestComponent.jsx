@@ -7,12 +7,12 @@ const io = require("socket.io-client");
 const socket = io("http://localhost:2000/");
 
 export default function TestComponent(props) {
-  const meetupId = 1234;
-  const user = "someone";
-  const meetupName = "war council";
-  // const meetupId = props.meetupId
-  // const firstname = props.name
-  // const meetupName = props.meetupName
+  // const meetupId = 1234;
+  // const user = "someone";
+  // const meetupName = "war council";
+  const meetupId = props.meetupId;
+  const firstname = props.username;
+  const meetupName = props.meetupName;
   // states used for our socket chat
   const [messageCount, setMessageCount] = useState(0);
   // for now a user is in a room by default
@@ -63,7 +63,7 @@ export default function TestComponent(props) {
     socket.emit("new message", {
       room: `${meetupId}`,
       msg: `${currentMessage}`,
-      user: `${user}`
+      user: `${firstname}`
     });
     setMessageCount(messageCount + 1);
     setMessages([...messages, { incoming: false, msg: `${currentMessage}` }]);
