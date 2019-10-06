@@ -5,11 +5,6 @@ import GoogleReactMap from "../maps/GoogleReactMap";
 import moment from "moment";
 // import Logo from '../../assets/maptee_logo.svg'
 
-let socket = new WebSocket("wss://localhost:3000/my-meetup/:meetupId");
-socket.onopen = e => {
-  console.log("[open] connection established");
-};
-
 export default function Meetup(props) {
   const meetupId = props.match.params.meetupId;
   const [meetup, setMeetup] = useState(null);
@@ -384,7 +379,7 @@ export default function Meetup(props) {
       )}
       {showlegend && (
         <ul className="map-legend">
-          <li>
+          <li className="map-legend-item">
             <img
               src="https://res.cloudinary.com/dri8yyakb/image/upload/v1570171958/optimap_icons/nonuser_departure_marker_ea6fxu.svg"
               alt=""
@@ -392,7 +387,7 @@ export default function Meetup(props) {
             />
             friend departure
           </li>
-          <li>
+          <li className="map-legend-item">
             <img
               src="https://res.cloudinary.com/dri8yyakb/image/upload/v1570171958/optimap_icons/nonuser_suggestion_marker_mu2axj.svg"
               alt=""
@@ -400,7 +395,7 @@ export default function Meetup(props) {
             />
             friend suggestions
           </li>
-          <li>
+          <li className="map-legend-item">
             <img
               src="https://res.cloudinary.com/dri8yyakb/image/upload/v1570171958/optimap_icons/picked_suggestion_marker_cdxmkq.svg"
               alt=""
@@ -408,7 +403,7 @@ export default function Meetup(props) {
             />
             picked suggestion
           </li>
-          <li>
+          <li className="map-legend-item">
             <img
               src="https://res.cloudinary.com/dri8yyakb/image/upload/v1570171749/optimap_icons/user_suggestion_marker_kg9ttt.svg"
               alt=""
@@ -416,7 +411,7 @@ export default function Meetup(props) {
             />
             your suggestion
           </li>
-          <li>
+          <li className="map-legend-item">
             <img
               src="https://res.cloudinary.com/dri8yyakb/image/upload/v1570171750/optimap_icons/user_departure_marker_mi73ho.svg"
               alt=""

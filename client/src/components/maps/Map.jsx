@@ -23,8 +23,7 @@ export default function Map(props) {
       <div>
         {selectedLoc.type_of_location == "departure" && (
           <span className="information-disp">
-            departure of {selectedLoc.created_by.first_name}{" "}
-            {selectedLoc.created_by.last_name}{" "}
+            {selectedLoc.created_by.first_name} is leaving from here
             <img
               src={selectedLoc.created_by.avatar}
               alt="user-avatar"
@@ -35,12 +34,12 @@ export default function Map(props) {
         {selectedLoc.type_of_location != "departure" && (
           <div>
             <span className="information-disp">
-              suggestion from {selectedLoc.created_by.first_name}{" "}
-              {selectedLoc.created_by.last_name}{" "}
+              {selectedLoc.created_by.first_name} suggests
               <img
                 src={selectedLoc.created_by.avatar}
                 alt="user-avatar"
                 className="profile-image"
+                style={{ width: 60, height: 60 }}
               />
             </span>
             <div className="extra-suggestion-info">
@@ -153,7 +152,6 @@ export default function Map(props) {
             lat: Number(departure.location.coordinates[0]),
             lng: Number(departure.location.coordinates[1])
           }}
-          defaultLabel={departure.created_by.first_name.substr(0, 1)}
           onClick={() => {
             setSelectedLocation(departure);
           }}
@@ -180,7 +178,7 @@ export default function Map(props) {
   return (
     <GoogleMap
       ref={props.onMapMounted}
-      defaultZoom={15}
+      defaultZoom={10}
       defaultCenter={{
         lat: props.zoomLocation.lat,
         lng: props.zoomLocation.lng
@@ -245,7 +243,7 @@ export default function Map(props) {
               defaultTitle={marker.name}
               icon={{
                 url: `${marker.icon}`,
-                scaledSize: new window.google.maps.Size(50, 50)
+                scaledSize: new window.google.maps.Size(40, 40)
               }}
               key={i}
               position={marker.position}
@@ -272,7 +270,7 @@ export default function Map(props) {
               defaultTitle={marker.name}
               icon={{
                 url: `${marker.icon}`,
-                scaledSize: new window.google.maps.Size(50, 50)
+                scaledSize: new window.google.maps.Size(40, 40)
               }}
               key={i}
               position={marker.position}

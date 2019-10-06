@@ -259,6 +259,28 @@
   border: 2px solid #6b7db3;
 }
 
+.selectionWindow-profile-image {
+  width: 60px;
+  height: 60px;
+}
+
+.header-buttons-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.legend-image {
+  width: 5%;
+  height: 5%;
+}
+
+.map-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  list-style-type: none;
+}
+
 @media only screen and (min-width: 1444px) {
   .left_side h2 {
     font-size: 2em;
