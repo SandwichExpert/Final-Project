@@ -5,6 +5,7 @@ import GoogleReactMap from "../maps/GoogleReactMap";
 import UserDisplay from "../sub-components/UserDisplay";
 import moment from "moment";
 import LocationSearchBox from "../maps/LocationSearchBox";
+import ChatBox from '../sub-components/ChatBox';
 // import Logo from '../../assets/maptee_logo.svg'
 
 export default function Meetup(props) {
@@ -240,6 +241,7 @@ export default function Meetup(props) {
           zIndex: 0
         }}
       />
+      <ChatBox user={user} meetup={meetup}/>
       <div className="heading_meetup">
         <div className="left_side">
           <h2>{meetup.name}</h2>
@@ -310,6 +312,7 @@ export default function Meetup(props) {
               </button>
             </div>
           </div>
+          
         </div>
       )}
       {displayVote && (
@@ -319,6 +322,7 @@ export default function Meetup(props) {
               <b>
                 <li key={i} className="voting-item">
                   {i == 0 && (
+                    
                     <img
                       src="https://image.flaticon.com/icons/svg/625/625394.svg"
                       className="vote-image"

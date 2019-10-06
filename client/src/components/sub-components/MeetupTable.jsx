@@ -42,25 +42,26 @@ export default function MeetupTable(props) {
   }
 
   function removeUser(meetupId) {
-    const result = window.confirm("Are you sure you want to leave this meetup?")
+    const result = window.confirm(
+      "Are you sure you want to leave this meetup?"
+    );
     const userId = props.user._id;
     console.log(props.user._id, meetupId);
-    if (result){
+    // if (result){
     api
       .removeUserFromMeetup(userId, meetupId)
       .then(e => {
         console.log("user Removed");
       })
       .catch(err => console.log(err));
-    }
-    
+    // }
   }
 
   function toggleId(index) {
     if (selectedItem === index) {
       setSelectedItem(null);
     } else setSelectedItem(index);
-    console.log(selectedItem)
+    console.log(selectedItem);
   }
 
   let data = {
@@ -133,9 +134,10 @@ export default function MeetupTable(props) {
                     style={{ border: "none", background: "none" }}
                     _data={meetup._id}
                     key={index}
-                    onClick={e => {copyToClipBoard(e);
-                      toggleId(index) }                   
-                    }
+                    onClick={e => {
+                      copyToClipBoard(e);
+                      toggleId(index);
+                    }}
                   >
                     <i
                       className="fas fa-user-plus"
@@ -182,7 +184,10 @@ export default function MeetupTable(props) {
                   </td>
                 )}
               </tr>
-             <tr className={selectedItem === index ? "isActive" : "hidden"} style={{ width: "100%" }}>
+              <tr
+                className={selectedItem === index ? "isActive" : "hidden"}
+                style={{ width: "100%" }}
+              >
                 <td colSpan="4" style={{ textAlign: "left" }}>
                   Shareable Id: {meetup._id}
                 </td>

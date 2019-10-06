@@ -1,15 +1,17 @@
 const path = require("path");
 require("dotenv").config({ path: path.join(__dirname, ".env") });
-
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const express = require("express");
+const app = express();
 const mongoose = require("mongoose");
 const logger = require("morgan");
 const nocache = require("nocache");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
+const http = require('http').createServer(app);
+var io = require('socket.io')(http);
 
 require("./configs/database");
 
@@ -18,7 +20,10 @@ const debug = require("debug")(
   `${app_name}:${path.basename(__filename).split(".")[0]}`
 );
 
-const app = express();
+io.on('connection', function(socket){
+  socket.on
+  console.log('a user connected')
+});
 
 app.use(nocache());
 
