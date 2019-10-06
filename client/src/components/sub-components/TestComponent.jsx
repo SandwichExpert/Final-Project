@@ -8,9 +8,11 @@ const socket = io("http://localhost:2000/");
 
 export default function TestComponent(props) {
   const meetupId = 1234;
-  const username = "someone";
+  const user = "someone";
+  const meetupName = "war council";
   // const meetupId = props.meetupId
   // const firstname = props.name
+  // const meetupName = props.meetupName
   // states used for our socket chat
   const [messageCount, setMessageCount] = useState(0);
   // for now a user is in a room by default
@@ -42,7 +44,10 @@ export default function TestComponent(props) {
     socket.on("receive message", payload => {
       console.log(payload, "message payload ");
       setMessageCount(messageCount + 1);
-      setMessages([...messages, payload.msg]);
+      setMessages([
+        ...messages,
+        { incoming: true, msg: `${payload.user} ${payload.msg}` }
+      ]);
       console.log("previous message count", messageCount);
     });
   });
@@ -57,10 +62,11 @@ export default function TestComponent(props) {
     // clients that are also in this room
     socket.emit("new message", {
       room: `${meetupId}`,
-      msg: `${currentMessage}`
+      msg: `${currentMessage}`,
+      user: `${user}`
     });
     setMessageCount(messageCount + 1);
-    setMessages([...messages, currentMessage]);
+    setMessages([...messages, { incoming: false, msg: `${currentMessage}` }]);
   }
 
   function handleMessageInput(e) {
@@ -70,10 +76,16 @@ export default function TestComponent(props) {
 
   return (
     <div>
-      <h1>Test Component Chat</h1>
-      <div className="chatbox">
+      <h1>{meetupName}</h1>
+      <div className="chatBox">
         {messages.map(message => {
-          return <div>{message}</div>;
+          let color;
+          message.incoming ? (color = "red") : (color = "blue");
+          return (
+            <div className="single-message" style={{ color: color }}>
+              {message.msg}
+            </div>
+          );
         })}
       </div>
       <button

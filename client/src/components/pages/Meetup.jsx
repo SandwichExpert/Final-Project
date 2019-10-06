@@ -1,4 +1,5 @@
 import GoogleReactMap from "../maps/GoogleReactMap";
+import TestComponent from "../sub-components/TestComponent";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";

@@ -8,13 +8,12 @@ $five: #99ffff;
 
 @function vh($quantity) {
   @return calc(var(--vh, 1vh) * #{$quantity});
-  }
+}
 
 @function vw($quantity) {
   @return calc(var(--vw, 1vw) * #{$quantity});
-  }
-  
-  
+}
+
 // ----------------------------------------
 // To install Boostrap:
 // 1) Run in the client folder: $ npm i bootstrap
@@ -38,7 +37,7 @@ $five: #99ffff;
 @import "../src/css_styles/createmeetup.scss";
 @import "../src/css_styles/login.scss";
 @import "../src/css_styles/join.scss";
- // --------------------
+@import "../src/css_styles/chatbox.scss"; // --------------------
 // Style reusable for all components
 * {
   box-sizing: border-box;
@@ -61,7 +60,7 @@ body {
   box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 6px;
   font-size: 14px;
   outline: none;
-  margin-bottom:5px;
+  margin-bottom: 5px;
 }
 
 .button {
@@ -98,7 +97,6 @@ body {
   text-decoration: none;
   color: white;
   margin: 3% 0;
-
 }
 
 .link:hover {
@@ -145,7 +143,7 @@ body {
   }
 
   .App-title {
-    font-size: 1.5em; 
+    font-size: 1.5em;
   }
 
   .App-intro {
@@ -168,22 +166,18 @@ body {
   padding-top: 10%;
   height: vh(100);
   color: white;
-  display:flex;
-  justify-content : center;
-  align-content:center;
-  align-items:center;
-  flex-flow:column wrap;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  flex-flow: column wrap;
 }
 
-.mobile-container{
-  height:vh(100);
-  width:vw(100);
-  background-color:$one;
+.mobile-container {
+  height: vh(100);
+  width: vw(100);
+  background-color: $one;
 }
-
-
-
-
 
 // --------------------
 // Style for Home component
@@ -201,7 +195,5 @@ body {
     color: $primary;
   }
 }
-
-
 
 @import "./css_styles/media.scss";
