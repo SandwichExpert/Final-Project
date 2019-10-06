@@ -109,10 +109,10 @@ export default function Meetup(props) {
       location: { coordinates: [null, null] },
       type_of_location: null,
       created_by: {
-        first_name: null,
-        last_name: null,
-        avatar: null,
-        _id: null
+        first_name: user.first_name,
+        last_name: user.last_name,
+        avatar: user.avatar,
+        _id: user._id
       },
       meetupid: meetupId,
       votes: []
@@ -121,10 +121,10 @@ export default function Meetup(props) {
       location: { coordinates: [null, null] },
       type_of_location: null,
       created_by: {
-        first_name: null,
-        last_name: null,
-        avatar: null,
-        _id: null
+        first_name: user.first_name,
+        last_name: user.last_name,
+        avatar: user.avatar,
+        _id: user._id
       },
       meetupid: meetupId,
       votes: []
@@ -133,13 +133,7 @@ export default function Meetup(props) {
       suggestionNew.location.coordinates[0] = state.suggestion.position.lat;
 
       suggestionNew.location.coordinates[1] = state.suggestion.position.lng;
-      suggestionNew.type_of_location = `${state.suggestion.name} ${
-        state.suggestion.types[0]
-      }`;
-      suggestionNew.created_by.first_name = user.first_name;
-      suggestionNew.created_by.last_name = user.last_name;
-      suggestionNew.created_by.avatar = user.avatar;
-      suggestionNew.created_by._id = user._id;
+      suggestionNew.type_of_location = `${state.suggestion.name}`;
     }
     if (state.departure) {
       departureNew.location.coordinates[0] = Number(
@@ -149,10 +143,6 @@ export default function Meetup(props) {
         state.departure.position.lng
       );
       departureNew.type_of_location = "departure";
-      departureNew.created_by.first_name = user.first_name;
-      departureNew.created_by.last_name = user.last_name;
-      departureNew.created_by.avatar = user.avatar;
-      departureNew.created_by._id = user._id;
     }
     submitNewDepartureAndSuggestion({
       suggestion: suggestionNew,
