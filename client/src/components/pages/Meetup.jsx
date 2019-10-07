@@ -337,11 +337,9 @@ export default function Meetup(props) {
 
       {/* The Whole chatbox interaction */}
 
-        <Store user={user} meetup={meetup}>
-      {isChatActive.show && (
-          <ChatBox user={user} meetup={meetup} />
-          )}
-        </Store>
+      <Store user={user} meetup={meetup}>
+        {isChatActive.show && <ChatBox user={user} meetup={meetup} />}
+      </Store>
       <Button variant="fab" aria-label="add" style={style} onClick={toggleDiv}>
         <i className="fas fa-comment"></i>
       </Button>
@@ -474,7 +472,7 @@ export default function Meetup(props) {
               alt=""
               className="legend-image"
             />
-            friend departure
+            <b>friends depart from</b>
           </li>
           <li className="map-legend-item">
             <img
@@ -482,7 +480,7 @@ export default function Meetup(props) {
               alt=""
               className="legend-image"
             />
-            friend suggestions
+            <b>friends suggest</b>
           </li>
           <li className="map-legend-item">
             <img
@@ -490,7 +488,7 @@ export default function Meetup(props) {
               alt=""
               className="legend-image"
             />
-            picked suggestion
+            <b>picked suggestion</b>
           </li>
           <li className="map-legend-item">
             <img
@@ -498,7 +496,7 @@ export default function Meetup(props) {
               alt=""
               className="legend-image"
             />
-            your suggestion
+            <b>you suggest</b>
           </li>
           <li className="map-legend-item">
             <img
@@ -506,7 +504,7 @@ export default function Meetup(props) {
               alt=""
               className="legend-image"
             />
-            your departure
+            <b>you depart from</b>
           </li>
         </ul>
       )}
