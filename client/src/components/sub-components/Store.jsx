@@ -28,7 +28,7 @@ function sendChatAction(value) {
 export default function Store(props) {
   const [allChats, dispatch] = React.useReducer(reducer, initState);
   if (!socket) {
-    socket = io("http://maptee.herokuapp.com/");
+    socket = io("/");
     socket.on("chat message", function(msg) {
       dispatch({ type: "RECEIVE_MESSAGE", payload: msg });
     });
