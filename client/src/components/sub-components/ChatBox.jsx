@@ -104,7 +104,7 @@ export default function ChatBox(props) {
           </div> */}
           <div className={classes.chatWindow}>
             {allChats[activeTopic].map((chat, i) => {
-              // console.log(allChats)
+              console.log(chat.msg)
               return(
               <div className={classes.flexColumn} key={i}>
                   <Chip
