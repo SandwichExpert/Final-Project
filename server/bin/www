@@ -27,7 +27,7 @@ server.on("error", error => {
   }
 });
 
-if (!process.env.PORT) process.env.PORT = 5000;
+if (!process.env.PORT) process.env.PORT = 2000;
 
 // wait for a connection event
 // upon connection we execute a callback
@@ -75,7 +75,7 @@ io.on("connection", function(socket) {
     console.log("message has been emitted");
   });
   socket.on("new suggestion", data => {
-    console.log(data.username, "new sugestion from user");
+    console.log(data.username, "new suggestion from user");
     console.log(data.lat, "on lat");
     console.log(data.lng, "on lng");
     socket.broadcast.to(data.room).emit("receive suggestion", data);
