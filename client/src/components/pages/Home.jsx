@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import api from "../../api";
 import UserDisplay from "../sub-components/UserDisplay";
 import moment from "moment";
-i
+
 
 export default function Home(props) {
   const [user, setUser] = useState("");
