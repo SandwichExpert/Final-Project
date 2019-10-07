@@ -23,7 +23,7 @@
 }
 
 .heading_meetup {
-  background-color: rgb(255, 255, 255);
+  background-color: rgba(252, 252, 252, 0.664);
   color: black;
   text-align: left;
   display: flex;
@@ -306,15 +306,21 @@
 }
 
 .legend-image {
+  margin-right: 2%;
   width: 5%;
   height: 5%;
 }
 
 .map-legend {
+  text-align: left;
+  background-color: rgba(252, 252, 252, 0.664);
+  position: absolute;
+  top: 20%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   list-style-type: none;
+  flex-direction: column;
 }
 
 @media only screen and (min-width: 1444px) {
