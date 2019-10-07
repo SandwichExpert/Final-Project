@@ -283,6 +283,7 @@
 
 .heading_middle {
   padding-bottom: 10%;
+  flex-direction : column;
 }
 
 .information-disp {
@@ -306,7 +307,7 @@
 
 .header-buttons-wrapper {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 .legend-image {
