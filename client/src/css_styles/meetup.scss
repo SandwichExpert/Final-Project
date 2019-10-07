@@ -422,6 +422,9 @@
   .ChatContainer {
     max-height: 60%;
   }
+  .legend{
+    display:none;
+  }
 }
 
 @media only screen and (min-width: 375px) and (max-width: 413px) {
@@ -455,6 +458,9 @@
   .ChatContainer {
     max-height: 60%;
   }
+  .legend{
+    display:none;
+  }
 }
 
 @media only screen and (min-width: 360px) and (max-width: 374px) {
@@ -487,6 +493,9 @@
   .ChatContainer {
     max-height: 60%;
   }
+  .legend{
+    display:none;
+  }
 }
 
 @media only screen and (min-width: 320px) and (max-width: 359px) {
@@ -518,4 +527,8 @@
   .ChatContainer {
     max-height: 400px;
   }
+  .legend{
+    display:none;
+  }
+
 }
