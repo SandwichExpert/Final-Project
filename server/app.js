@@ -10,11 +10,6 @@ const logger = require("morgan");
 const nocache = require("nocache");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
-// const http = require('http').createServer(app);
-// var io = require('socket.io')(http);
-
-
-
 require("./configs/database");
 
 const app_name = require("./package.json").name;
@@ -26,11 +21,6 @@ const debug = require("debug")(
 //   socket.on
 //   console.log('a user connected')
 // });
-
-// io.on('connection',(socket)=>{
-//   console.log('Client connected');
-//   socket.on('disconnect', () => console.log('Client disconnected'));
-// })
 
 app.use(nocache());
 
