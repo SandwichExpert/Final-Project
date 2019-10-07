@@ -3,31 +3,12 @@
 const http = require("http");
 const socketIO = require("socket.io");
 let app = require("../app");
-const wss = new SocketServer({ app });
-var HOST = location.origin.replace(/^http/, 'ws')
-var ws = new WebSocket(HOST);
-var el = document.getElementById('server-time');
 
-ws.onmessage = function (event) {
-  el.innerHTML = 'Server time: ' + event.data;
-};
 
 
 let server = http.createServer(app);
 // socket io please listen to this server
 const io = socketIO(server);
-
-wss.on('connection', (ws) => {
-  console.log('Client connected');
-  ws.on('close', () => console.log('Client disconnected'));
-});
-
-setInterval(() => {
-  wss.clients.forEach((client) => {
-    client.send(new Date().toTimeString());
-  });
-}, 1000);
-
 
 server.on("error", error => {
   if (error.syscall !== "listen") {
