@@ -55,6 +55,34 @@ if (!process.env.PORT) process.env.PORT = 5000;
 // });
 io.on("connection", function(socket) {
   console.log("a user connected");
+<<<<<<< HEAD
+=======
+
+  socket.on("disconnect", () => {
+    console.log("a user disconnected");
+  });
+  socket.on("room", data => {
+    console.log("the room has been joined");
+    socket.join(data.room);
+  });
+  socket.on("leave room", data => {
+    console.log("room has been left");
+    socket.leave(data.room);
+  });
+  socket.on("new message", data => {
+    console.log("new message received");
+    console.log(data, "got data");
+    console.log(data.msg, "the new message");
+    socket.broadcast.to(data.room).emit("receive message", data);
+    console.log("message has been emitted");
+  });
+  socket.on("new suggestion", data => {
+    console.log(data.username, "new sugestion from user");
+    console.log(data.lat, "on lat");
+    console.log(data.lng, "on lng");
+    socket.broadcast.to(data.room).emit("receive suggestion", data);
+  });
+>>>>>>> suggestions_live
   socket.on("chat message", function(msg) {
     console.log("message: " + JSON.stringify(msg));
     io.emit("chat message", msg);

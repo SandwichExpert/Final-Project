@@ -8,7 +8,8 @@ import ChatBox from "../sub-components/ChatBox";
 import Store from "../sub-components/Store";
 import Button from "@material-ui/core/Button";
 // setup socket.io on the client side
-// const io = require("socket.io-client");
+const io = require("socket.io-client");
+const socket = io("http://localhost:2000/");
 
 // this setup has to match your backend
 // const socket = io("http://localhost:2000/");
@@ -47,6 +48,10 @@ export default function Meetup(props) {
   // location states used to determine map zoom
   const [zoomLocation, setZoomLocation] = useState(null);
   const [currentUserPostion, setCurrentUserPosition] = useState(null);
+
+  // states to have live updates
+  const [inRoom, setInRoom] = useState(true);
+  const [liveSuggestions, setLiveSuggestions] = useState([]);
   // states used for our socket chat
   // const [messageCount, setMessageCount] = useState(0);
   // for now a user is in a room by default
@@ -66,9 +71,50 @@ export default function Meetup(props) {
       });
   }, []);
 
+  // use effect for live map updates
+  useEffect(() => {
+    // users joins a room which is connected
+    if (inRoom) {
+      console.log("joining the room");
+      socket.emit("room", {
+        room: `${meetupId}`
+      });
+    }
+
+    socket.on("receive suggestion", payload => {
+      console.log(payload.username, payload.lat, payload.lng);
+      setLiveSuggestions([
+        ...liveSuggestions,
+        { username: payload.username, lat: payload.lat, lng: payload.lng }
+      ]);
+    });
+
+    return () => {
+      if (inRoom) {
+        console.log("leaving the room");
+        socket.emit("leave room", {
+          room: `${meetupId}`
+        });
+      }
+    };
+  });
+
   function toggleDiv() {
     const { show } = isChatActive;
     setIsChatActive({ show: !show });
+  }
+
+  function handleNewSuggestion(lat, lng) {
+    console.log("sending a suggestion");
+    // because on reception the socket will send this messages to
+    // clients that are also in this room
+    socket.emit("new suggestion", {
+      room: `${meetupId}`,
+      username: `${user.first_name}`,
+      userid: user._id,
+      lat: lat,
+      lng: lng
+    });
   }
 
   // use effect tot enter and leave a room
@@ -222,6 +268,10 @@ export default function Meetup(props) {
       suggestionNew.created_by.last_name = user.last_name;
       suggestionNew.created_by.avatar = user.avatar;
       suggestionNew.created_by._id = user._id;
+      handleNewSuggestion(
+        suggestionNew.location.coordinates[0],
+        suggestionNew.location.coordinates[1]
+      );
     }
     if (state.departure) {
       departureNew.location.coordinates[0] = Number(
@@ -322,6 +372,7 @@ export default function Meetup(props) {
   return (
     <div className="map" style={{ width: window.innerWidth }}>
       <GoogleReactMap
+        liveSuggestions={liveSuggestions}
         zoomLocation={zoomLocation}
         userSuggestionsDepartures={state}
         setUserSuggestionsDepartures={setState}
@@ -365,7 +416,7 @@ export default function Meetup(props) {
             }}
           >
             show legend <span> </span>
-            <i class="fas fa-map-signs"></i>
+            <i className="fas fa-map-signs"></i>
           </button>
           <button
             className="heading_middle"
@@ -376,7 +427,7 @@ export default function Meetup(props) {
             style={{ backgroundColor: "transparent", border: "none" }}
           >
             see ranking <span> </span>
-            <i class="fas fa-poll"></i>
+            <i className="fas fa-poll"></i>
           </button>
         </div>
         <div className="right_side">

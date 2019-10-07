@@ -220,6 +220,7 @@ export default function GoogleReactMap(props) {
         bounds={state.bounds}
         isAdmin={props.isAdmin}
         highVoteId={props.highVoteId}
+        liveSuggestions={props.liveSuggestions}
         googleMapURL={`https://maps.googleapis.com/maps/api/js?key=AIzaSyC4R6AN7SmujjPUIGKdyao2Kqitzr1kiRg&v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GKEY}`}
         loadingElement={<div style={{ height: window.innerHeight }} />}
         containerElement={<div style={{ height: window.innerHeight }} />}
