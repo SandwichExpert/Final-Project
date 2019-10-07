@@ -3,6 +3,8 @@ import api from "../../api";
 import UserDisplay from "../sub-components/UserDisplay";
 import moment from "moment";
 import ChatBox from "../sub-components/ChatBox";
+import Store from "../sub-components/Store";
+import Button from "@material-ui/core/Button";
 
 export default function Home(props) {
   const [user, setUser] = useState("");
