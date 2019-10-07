@@ -415,7 +415,7 @@ export default function Meetup(props) {
               padding: 0
             }}
           >
-            <p className='legend'>show legend</p> <br/>
+            <p className='legend'>show legend</p> 
             <i className="fas fa-map-signs"></i>
           </button>
           <button
@@ -426,7 +426,7 @@ export default function Meetup(props) {
             }}
             style={{ backgroundColor: "transparent", border: "none" }}
           >
-            <p className='legend'>see ratings</p> <br/>
+            <p className='legend'>see ratings</p> 
             <i className="fas fa-poll"></i>
           </button>
         </div>
