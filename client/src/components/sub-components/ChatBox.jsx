@@ -89,7 +89,7 @@ export default function ChatBox(props) {
         </Typography>
         <Typography component="h5">{props.user.first_name}</Typography>
         <div className={classes.flex}>
-          {/* <div className={classes.topicsWindow}>
+          <div className={classes.topicsWindow}>
             <List>
               {topics.map(topic => (
                 <ListItem
@@ -101,10 +101,10 @@ export default function ChatBox(props) {
                 </ListItem>
               ))}
             </List>
-          </div> */}
+          </div>
           <div className={classes.chatWindow}>
             {allChats[activeTopic].map((chat, i) => {
-              console.log(allChats)
+              // console.log(allChats)
               return(
               <div className={classes.flexColumn} key={i}>
                   <Chip
