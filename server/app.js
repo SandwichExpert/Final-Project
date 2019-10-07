@@ -10,8 +10,8 @@ const logger = require("morgan");
 const nocache = require("nocache");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
-const http = require('http').createServer(app);
-var io = require('socket.io')(http);
+// const http = require('http').createServer(app);
+// var io = require('socket.io')(http);
 
 
 
@@ -27,10 +27,10 @@ const debug = require("debug")(
 //   console.log('a user connected')
 // });
 
-io.on('connection',(socket)=>{
-  console.log('Client connected');
-  socket.on('disconnect', () => console.log('Client disconnected'));
-})
+// io.on('connection',(socket)=>{
+//   console.log('Client connected');
+//   socket.on('disconnect', () => console.log('Client disconnected'));
+// })
 
 app.use(nocache());
 
