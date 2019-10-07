@@ -16,14 +16,15 @@ const socket = io("/");
 const style = {
   margin: 0,
   top: "auto",
-  right: 20,
-  bottom: 20,
+  right: "5%",
+  bottom: "5%",
   left: "auto",
   position: "fixed",
   backgroundColor: "#6b7db3",
   color: "#FFFFFF",
-  height: 30,
-  width: 30
+  height: 50,
+  width: 50,
+  borderRadius : 50,
 };
 
 export default function Meetup(props) {
