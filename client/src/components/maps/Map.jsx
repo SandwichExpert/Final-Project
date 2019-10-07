@@ -28,6 +28,7 @@ export default function Map(props) {
               src={selectedLoc.created_by.avatar}
               alt="user-avatar"
               className="profile-image"
+              style={{ width: 60, height: 60 }}
             />
           </span>
         )}
