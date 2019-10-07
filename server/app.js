@@ -10,6 +10,13 @@ const logger = require("morgan");
 const nocache = require("nocache");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
+<<<<<<< HEAD
+=======
+// const http = require('http').createServer(app);
+// var io = require('socket.io')(http);
+
+
+>>>>>>> 0a5b87620156317d668b014930cace02f20b381c
 
 require("./configs/database");
 
@@ -23,6 +30,14 @@ const debug = require("debug")(
 //   console.log('a user connected')
 // });
 
+<<<<<<< HEAD
+=======
+// io.on('connection',(socket)=>{
+//   console.log('Client connected');
+//   socket.on('disconnect', () => console.log('Client disconnected'));
+// })
+
+>>>>>>> 0a5b87620156317d668b014930cace02f20b381c
 app.use(nocache());
 
 // Set "Access-Control-Allow-Origin" header
