@@ -208,6 +208,27 @@ export default function Map(props) {
           UserMarker(props.currentUserDeparture, "departure")}
         {props.currentUserSuggestion &&
           UserMarker(props.currentUserSuggestion, "suggestion")}
+        {props.liveSuggestions.map((suggestion, i) => {
+          return (
+            <Marker
+              icon={{
+                url: nonuser_suggestion_marker,
+                scaledSize: new window.google.maps.Size(50, 50)
+              }}
+              key={i}
+              position={{
+                lat: Number(suggestion.lat),
+                lng: Number(suggestion.lng)
+              }}
+              //  onClick={() => {
+              //    setSelectedLocation(suggestion);
+              //  }}
+              //  id={suggestion._id}
+              creator={suggestion.username}
+              title={`live suggestion form ${suggestion.username}`}
+            ></Marker>
+          );
+        })}
         {selectedLocation && (
           <div>
             <InfoWindow
