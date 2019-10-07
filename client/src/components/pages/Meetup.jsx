@@ -416,7 +416,7 @@ export default function Meetup(props) {
             }}
           >
             show legend <span> </span>
-            <i class="fas fa-map-signs"></i>
+            <i className="fas fa-map-signs"></i>
           </button>
           <button
             className="heading_middle"
@@ -427,7 +427,7 @@ export default function Meetup(props) {
             style={{ backgroundColor: "transparent", border: "none" }}
           >
             see ranking <span> </span>
-            <i class="fas fa-poll"></i>
+            <i className="fas fa-poll"></i>
           </button>
         </div>
         <div className="right_side">
