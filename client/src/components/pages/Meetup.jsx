@@ -9,7 +9,7 @@ import Store from "../sub-components/Store";
 import Button from "@material-ui/core/Button";
 // setup socket.io on the client side
 const io = require("socket.io-client");
-const socket = io("http://localhost:2000/");
+const socket = io("/");
 
 // this setup has to match your backend
 // const socket = io("http://localhost:2000/");
