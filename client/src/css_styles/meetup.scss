@@ -424,6 +424,9 @@
   }
   .legend{
     display:none;
+  };
+  .header-buttons-wrapper{
+    flex-direction:row;
   }
 }
 
@@ -460,6 +463,9 @@
   }
   .legend{
     display:none;
+  };
+  .header-buttons-wrapper{
+    flex-direction:row;
   }
 }
 
@@ -495,6 +501,9 @@
   }
   .legend{
     display:none;
+  };
+  .header-buttons-wrapper{
+    flex-direction:row;
   }
 }
 
@@ -530,5 +539,7 @@
   .legend{
     display:none;
   }
-
+  .header-buttons-wrapper{
+    flex-direction:row;
+  }
 }
