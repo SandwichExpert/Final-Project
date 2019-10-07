@@ -30,7 +30,11 @@ export default function Home(props) {
   }
 
   if (!user) {
-    return <div>does nothing</div>;
+    return (
+      <div className="mobile_loading">
+        <div className="loading-spinner"></div>
+      </div>
+    );
   }
 
   return (
