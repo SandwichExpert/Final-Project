@@ -343,7 +343,7 @@ export default function Meetup(props) {
         </Store>
       )}
       <Button variant="fab" aria-label="add" style={style} onClick={toggleDiv}>
-        <i class="fas fa-comment"></i>
+        <i className="fas fa-comment"></i>
       </Button>
 
       {/* end of the chat     */}
@@ -510,13 +510,13 @@ export default function Meetup(props) {
           </li>
         </ul>
       )}
-      {showChat && (
+      {/* {showChat && (
         <TestComponent
           meetupId={meetupId}
           username={user.first_name}
           meetupName={meetup.name}
         ></TestComponent>
-      )}
+      )} */}
 
       {/* <pre>{JSON.stringify(state, null, 2)}</pre>
       <pre>{JSON.stringify(allNonUserDepartures, null, 2)}</pre>
