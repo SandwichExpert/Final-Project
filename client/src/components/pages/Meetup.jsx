@@ -337,11 +337,11 @@ export default function Meetup(props) {
 
       {/* The Whole chatbox interaction */}
 
-      {isChatActive.show && (
         <Store user={user} meetup={meetup}>
+      {isChatActive.show && (
           <ChatBox user={user} meetup={meetup} />
+          )}
         </Store>
-      )}
       <Button variant="fab" aria-label="add" style={style} onClick={toggleDiv}>
         <i className="fas fa-comment"></i>
       </Button>

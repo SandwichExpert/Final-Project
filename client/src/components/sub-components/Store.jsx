@@ -28,16 +28,16 @@ function sendChatAction(value) {
 export default function Store(props) {
   const [allChats, dispatch] = React.useReducer(reducer, initState);
   if (!socket) {
-    socket = io(":3002");
+    socket = io(":2000");
     socket.on("chat message", function(msg) {
       dispatch({ type: "RECEIVE_MESSAGE", payload: msg });
     });
   }
   const user = props.user.first_name;
-  const avatar = props.user.avatar;
+
 
   return (
-    <CTX.Provider value={{ allChats, sendChatAction, user, avatar }}>
+    <CTX.Provider value={{ allChats, sendChatAction, user }}>
       {props.children}
     </CTX.Provider>
   );

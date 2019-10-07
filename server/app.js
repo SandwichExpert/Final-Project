@@ -20,9 +20,19 @@ const debug = require("debug")(
   `${app_name}:${path.basename(__filename).split(".")[0]}`
 );
 
-io.on('connection', function(socket){
-  socket.on
-  console.log('a user connected')
+// io.on('connection', function(socket){
+//   socket.on
+//   console.log('a user connected')
+// });
+
+io.on('connection',function(socket){
+  console.log('a user connected');
+  socket.on('chat message', function(msg){
+    console.log('message: ' + JSON.stringify(msg));
+    io.emit('chat message', msg)
+    console.log(msg)
+
+});
 });
 
 app.use(nocache());

@@ -62,7 +62,7 @@ const useStyles = makeStyles(theme => ({
 export default function ChatBox(props) {
   const classes = useStyles();
 
-  const { allChats, sendChatAction, user, avatar } = React.useContext(CTX);
+  const { allChats, sendChatAction, user} = React.useContext(CTX);
 
   const topics = Object.keys(allChats);
 
@@ -103,23 +103,21 @@ export default function ChatBox(props) {
             </List>
           </div> */}
           <div className={classes.chatWindow}>
-            {allChats[activeTopic].map((chat, i) => (
+            {allChats[activeTopic].map((chat, i) => {
+              console.log(allChats)
+              return(
               <div className={classes.flexColumn} key={i}>
-                <div className={classes.userChip}>
                   <Chip
-                    // avatar={<Avatar alt="name" src={avatar} />}
                     label={chat.from}
                     className={classes.chip}
                     style={{ backgroundColor: "#6bb39a", color: "#ffffff" }}
                   />
-                </div>
-                <div className={classes.userChip}>
                   <Typography variant="body1" gutterBottom>
                     {chat.msg}
                   </Typography>
                 </div>
-              </div>
-            ))}
+                )
+            })}
           </div>
         </div>
         <div className={classes.flex}>
@@ -128,21 +126,24 @@ export default function ChatBox(props) {
             label="Send a message"
             className={classes.chatBox}
             value={textValue}
-            onChange={e => {
-              changeTextValue(e.target.value);
+            onChange={
+              e => {
+                changeTextValue(e.target.value)
+                console.log(textValue)
             }}
           />
           <Button
             variant="contained"
             color="inherit"
             className={classes.button}
-            onClick={() => {
-              sendChatAction({
-                from: user,
-                msg: textValue,
-                topic: activeTopic,
-                avatar: avatar
-              });
+            onClick={
+              () => {
+                sendChatAction({
+                  from: user,
+                  msg: textValue,
+                  topic: activeTopic,
+                })
+                console.log(textValue)
               changeTextValue("");
             }}
           >
