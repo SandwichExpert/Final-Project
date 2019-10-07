@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import api from "../../api";
 import UserDisplay from "../sub-components/UserDisplay";
 import moment from "moment";
+import ChatBox from "../sub-components/ChatBox";
 
 export default function Home(props) {
   const [user, setUser] = useState("");
   const [friends, setFriends] = useState("");
   const [count, setCount] = useState("");
   const [meetups, setMeetups] = useState("");
+  const [isChatActive, setIsChatActive] = useState(false);
 
   useEffect(() => {
     api.getUserInfo().then(userInfo => {
@@ -22,6 +24,11 @@ export default function Home(props) {
       console.log("here", meetups);
     });
   }, []);
+
+  function toggleDiv() {
+    const { show } = isChatActive;
+    setIsChatActive({ show: !show });
+  }
 
   function filteredMeetups(meetups) {
     return meetups.sort(
@@ -47,6 +54,12 @@ export default function Home(props) {
             count={count}
             meetups={meetups}
           ></UserDisplay>
+          <Store user={user} meetup={meetup}>
+        {isChatActive.show && <ChatBox user={user} meetup={meetup} />}
+      </Store>
+      <Button variant="fab" aria-label="add" style={style} onClick={toggleDiv}>
+        <i className="fas fa-comment"></i>
+      </Button>
         </div>
       )}
       {/* {api.isLoggedIn() && <div>Hello</div>} */}

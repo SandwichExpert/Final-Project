@@ -3,7 +3,7 @@ import io from "socket.io-client";
 export const CTX = React.createContext();
 
 const initState = {
-  general: [{ from: "maptee", msg: "Hello there" }]
+  general: [{ from: "Mapteam", msg: "Welcome to the Chat!" }]
 };
 
 function reducer(state, action) {
