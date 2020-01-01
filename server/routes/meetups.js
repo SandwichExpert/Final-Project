@@ -83,14 +83,12 @@ router.delete("/:meetupId", isLoggedIn, (req, res, next) => {
 router.put("/join", isLoggedIn, (req, res, next) => {
   const meetup = req.body.meetupId;
   const _users = req.body.userId;
-  console.log(meetup, _users, "----------------------------");
   MeetUp.findByIdAndUpdate(
     meetup,
     { $addToSet: { _users: _users } },
     { new: true }
   )
     .then(updatedMeetup => {
-      console.log("heeeere");
       User.findByIdAndUpdate(
         _users,
         { $addToSet: { _meetups: meetup } },
