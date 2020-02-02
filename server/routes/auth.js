@@ -65,7 +65,7 @@ router.post('/login', (req, res, next) => {
       // failureDetails,
       return
     }
-
+    
     // LOG IN THIS USER
     // "req.logIn()" is a Passport method that calls "serializeUser()"
     // (that saves the USER ID in the session)

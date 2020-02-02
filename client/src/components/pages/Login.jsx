@@ -12,8 +12,8 @@ export default function Login(props) {
     api
       .login(formValues.email, formValues.password)
       .then(result => {
-        console.log('SUCCESS!')
-        props.history.push('/home') // Redirect to the home page
+        console.log("SUCCESS!");
+        props.history.push("/home"); // Redirect to the home page
       })
       .catch(err => setMessage(err.toString()));
   }
@@ -21,16 +21,15 @@ export default function Login(props) {
   const [message, setMessage] = useState(null);
 
   return (
- 
     <div className="mobile-container">
       <img src={Logo} alt="Maptee" className="main_logo" />
       <div className="mobile-background">
-        <form onSubmit={handleSubmit} className ="login_form">
+        <form onSubmit={handleSubmit} className="login_form">
           <b>Email</b> <br />{" "}
           <input
             type="email"
             {...getInputProps("email")}
-            placeholder="Your email"
+            placeholder="Your email (for trial try henri.dbel@gmail.com)"
             className="inputs-login"
           />{" "}
           <br />
@@ -38,7 +37,7 @@ export default function Login(props) {
           <input
             type="password"
             {...getInputProps("password")}
-            placeholder="Your password"
+            placeholder="Your password (for trial try 12345)"
             className="inputs-login"
           />
           <br />
@@ -59,6 +58,5 @@ export default function Login(props) {
         {message && <div className="info info-danger">{message}</div>}
       </div>
     </div>
-   
   );
 }
